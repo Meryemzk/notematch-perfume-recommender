@@ -1,20 +1,19 @@
 from collections import Counter
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
 from .models import Mood, SurveyQuestion, SurveyOption, SurveySubmission, SurveyAnswer
+from .seed_data import ensure_starter_content
 from perfumes.models import Perfume
 
 
 @login_required
 def quiz(request):
-    questions = SurveyQuestion.objects.all().order_by("order")
+    if not SurveyQuestion.objects.exists():
+        ensure_starter_content()
 
-    if not questions.exists():
-        return render(request, "survey/quiz.html", {
-            "questions": questions,
-            "no_questions": True,
-        })
+    questions = SurveyQuestion.objects.prefetch_related("options").all().order_by("order")
 
     if request.method == "POST":
         submission = SurveySubmission.objects.create(user=request.user)
@@ -22,21 +21,20 @@ def quiz(request):
         total_energic = 0
         total_relax = 0
         tags = []
+        mood_votes = []
 
         for q in questions:
             picked_option_id = request.POST.get(f"q_{q.id}")
             if not picked_option_id:
-                return render(request, "survey/quiz.html", {
-                    "questions": questions,
-                    "error": "Please answer all questions."
-                })
+                submission.delete()
+                messages.error(request, "Please answer every survey question before submitting.")
+                return render(request, "survey/quiz.html", {"questions": questions})
 
             opt = SurveyOption.objects.filter(id=picked_option_id, question=q).first()
             if not opt:
-                return render(request, "survey/quiz.html", {
-                    "questions": questions,
-                    "error": "Invalid selection. Please try again."
-                })
+                submission.delete()
+                messages.error(request, "One answer was invalid. Please try the survey again.")
+                return render(request, "survey/quiz.html", {"questions": questions})
 
             SurveyAnswer.objects.create(submission=submission, question=q, option=opt)
 
@@ -45,11 +43,17 @@ def quiz(request):
 
             if opt.note_tag:
                 tags.append(opt.note_tag.strip().lower())
+            if opt.target_mood:
+                mood_votes.append(opt.target_mood.strip())
 
-        mood_name = "Energic" if total_energic >= total_relax else "Relaxation"
+        top_tags = [t for t, _count in Counter(tags).most_common(4)]
+
+        if mood_votes:
+            mood_name = Counter(mood_votes).most_common(1)[0][0]
+        else:
+            mood_name = "Energic" if total_energic >= total_relax else "Relaxation"
+
         mood, _ = Mood.objects.get_or_create(name=mood_name)
-
-        top_tags = [t for t, _count in Counter(tags).most_common(3)]
 
         submission.total_energic = total_energic
         submission.total_relax = total_relax
@@ -57,6 +61,7 @@ def quiz(request):
         submission.top_note_tags = ",".join(top_tags)
         submission.save()
 
+        messages.success(request, "Survey completed. Your personalized perfume matches are ready.")
         return redirect("quiz_result")
 
     return render(request, "survey/quiz.html", {"questions": questions})
@@ -64,6 +69,9 @@ def quiz(request):
 
 @login_required
 def result(request):
+    if not Perfume.objects.exists() or not SurveyQuestion.objects.exists():
+        ensure_starter_content()
+
     latest = (
         SurveySubmission.objects
         .filter(user=request.user)
@@ -73,37 +81,37 @@ def result(request):
     )
 
     if not latest:
+        messages.info(request, "Please complete the survey first so we can recommend perfumes.")
         return redirect("quiz")
 
-    perfumes = Perfume.objects.filter(moods=latest.result_mood).distinct()
-
     tags = [t.strip().lower() for t in (latest.top_note_tags or "").split(",") if t.strip()]
+    all_perfumes = Perfume.objects.prefetch_related("moods").all()
 
     ranked_perfumes = []
-
-    for perfume in perfumes:
+    for perfume in all_perfumes:
         score = 0
         notes_text = (perfume.notes or "").lower()
+        mood_names = [m.name for m in perfume.moods.all()]
 
-        # Base score for matching mood
-        score += 5
+        if latest.result_mood and latest.result_mood.name in mood_names:
+            score += 6
 
-        # Extra score for matching note tags
         matched_tags = []
         for tag in tags:
-            if tag in notes_text:
+            if tag and tag in notes_text:
                 score += 3
                 matched_tags.append(tag)
 
-        ranked_perfumes.append({
-            "perfume": perfume,
-            "score": score,
-            "matched_tags": matched_tags,
-        })
+        if score > 0:
+            ranked_perfumes.append({
+                "perfume": perfume,
+                "score": score,
+                "matched_tags": matched_tags,
+                "moods": mood_names,
+            })
 
     ranked_perfumes.sort(key=lambda x: x["score"], reverse=True)
-
-    top_recommendations = ranked_perfumes[:4]
+    top_recommendations = ranked_perfumes[:6]
 
     return render(request, "survey/result.html", {
         "latest": latest,

@@ -35,6 +35,8 @@ class SurveyOption(models.Model):
 
     # optional perfume note tag that user likes (e.g. citrus, lavender, vanilla)
     note_tag = models.CharField(max_length=50, blank=True)
+    # mood that this answer points to (e.g. Romantic, Confident, Calm)
+    target_mood = models.CharField(max_length=50, blank=True)
 
     def __str__(self):
         return f"{self.question.order}) {self.text}"

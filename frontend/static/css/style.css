@@ -1,79 +1,25 @@
 :root{
-  --nm-bg: #f7f2ee;
-  --nm-card: rgba(255,255,255,0.75);
-  --nm-text: #2b2320;
-  --nm-muted:#6b5f5a;
-  --nm-accent:#b07a63;
-  --nm-border: rgba(0,0,0,0.08);
-}
-
-.nm-body{
-  background: radial-gradient(1200px 600px at 60% 10%, #fff 0%, var(--nm-bg) 60%);
-  color: var(--nm-text);
-  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-}
-
 .nm-navbar{
-  background: rgba(247,242,238,0.78);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--nm-border);
+  --nm-bg:#f8f1ec;
+  --nm-card:rgba(255,255,255,.82);
+  --nm-text:#271f1d;
+  --nm-muted:#756964;
+  --nm-accent:#a86952;
+  --nm-accent-2:#d7a68d;
+  --nm-border:rgba(55,35,26,.12);
+  --nm-shadow:0 18px 60px rgba(67,38,28,.10);
 }
-
-.nm-brand{
-  font-family: "Playfair Display", serif;
-  font-weight: 700;
-  letter-spacing: .2px;
-}
-
-.nm-logo{ font-size: 20px; }
-
-.nm-btn{
-  background: var(--nm-accent);
-  border: 0;
-  color: white;
-  padding: 10px 16px;
-  border-radius: 999px;
-}
-.nm-btn:hover{ opacity:.92; color:white; }
-
-.nm-pill{
-  border-radius: 999px;
-  padding: 10px 14px;
-  border: 1px solid var(--nm-border);
-  background: rgba(255,255,255,0.55);
-}
-
-.nm-hero{
-  border: 1px solid var(--nm-border);
-  background: linear-gradient(90deg, rgba(255,255,255,.65), rgba(255,255,255,.35));
-  border-radius: 24px;
-  overflow: hidden;
-}
-
-.nm-hero-img{
-  min-height: 360px;
-  background-size: cover;
-  background-position: center;
-}
-
-/* Miss Dior inspired background image (not official) */
-.nm-hero-img--missdior{
-  background:
-    linear-gradient(90deg, rgba(247,242,238,.1), rgba(247,242,238,.95)),
-    url("https://images.unsplash.com/photo-1596464716127-f2a82984de30?auto=format&fit=crop&w=1400&q=80");
-}
-
-  font-family: "Playfair Display", serif;
-  font-weight: 700;
-}
-
-.nm-card{
-  background: var(--nm-card);
-  border: 1px solid var(--nm-border);
-  border-radius: 18px;
-  padding: 18px;
-}
-
-.nm-section{
-  padding: 48px 0;
-}
+*{box-sizing:border-box}
+a{color:var(--nm-accent);text-decoration:none}a:hover{text-decoration:underline}
+.nm-body{background:radial-gradient(900px 600px at 85% 5%,#fff 0%,#f8eee8 42%,var(--nm-bg) 100%);color:var(--nm-text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;min-height:100vh}
+.nm-navbar{background:rgba(248,241,236,.84);backdrop-filter:blur(12px);border-bottom:1px solid var(--nm-border)}
+.nm-brand,.nm-title{font-family:"Playfair Display",serif;font-weight:700;letter-spacing:.1px}.nm-logo{display:inline-flex;width:34px;height:34px;border-radius:50%;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--nm-accent),var(--nm-accent-2));color:white}.nm-welcome{display:inline-flex;padding:9px 13px;border-radius:999px;background:#fff;border:1px solid var(--nm-border);font-size:.92rem;color:var(--nm-text)}
+.nm-btn{background:var(--nm-accent);border:0;color:white;padding:10px 17px;border-radius:999px;font-weight:700;box-shadow:0 10px 22px rgba(168,105,82,.18)}.nm-btn:hover{background:#965940;color:white;text-decoration:none}.nm-pill{border-radius:999px;padding:10px 15px;border:1px solid var(--nm-border);background:rgba(255,255,255,.72);color:var(--nm-text)}.nm-pill:hover{background:white;color:var(--nm-text);text-decoration:none}
+.nm-section{padding:48px 0}.nm-hero{border:1px solid var(--nm-border);background:linear-gradient(120deg,rgba(255,255,255,.9),rgba(255,255,255,.58));border-radius:30px;overflow:hidden;box-shadow:var(--nm-shadow)}.nm-hero-img{min-height:410px;background-size:cover;background-position:center}.nm-hero-img--luxury{background:linear-gradient(90deg,rgba(248,241,236,.05),rgba(248,241,236,.88)),url("https://images.unsplash.com/photo-1595425964071-2c1ecfbdd1ea?auto=format&fit=crop&w=1400&q=80")}
+.nm-card,.nm-perfume-card,.nm-profile-hero{background:var(--nm-card);border:1px solid var(--nm-border);border-radius:22px;padding:22px;box-shadow:var(--nm-shadow)}.nm-perfume-card{transition:.2s ease;background:rgba(255,255,255,.72)}.nm-perfume-card:hover{transform:translateY(-3px);box-shadow:0 24px 70px rgba(67,38,28,.13)}.nm-profile-hero{display:flex;justify-content:space-between;gap:16px;align-items:center;background:linear-gradient(135deg,#fff,rgba(255,244,238,.85))}
+.nm-kicker{text-transform:uppercase;letter-spacing:.14em;font-size:.76rem;font-weight:800;color:var(--nm-accent);margin-bottom:8px}.nm-mini-stat{background:#fff;border:1px solid var(--nm-border);border-radius:16px;padding:14px}.nm-mini-stat strong{display:block;font-size:1.4rem}.nm-mini-stat span{font-size:.78rem;color:var(--nm-muted)}
+.nm-brand-badge{display:inline-flex;padding:6px 10px;border-radius:999px;background:#2c2320;color:#fff;font-size:.78rem;font-weight:700}.nm-chip{display:inline-flex;padding:6px 9px;border-radius:999px;background:#f0ded4;border:1px solid rgba(168,105,82,.22);color:#6b3b2b;font-size:.78rem;font-weight:700}.nm-status-dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:#18a058;margin-right:7px}
+.nm-question{border-bottom:1px solid var(--nm-border);padding-bottom:22px}.nm-question:last-of-type{border-bottom:0}.nm-question-number{flex:0 0 auto;display:inline-flex;width:38px;height:38px;border-radius:50%;align-items:center;justify-content:center;background:var(--nm-accent);color:#fff;font-weight:800}.nm-option{display:block;padding:14px 16px;border:1px solid var(--nm-border);border-radius:16px;background:#fff;cursor:pointer;height:100%;transition:.18s}.nm-option span{display:block;color:var(--nm-muted);font-size:.78rem;margin-top:4px;text-transform:uppercase;letter-spacing:.08em}.btn-check:checked+.nm-option{border-color:var(--nm-accent);background:#fff2ec;box-shadow:0 0 0 3px rgba(168,105,82,.13)}.nm-option:hover{border-color:var(--nm-accent)}
+.nm-input,.nm-card input[type="text"],.nm-card input[type="password"],.nm-card input[type="email"]{border-radius:14px;border:1px solid var(--nm-border);padding:11px 13px}.nm-card input[type="text"],.nm-card input[type="password"],.nm-card input[type="email"]{width:100%;display:block}.nm-alert{border-radius:16px;border:1px solid var(--nm-border)}.nm-table{--bs-table-bg:transparent}.nm-table td,.nm-table th{border-color:var(--nm-border)}
+.nm-footer{background:#211a18;border-top:1px solid rgba(255,255,255,.08);color:#fff}.nm-footer a{display:block;color:#ead8cf;margin-bottom:7px}.nm-footer .text-secondary{color:#c6b6ae!important}
+@media(max-width:768px){.nm-profile-hero{display:block}.nm-profile-hero .btn{margin-top:16px}.nm-hero-img{min-height:260px}.nm-section{padding:32px 0}}

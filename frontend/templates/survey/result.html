@@ -1,65 +1,45 @@
 {% extends "base.html" %}
-{% block title %}Your Results{% endblock %}
-
+{% block title %}Your Recommendations{% endblock %}
 {% block content %}
 <div class="container nm-section">
-  <div class="nm-card">
-    <h2 class="nm-title mb-2">Your result: {{ latest.result_mood.name }}</h2>
-
-    <p class="text-secondary mb-2">
-      Energic score: <b>{{ latest.total_energic }}</b> |
-      Relaxation score: <b>{{ latest.total_relax }}</b>
-    </p>
-
+  <div class="nm-card mb-4">
+    <div class="nm-kicker">Recommendation result</div>
+    <h1 class="nm-title mb-2">Your mood match: {{ latest.result_mood.name }}</h1>
+    <p class="text-secondary mb-2">Energic score: <b>{{ latest.total_energic }}</b> · Relaxation score: <b>{{ latest.total_relax }}</b></p>
     {% if tags %}
-      <p class="text-secondary mb-3">
-        Your preferred note tags:
-        {% for tag in tags %}
-          <span class="badge bg-secondary me-1">{{ tag }}</span>
-        {% endfor %}
-      </p>
-    {% endif %}
-
-    <hr>
-
-    <h4 class="mb-3">Top Recommendations for You</h4>
-
-    {% if top_recommendations %}
-      <div class="row g-3">
-        {% for item in top_recommendations %}
-          <div class="col-md-6">
-            <div class="nm-card h-100">
-              <h5 class="mb-1">{{ item.perfume.name }}</h5>
-
-              {% if item.perfume.brand %}
-                <p class="text-secondary mb-1">{{ item.perfume.brand }}</p>
-              {% endif %}
-
-              {% if item.perfume.notes %}
-                <p class="mb-2">Notes: {{ item.perfume.notes }}</p>
-              {% endif %}
-
-              <p class="mb-1"><strong>Match score:</strong> {{ item.score }}</p>
-
-              {% if item.matched_tags %}
-                <p class="mb-0">
-                  <strong>Matched tags:</strong>
-                  {% for tag in item.matched_tags %}
-                    <span class="badge bg-secondary me-1">{{ tag }}</span>
-                  {% endfor %}
-                </p>
-              {% endif %}
-            </div>
-          </div>
-        {% endfor %}
+      <div class="d-flex gap-1 flex-wrap">
+        {% for tag in tags %}<span class="nm-chip">{{ tag }}</span>{% endfor %}
       </div>
-    {% else %}
-      <p>No recommendations found yet. Add perfumes in Admin and connect them to moods.</p>
     {% endif %}
+  </div>
 
-    <div class="mt-4">
-      <a class="btn nm-pill" href="/survey/">Take survey again</a>
-    </div>
+  <div class="row g-3">
+    {% for item in top_recommendations %}
+      <div class="col-md-6 col-xl-4">
+        <div class="nm-perfume-card h-100">
+          <span class="nm-brand-badge">{{ item.perfume.brand }}</span>
+          <h3 class="h5 mt-3 mb-1">{{ item.perfume.name }}</h3>
+          <p class="text-secondary small mb-2">{{ item.perfume.description }}</p>
+          <p class="mb-2"><strong>Why it matches:</strong> {{ item.perfume.best_for }}</p>
+          <p class="mb-2"><strong>Mood boost:</strong> {{ item.perfume.boosts_mood }}</p>
+          <p class="mb-2"><strong>Notes:</strong> {{ item.perfume.notes }}</p>
+          <p class="mb-2"><strong>Match score:</strong> {{ item.score }}</p>
+          {% if item.matched_tags %}
+            <div class="d-flex gap-1 flex-wrap">
+              {% for tag in item.matched_tags %}<span class="nm-chip">{{ tag }}</span>{% endfor %}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    {% empty %}
+      <div class="col-12"><div class="alert alert-warning">No matches found yet. Please browse the catalog or try the survey again.</div></div>
+    {% endfor %}
+  </div>
+
+  <div class="mt-4 d-flex gap-2 flex-wrap">
+    <a class="btn nm-btn" href="/survey/">Take survey again</a>
+    <a class="btn nm-pill" href="/perfumes/">Browse all perfumes</a>
+    <a class="btn nm-pill" href="/users/me/">View profile</a>
   </div>
 </div>
 {% endblock %}

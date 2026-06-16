@@ -1,24 +1,57 @@
 {% extends "base.html" %}
-{% block title %}Perfumes{% endblock %}
-
+{% block title %}Browse Perfumes{% endblock %}
 {% block content %}
 <div class="container nm-section">
-  <div class="nm-card">
-    <h2 class="nm-title mb-2">Perfume Catalog</h2>
-    <p class="text-secondary">Add perfumes in Admin and they’ll show here.</p>
+  <div class="nm-card mb-4">
+    <div class="d-flex justify-content-between flex-wrap gap-3 align-items-end">
+      <div>
+        <div class="nm-kicker">Catalog</div>
+        <h1 class="nm-title mb-2">Browse perfumes by brand, mood, and notes</h1>
+        <p class="text-secondary mb-0">Explore curated perfume examples from Dior, Chanel, D&G, YSL, Lancôme, Viktor & Rolf, Marc Jacobs, Givenchy, Tom Ford, Creed, Armani, Paco Rabanne, and Prada.</p>
+      </div>
+    </div>
 
-    {% if perfumes %}
-      <ul class="mb-0">
-        {% for p in perfumes %}
-          <li>
-            <b>{{ p.name }}</b>{% if p.brand %} — {{ p.brand }}{% endif %}
-            {% if p.notes %}<br><small class="text-secondary">{{ p.notes }}</small>{% endif %}
-          </li>
-        {% endfor %}
-      </ul>
-    {% else %}
-      <p class="text-secondary mb-0">No perfumes yet.</p>
-    {% endif %}
+    <form class="row g-2 mt-3" method="get">
+      <div class="col-lg-5"><input class="form-control nm-input" name="q" value="{{ query }}" placeholder="Search name, note, mood, or description"></div>
+      <div class="col-lg-3">
+        <select class="form-select nm-input" name="brand">
+          <option value="">All brands</option>
+          {% for b in brands %}<option value="{{ b }}" {% if b == selected_brand %}selected{% endif %}>{{ b }}</option>{% endfor %}
+        </select>
+      </div>
+      <div class="col-lg-3">
+        <select class="form-select nm-input" name="mood">
+          <option value="">All moods</option>
+          {% for m in moods %}<option value="{{ m }}" {% if m == selected_mood %}selected{% endif %}>{{ m }}</option>{% endfor %}
+        </select>
+      </div>
+      <div class="col-lg-1"><button class="btn nm-btn w-100" type="submit">Go</button></div>
+    </form>
+  </div>
+
+  <div class="row g-3">
+    {% for p in perfumes %}
+      <div class="col-md-6 col-xl-4">
+        <div class="nm-perfume-card h-100">
+          <div class="d-flex justify-content-between gap-2 align-items-start">
+            <span class="nm-brand-badge">{{ p.brand }}</span>
+            <span class="small text-secondary">#{{ forloop.counter }}</span>
+          </div>
+          <h3 class="h5 mt-3 mb-1">{{ p.name }}</h3>
+          <p class="text-secondary small mb-2">{{ p.description }}</p>
+          <p class="mb-2"><strong>Notes:</strong> {{ p.notes }}</p>
+          <p class="mb-2"><strong>Best for:</strong> {{ p.best_for }}</p>
+          <p class="mb-2"><strong>Mood it increases:</strong> {{ p.boosts_mood }}</p>
+          <div class="d-flex gap-1 flex-wrap">
+            {% for mood in p.moods.all %}
+              <span class="nm-chip">{{ mood.name }}</span>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <div class="col-12"><div class="alert alert-warning">No perfumes found for this filter.</div></div>
+    {% endfor %}
   </div>
 </div>
 {% endblock %}

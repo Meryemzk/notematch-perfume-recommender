@@ -1,24 +1,43 @@
 {% extends "base.html" %}
 {% block title %}My Profile{% endblock %}
-
 {% block content %}
 <div class="container nm-section">
-  <div class="nm-card">
-    <h2 class="nm-title mb-2">Hello, {{ user.username }} 👋</h2>
-    <p class="text-secondary">Your latest survey results:</p>
+  <div class="nm-profile-hero mb-4">
+    <div>
+      <div class="nm-kicker">Personal dashboard</div>
+      <h1 class="nm-title mb-1">Welcome {{ user.username }}</h1>
+      <p class="text-secondary mb-0">Track your mood history, perfume preferences, and recommendation progress.</p>
+    </div>
+    <a class="btn nm-btn" href="/survey/">Take new survey</a>
+  </div>
 
+  <div class="row g-3 mb-4">
+    <div class="col-md-4"><div class="nm-card h-100"><span class="text-secondary">Surveys completed</span><h2 class="mb-0">{{ total_surveys }}</h2></div></div>
+    <div class="col-md-4"><div class="nm-card h-100"><span class="text-secondary">Latest mood</span><h2 class="mb-0">{{ favorite_mood }}</h2></div></div>
+    <div class="col-md-4"><div class="nm-card h-100"><span class="text-secondary">Perfumes in catalog</span><h2 class="mb-0">{{ perfume_count }}</h2></div></div>
+  </div>
+
+  <div class="nm-card">
+    <h2 class="nm-title h3 mb-3">Recent survey history</h2>
     {% if latest %}
-      <ul class="mb-0">
-        {% for item in latest %}
-          <li>
-            <b>{% if item.result_mood %}{{ item.result_mood.name }}{% else %}No result{% endif %}</b>
-            — Energic: {{ item.total_energic }}, Relaxation: {{ item.total_relax }}
-            — {{ item.created_at }}
-          </li>
-        {% endfor %}
-      </ul>
+      <div class="table-responsive">
+        <table class="table align-middle nm-table">
+          <thead><tr><th>Date</th><th>Mood</th><th>Energic</th><th>Relaxation</th><th>Note tags</th></tr></thead>
+          <tbody>
+            {% for item in latest %}
+              <tr>
+                <td>{{ item.created_at|date:"M d, Y H:i" }}</td>
+                <td><span class="nm-chip">{% if item.result_mood %}{{ item.result_mood.name }}{% else %}No result{% endif %}</span></td>
+                <td>{{ item.total_energic }}</td>
+                <td>{{ item.total_relax }}</td>
+                <td>{{ item.top_note_tags|default:"—" }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
     {% else %}
-      <p class="text-secondary mb-0">No survey results yet. <a href="/survey/">Take the survey</a>.</p>
+      <p class="text-secondary mb-0">No survey results yet. <a href="/survey/">Take the survey</a> to build your fragrance profile.</p>
     {% endif %}
   </div>
 </div>

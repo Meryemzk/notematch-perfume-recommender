@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}NoteMatch - Miss Dior Inspiration{% endblock %}
+
+{% block content %}
+<div class="container nm-section">
+  <div class="row g-0 nm-hero">
+    <div class="col-lg-6 p-4 p-lg-5">
+      <h1 class="nm-title display-5 mb-3">Miss Dior–Inspired Mood Matching</h1>
+      <p class="text-secondary mb-4">
+        A soft, floral, elegant vibe — then we match fragrances to how you feel today.
+      </p>
+
+      <div class="d-flex gap-2 flex-wrap">
+        <a class="btn nm-btn" href="/survey/">Take the Survey</a>
+        <a class="btn nm-pill" href="/perfumes/">Browse Perfumes</a>
+      </div>
+
+      <div class="mt-4">
+        <small class="text-secondary">
+          *This page is inspired by “Miss Dior” style; it’s not an official Dior site.
+        </small>
+      </div>
+    </div>
+    <div class="col-lg-6 nm-hero-img nm-hero-img--missdior"></div>
+  </div>
+
+  <div class="row nm-section g-3">
+    <div class="col-md-4"><div class="nm-card h-100"><h5 class="mb-2">Login + Profile</h5><p class="text-secondary mb-0">Users can sign up, login, and track results.</p></div></div>
+    <div class="col-md-4"><div class="nm-card h-100"><h5 class="mb-2">Survey (Mood)</h5><p class="text-secondary mb-0">A simple mood survey saved per user.</p></div></div>
+    <div class="col-md-4"><div class="nm-card h-100"><h5 class="mb-2">Recommendations</h5><p class="text-secondary mb-0">Perfumes linked to moods show up after survey.</p></div></div>
+  </div>
+</div>
+{% endblock %}

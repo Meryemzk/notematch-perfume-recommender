@@ -1,0 +1,79 @@
+:root{
+  --nm-bg: #f7f2ee;
+  --nm-card: rgba(255,255,255,0.75);
+  --nm-text: #2b2320;
+  --nm-muted:#6b5f5a;
+  --nm-accent:#b07a63;
+  --nm-border: rgba(0,0,0,0.08);
+}
+
+.nm-body{
+  background: radial-gradient(1200px 600px at 60% 10%, #fff 0%, var(--nm-bg) 60%);
+  color: var(--nm-text);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+}
+
+.nm-navbar{
+  background: rgba(247,242,238,0.78);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--nm-border);
+}
+
+.nm-brand{
+  font-family: "Playfair Display", serif;
+  font-weight: 700;
+  letter-spacing: .2px;
+}
+
+.nm-logo{ font-size: 20px; }
+
+.nm-btn{
+  background: var(--nm-accent);
+  border: 0;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 999px;
+}
+.nm-btn:hover{ opacity:.92; color:white; }
+
+.nm-pill{
+  border-radius: 999px;
+  padding: 10px 14px;
+  border: 1px solid var(--nm-border);
+  background: rgba(255,255,255,0.55);
+}
+
+.nm-hero{
+  border: 1px solid var(--nm-border);
+  background: linear-gradient(90deg, rgba(255,255,255,.65), rgba(255,255,255,.35));
+  border-radius: 24px;
+  overflow: hidden;
+}
+
+.nm-hero-img{
+  min-height: 360px;
+  background-size: cover;
+  background-position: center;
+}
+
+/* Miss Dior inspired background image (not official) */
+.nm-hero-img--missdior{
+  background:
+    linear-gradient(90deg, rgba(247,242,238,.1), rgba(247,242,238,.95)),
+    url("https://images.unsplash.com/photo-1596464716127-f2a82984de30?auto=format&fit=crop&w=1400&q=80");
+}
+
+  font-family: "Playfair Display", serif;
+  font-weight: 700;
+}
+
+.nm-card{
+  background: var(--nm-card);
+  border: 1px solid var(--nm-border);
+  border-radius: 18px;
+  padding: 18px;
+}
+
+.nm-section{
+  padding: 48px 0;
+}

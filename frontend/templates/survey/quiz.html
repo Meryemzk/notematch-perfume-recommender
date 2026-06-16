@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Survey{% endblock %}
+
+{% block content %}
+<div class="container nm-section" style="max-width:820px;">
+  <div class="nm-card">
+    <h2 class="nm-title mb-2">Mood & Notes Survey</h2>
+    <p class="text-secondary mb-3">
+      Answer a few questions and we’ll recommend perfumes for <b>Energic</b> or <b>Relaxation</b>.
+    </p>
+
+    {% if no_questions %}
+      <div class="alert alert-warning">
+        No survey questions yet. Add them in <a href="/admin/">Admin</a> (SurveyQuestion).
+      </div>
+    {% else %}
+
+      {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+      {% endif %}
+
+      <form method="post">
+        {% csrf_token %}
+
+        {% for q in questions %}
+          <div class="mb-4">
+            <h6 class="mb-2">{{ q.order }}. {{ q.text }}</h6>
+
+            {% for opt in q.options.all %}
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="q_{{ q.id }}" id="opt_{{ opt.id }}" value="{{ opt.id }}">
+                <label class="form-check-label" for="opt_{{ opt.id }}">
+                  {{ opt.text }}
+                </label>
+              </div>
+            {% endfor %}
+          </div>
+        {% endfor %}
+
+        <button class="btn nm-btn" type="submit">Get my recommendations</button>
+      </form>
+
+      <p class="mt-3 mb-0 text-secondary">
+        If you see empty options, add Options inside each Question in Admin.
+      </p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

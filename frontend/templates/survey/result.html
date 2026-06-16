@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Your Results{% endblock %}
+
+{% block content %}
+<div class="container nm-section">
+  <div class="nm-card">
+    <h2 class="nm-title mb-2">Your result: {{ latest.result_mood.name }}</h2>
+
+    <p class="text-secondary mb-2">
+      Energic score: <b>{{ latest.total_energic }}</b> |
+      Relaxation score: <b>{{ latest.total_relax }}</b>
+    </p>
+
+    {% if tags %}
+      <p class="text-secondary mb-3">
+        Your preferred note tags:
+        {% for tag in tags %}
+          <span class="badge bg-secondary me-1">{{ tag }}</span>
+        {% endfor %}
+      </p>
+    {% endif %}
+
+    <hr>
+
+    <h4 class="mb-3">Top Recommendations for You</h4>
+
+    {% if top_recommendations %}
+      <div class="row g-3">
+        {% for item in top_recommendations %}
+          <div class="col-md-6">
+            <div class="nm-card h-100">
+              <h5 class="mb-1">{{ item.perfume.name }}</h5>
+
+              {% if item.perfume.brand %}
+                <p class="text-secondary mb-1">{{ item.perfume.brand }}</p>
+              {% endif %}
+
+              {% if item.perfume.notes %}
+                <p class="mb-2">Notes: {{ item.perfume.notes }}</p>
+              {% endif %}
+
+              <p class="mb-1"><strong>Match score:</strong> {{ item.score }}</p>
+
+              {% if item.matched_tags %}
+                <p class="mb-0">
+                  <strong>Matched tags:</strong>
+                  {% for tag in item.matched_tags %}
+                    <span class="badge bg-secondary me-1">{{ tag }}</span>
+                  {% endfor %}
+                </p>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>No recommendations found yet. Add perfumes in Admin and connect them to moods.</p>
+    {% endif %}
+
+    <div class="mt-4">
+      <a class="btn nm-pill" href="/survey/">Take survey again</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

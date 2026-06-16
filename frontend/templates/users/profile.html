@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}My Profile{% endblock %}
+
+{% block content %}
+<div class="container nm-section">
+  <div class="nm-card">
+    <h2 class="nm-title mb-2">Hello, {{ user.username }} 👋</h2>
+    <p class="text-secondary">Your latest survey results:</p>
+
+    {% if latest %}
+      <ul class="mb-0">
+        {% for item in latest %}
+          <li>
+            <b>{% if item.result_mood %}{{ item.result_mood.name }}{% else %}No result{% endif %}</b>
+            — Energic: {{ item.total_energic }}, Relaxation: {{ item.total_relax }}
+            — {{ item.created_at }}
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-secondary mb-0">No survey results yet. <a href="/survey/">Take the survey</a>.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

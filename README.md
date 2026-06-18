@@ -1,10 +1,19 @@
-# NoteMatch Semi-Pro — Deployment Ready
+# NoteMatch — Mood and Preference Perfume Recommendation System
 
-NoteMatch is a Django mood-based perfume recommendation system.
+NoteMatch is a Django web application for an undergraduate development project. It recommends perfumes using a combination of mood answers and a saved user preference profile.
 
-This version has been fixed so it can run locally on Mac and can also be deployed to a real server using Render with Supabase PostgreSQL.
+## Main features
 
-## Local run on Mac
+- User sign up, login and profile pages.
+- Friendly greeting that shows the user name only, without an email domain or @ sign.
+- Saved preference profile for each user. Three favourite perfumes, gender preference, new/classic style preference and budget remain saved until the user chooses to update them.
+- Mood and scent survey with admin-editable questions and options.
+- Recommendation scoring using mood, scent-note keywords, favourite-perfume evidence, gender category, style category and budget.
+- Catalogue with more than 100 seeded perfume records and prices shown in pounds.
+- Professional responsive interface with shared templates, reusable includes and a detailed footer.
+- Admin controls for perfumes, questions, user preference profiles and survey submissions.
+
+## Local run
 
 ```bash
 cd backend
@@ -29,20 +38,22 @@ Admin:
 http://127.0.0.1:8000/admin/
 ```
 
-## Real server deployment
+## Render deployment
 
-Read this file:
+This project includes `render.yaml`, `Procfile`, `runtime.txt`, WhiteNoise static-file support and PostgreSQL/Supabase support through `DATABASE_URL`.
+
+In Render, set these environment variables:
 
 ```text
-DEPLOY_RENDER_SUPABASE.md
+DEBUG=False
+SECRET_KEY=your-secret-key
+ALLOWED_HOSTS=your-app-name.onrender.com
+CSRF_TRUSTED_ORIGINS=https://your-app-name.onrender.com
+DATABASE_URL=optional-postgres-url
 ```
 
-## Important files added/fixed
+The Render build command runs migrations and seeds the survey/perfume data automatically.
 
-- `backend/config/settings.py` now supports environment variables and Supabase PostgreSQL.
-- `backend/requirements.txt` now includes deployment and database packages.
-- `backend/Procfile` tells the server how to start Django.
-- `backend/runtime.txt` tells the server which Python version to use.
-- `backend/.env.example` shows the environment variables you need.
-- `render.yaml` provides optional Render deployment configuration.
-- `DEPLOY_RENDER_SUPABASE.md` gives step-by-step deployment instructions.
+## Important note about prices
+
+The seeded perfume prices are prototype/demo UK pound prices for project testing and comparison. For a commercial website, prices should be checked against live retailer data before publishing.

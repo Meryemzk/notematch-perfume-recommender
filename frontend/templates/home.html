@@ -1,57 +1,33 @@
 {% extends "base.html" %}
-{% block title %}NoteMatch - Mood-Based Perfume Recommendations{% endblock %}
+{% block title %}NoteMatch - Miss Dior Inspiration{% endblock %}
+
 {% block content %}
-<section class="container nm-section">
-  <div class="row g-0 nm-hero align-items-stretch">
+<div class="container nm-section">
+  <div class="row g-0 nm-hero">
     <div class="col-lg-6 p-4 p-lg-5">
-      {% if user.is_authenticated %}
-        <div class="nm-kicker">Welcome {{ user.username }}</div>
-      {% else %}
-        <div class="nm-kicker">AI-enhanced fragrance discovery</div>
-      {% endif %}
-      <h1 class="nm-title display-5 mb-3">Find a perfume that matches your mood.</h1>
-      <p class="text-secondary mb-4 lead">Answer a detailed mood and scent survey. NoteMatch compares your answers with perfume notes, moods, and emotional goals to recommend fragrances that feel personal.</p>
+      <h1 class="nm-title display-5 mb-3">Miss Dior–Inspired Mood Matching</h1>
+      <p class="text-secondary mb-4">
+        A soft, floral, elegant vibe — then we match fragrances to how you feel today.
+      </p>
+
       <div class="d-flex gap-2 flex-wrap">
         <a class="btn nm-btn" href="/survey/">Take the Survey</a>
         <a class="btn nm-pill" href="/perfumes/">Browse Perfumes</a>
       </div>
-      <div class="row g-3 mt-4">
-        <div class="col-4"><div class="nm-mini-stat"><strong>10</strong><span>survey questions</span></div></div>
-        <div class="col-4"><div class="nm-mini-stat"><strong>25+</strong><span>perfumes</span></div></div>
-        <div class="col-4"><div class="nm-mini-stat"><strong>8+</strong><span>mood types</span></div></div>
+
+      <div class="mt-4">
+        <small class="text-secondary">
+          *This page is inspired by “Miss Dior” style; it’s not an official Dior site.
+        </small>
       </div>
     </div>
-    <div class="col-lg-6 nm-hero-img nm-hero-img--luxury"></div>
+    <div class="col-lg-6 nm-hero-img nm-hero-img--missdior"></div>
   </div>
 
   <div class="row nm-section g-3">
-    <div class="col-md-4"><div class="nm-card h-100"><h5>1. Share your mood</h5><p class="text-secondary mb-0">Tell the system whether you feel calm, romantic, confident, energetic, fresh, elegant, or cozy.</p></div></div>
-    <div class="col-md-4"><div class="nm-card h-100"><h5>2. Match scent notes</h5><p class="text-secondary mb-0">Your answers are mapped to notes such as citrus, rose, vanilla, musk, amber, lavender, and woody accords.</p></div></div>
-    <div class="col-md-4"><div class="nm-card h-100"><h5>3. Get recommendations</h5><p class="text-secondary mb-0">The system ranks perfumes by mood match and note similarity, then saves your result in your profile.</p></div></div>
+    <div class="col-md-4"><div class="nm-card h-100"><h5 class="mb-2">Login + Profile</h5><p class="text-secondary mb-0">Users can sign up, login, and track results.</p></div></div>
+    <div class="col-md-4"><div class="nm-card h-100"><h5 class="mb-2">Survey (Mood)</h5><p class="text-secondary mb-0">A simple mood survey saved per user.</p></div></div>
+    <div class="col-md-4"><div class="nm-card h-100"><h5 class="mb-2">Recommendations</h5><p class="text-secondary mb-0">Perfumes linked to moods show up after survey.</p></div></div>
   </div>
-
-  <div class="nm-card">
-    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
-      <div>
-        <h2 class="nm-title h3 mb-1">Featured perfumes</h2>
-        <p class="text-secondary mb-0">A preview of the catalog used for recommendations.</p>
-      </div>
-      <a class="btn nm-pill" href="/perfumes/">View full catalog</a>
-    </div>
-    <div class="row g-3">
-      {% for p in featured_perfumes %}
-        <div class="col-md-4">
-          <div class="nm-perfume-card h-100">
-            <span class="nm-brand-badge">{{ p.brand }}</span>
-            <h5 class="mt-2 mb-1">{{ p.name }}</h5>
-            <p class="text-secondary small mb-2">{{ p.notes }}</p>
-            <p class="small mb-0"><strong>Boosts:</strong> {{ p.boosts_mood }}</p>
-          </div>
-        </div>
-      {% empty %}
-        <p class="text-secondary">Perfume content will appear after seeding the catalog.</p>
-      {% endfor %}
-    </div>
-  </div>
-</section>
+</div>
 {% endblock %}

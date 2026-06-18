@@ -1,43 +1,109 @@
 {% extends "base.html" %}
-{% block title %}Mood Survey{% endblock %}
-{% block content %}
-<div class="container nm-section" style="max-width:980px;">
-  <div class="nm-card mb-4">
-    <div class="nm-kicker">Personalized survey</div>
-    <h1 class="nm-title mb-2">Mood, personality & perfume preference survey</h1>
-    <p class="text-secondary mb-0">Answer all questions so NoteMatch can understand your emotional goal, scent family, strength preference, and ideal occasion.</p>
-  </div>
+{% block title %}Survey{% endblock %}
 
-  <form method="post" class="nm-card">
-    {% csrf_token %}
-    {% for q in questions %}
-      <div class="nm-question mb-4">
-        <div class="d-flex gap-3 align-items-start">
-          <span class="nm-question-number">{{ q.order }}</span>
-          <div class="flex-grow-1">
-            <h5 class="mb-3">{{ q.text }}</h5>
-            <div class="row g-2">
+{% block content %}
+<div class="container nm-section" style="max-width:900px;">
+  <div class="nm-card">
+    <h2 class="nm-title mb-2">Mood & Preference Survey</h2>
+    <p class="text-secondary mb-3">
+      Tell us what you already like, then answer the mood questions. NoteMatch will use your
+      <b>three favourite perfumes</b>, gender preference, style preference and budget to produce
+      more personalised recommendations.
+    </p>
+
+    {% if no_questions %}
+      <div class="alert alert-warning">
+        No survey questions yet. Add them in <a href="/admin/">Admin</a> (SurveyQuestion).
+      </div>
+    {% else %}
+
+      {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+      {% endif %}
+
+      <form method="post">
+        {% csrf_token %}
+
+        <div class="mb-4 p-3 rounded" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);">
+          <h4 class="mb-2">1. Your perfume preference profile</h4>
+          <p class="text-secondary mb-3">
+            Enter three perfumes you already like. The system can use them to understand your past scent taste.
+          </p>
+
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label class="form-label" for="favourite_perfume_1">Favourite perfume 1</label>
+              <input class="form-control" type="text" id="favourite_perfume_1" name="favourite_perfume_1"
+                     placeholder="e.g. Sauvage" value="{{ form_values.favourite_perfume_1|default:'' }}" required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label" for="favourite_perfume_2">Favourite perfume 2</label>
+              <input class="form-control" type="text" id="favourite_perfume_2" name="favourite_perfume_2"
+                     placeholder="e.g. Black Opium" value="{{ form_values.favourite_perfume_2|default:'' }}" required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label" for="favourite_perfume_3">Favourite perfume 3</label>
+              <input class="form-control" type="text" id="favourite_perfume_3" name="favourite_perfume_3"
+                     placeholder="e.g. Libre" value="{{ form_values.favourite_perfume_3|default:'' }}" required>
+            </div>
+          </div>
+
+          <div class="row g-3 mt-2">
+            <div class="col-md-4">
+              <label class="form-label" for="preferred_gender">Preferred gender category</label>
+              <select class="form-select" id="preferred_gender" name="preferred_gender" required>
+                {% for value, label in preference_choices.gender %}
+                  <option value="{{ value }}" {% if form_values.preferred_gender == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label" for="style_preference">New or classic perfume?</label>
+              <select class="form-select" id="style_preference" name="style_preference" required>
+                {% for value, label in preference_choices.style %}
+                  <option value="{{ value }}" {% if form_values.style_preference == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label" for="budget_range">Budget</label>
+              <select class="form-select" id="budget_range" name="budget_range" required>
+                {% for value, label in preference_choices.budget %}
+                  <option value="{{ value }}" {% if form_values.budget_range == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <h4 class="mb-3">2. Mood and scent questions</h4>
+
+          {% for q in questions %}
+            <div class="mb-4">
+              <h6 class="mb-2">{{ q.order }}. {{ q.text }}</h6>
+
               {% for opt in q.options.all %}
-                <div class="col-md-6">
-                  <input class="btn-check" type="radio" name="q_{{ q.id }}" id="opt_{{ opt.id }}" value="{{ opt.id }}" required>
-                  <label class="nm-option w-100" for="opt_{{ opt.id }}">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="q_{{ q.id }}" id="opt_{{ opt.id }}" value="{{ opt.id }}" required>
+                  <label class="form-check-label" for="opt_{{ opt.id }}">
                     {{ opt.text }}
-                    {% if opt.note_tag %}<span>{{ opt.note_tag }}</span>{% endif %}
                   </label>
                 </div>
               {% endfor %}
             </div>
-          </div>
+          {% endfor %}
         </div>
-      </div>
-    {% empty %}
-      <div class="alert alert-warning">The survey is being prepared. Please refresh the page.</div>
-    {% endfor %}
 
-    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mt-4">
-      <p class="text-secondary mb-0 small">Your answers are saved to your profile so you can compare previous results.</p>
-      <button class="btn nm-btn btn-lg" type="submit">Get my recommendations</button>
-    </div>
-  </form>
+        <button class="btn nm-btn" type="submit">Get my personalised recommendations</button>
+      </form>
+
+      <p class="mt-3 mb-0 text-secondary">
+        Preference data is used only to improve the recommendation result in this prototype.
+      </p>
+    {% endif %}
+  </div>
 </div>
 {% endblock %}

@@ -3,23 +3,56 @@
 
 {% block content %}
 <div class="container nm-section">
-  <div class="nm-card">
-    <h2 class="nm-title mb-2">Hello, {{ user.username }} 👋</h2>
-    <p class="text-secondary">Your latest survey results:</p>
+  <div class="nm-card mb-4">
+    <p class="nm-eyebrow">My profile</p>
+    <h2 class="nm-title mb-2">Hello {{ display_name }}</h2>
+    <p class="text-secondary mb-0">Manage your saved perfume preferences and view your previous recommendation results.</p>
+  </div>
 
-    {% if latest %}
-      <ul class="mb-0">
-        {% for item in latest %}
-          <li>
-            <b>{% if item.result_mood %}{{ item.result_mood.name }}{% else %}No result{% endif %}</b>
-            — Energic: {{ item.total_energic }}, Relaxation: {{ item.total_relax }}
-            — {{ item.created_at }}
-          </li>
-        {% endfor %}
-      </ul>
-    {% else %}
-      <p class="text-secondary mb-0">No survey results yet. <a href="/survey/">Take the survey</a>.</p>
-    {% endif %}
+  <div class="row g-3 mb-4">
+    <div class="col-lg-5">
+      <div class="nm-card h-100">
+        <h5 class="mb-3">Saved perfume profile</h5>
+        {% if saved_profile %}
+          <ol>
+            <li>{{ saved_profile.favourite_perfume_1 }}</li>
+            <li>{{ saved_profile.favourite_perfume_2 }}</li>
+            <li>{{ saved_profile.favourite_perfume_3 }}</li>
+          </ol>
+          <p class="mb-1"><strong>Gender:</strong> {{ saved_profile.get_preferred_gender_display }}</p>
+          <p class="mb-1"><strong>Style:</strong> {{ saved_profile.get_style_preference_display }}</p>
+          <p class="mb-3"><strong>Budget:</strong> {{ saved_profile.get_budget_range_display }}</p>
+          <a class="btn nm-btn" href="/users/preferences/">Edit saved profile</a>
+        {% else %}
+          <p class="text-secondary">You have not saved a perfume profile yet.</p>
+          <a class="btn nm-btn" href="/survey/">Create profile in survey</a>
+        {% endif %}
+      </div>
+    </div>
+    <div class="col-lg-7">
+      <div class="nm-card h-100">
+        <h5 class="mb-3">Recent survey results</h5>
+        {% if latest %}
+          <div class="table-responsive">
+            <table class="table align-middle">
+              <thead><tr><th>Date</th><th>Mood</th><th>Budget</th><th>Keywords</th></tr></thead>
+              <tbody>
+                {% for item in latest %}
+                  <tr>
+                    <td>{{ item.created_at|date:"d M Y H:i" }}</td>
+                    <td>{{ item.result_mood.name }}</td>
+                    <td>{{ item.get_budget_range_display }}</td>
+                    <td>{{ item.top_note_tags }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+          <p class="text-secondary mb-0">No survey results yet.</p>
+        {% endif %}
+      </div>
+    </div>
   </div>
 </div>
 {% endblock %}

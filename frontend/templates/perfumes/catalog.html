@@ -3,22 +3,20 @@
 
 {% block content %}
 <div class="container nm-section">
-  <div class="nm-card">
-    <h2 class="nm-title mb-2">Perfume Catalog</h2>
-    <p class="text-secondary">Add perfumes in Admin and they’ll show here.</p>
-
-    {% if perfumes %}
-      <ul class="mb-0">
-        {% for p in perfumes %}
-          <li>
-            <b>{{ p.name }}</b>{% if p.brand %} — {{ p.brand }}{% endif %}
-            {% if p.notes %}<br><small class="text-secondary">{{ p.notes }}</small>{% endif %}
-          </li>
-        {% endfor %}
-      </ul>
-    {% else %}
-      <p class="text-secondary mb-0">No perfumes yet.</p>
-    {% endif %}
+  <div class="nm-card mb-4">
+    <p class="nm-eyebrow">Catalogue</p>
+    <h2 class="nm-title mb-2">Perfume Catalogue</h2>
+    <p class="text-secondary mb-0">Browse the seeded perfume data used by the recommendation engine. Admin users can add, edit, feature or hide perfumes.</p>
   </div>
+
+  {% if perfumes %}
+    <div class="row g-3">
+      {% for perfume in perfumes %}
+        <div class="col-lg-4 col-md-6">{% include "includes/perfume_card.html" %}</div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="nm-card"><p class="text-secondary mb-0">No perfumes yet.</p></div>
+  {% endif %}
 </div>
 {% endblock %}

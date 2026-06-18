@@ -2,49 +2,53 @@
 {% block title %}Survey{% endblock %}
 
 {% block content %}
-<div class="container nm-section" style="max-width:900px;">
+<div class="container nm-section" style="max-width:980px;">
   <div class="nm-card">
+    <p class="nm-eyebrow">Personalised recommendation</p>
     <h2 class="nm-title mb-2">Mood & Preference Survey</h2>
-    <p class="text-secondary mb-3">
-      Tell us what you already like, then answer the mood questions. NoteMatch will use your
-      <b>three favourite perfumes</b>, gender preference, style preference and budget to produce
-      more personalised recommendations.
+    <p class="text-secondary mb-4">
+      Your saved perfume profile is used for recommendations. It will not change unless you tick the update option or edit it from My Profile.
     </p>
 
     {% if no_questions %}
-      <div class="alert alert-warning">
-        No survey questions yet. Add them in <a href="/admin/">Admin</a> (SurveyQuestion).
-      </div>
+      <div class="alert alert-warning">No survey questions yet. Add them in <a href="/admin/">Admin</a> (SurveyQuestion).</div>
     {% else %}
-
-      {% if error %}
-        <div class="alert alert-danger">{{ error }}</div>
-      {% endif %}
+      {% if error %}<div class="alert alert-danger">{{ error }}</div>{% endif %}
 
       <form method="post">
         {% csrf_token %}
 
-        <div class="mb-4 p-3 rounded" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);">
-          <h4 class="mb-2">1. Your perfume preference profile</h4>
-          <p class="text-secondary mb-3">
-            Enter three perfumes you already like. The system can use them to understand your past scent taste.
-          </p>
+        <section class="nm-panel mb-4">
+          <div class="d-flex flex-wrap justify-content-between gap-2 align-items-start">
+            <div>
+              <h4 class="mb-2">1. Saved perfume preference profile</h4>
+              <p class="text-secondary mb-3">Enter three favourite perfumes the first time. After that, your profile stays saved until you choose to update it.</p>
+            </div>
+            {% if saved_profile %}<a class="btn nm-pill btn-sm" href="/users/preferences/">Edit saved profile</a>{% endif %}
+          </div>
+
+          {% if saved_profile %}
+            <div class="alert alert-light border">
+              <strong>Current saved favourites:</strong>
+              {{ saved_profile.favourite_perfume_1 }}, {{ saved_profile.favourite_perfume_2 }}, {{ saved_profile.favourite_perfume_3 }}
+            </div>
+          {% endif %}
 
           <div class="row g-3">
             <div class="col-md-4">
               <label class="form-label" for="favourite_perfume_1">Favourite perfume 1</label>
               <input class="form-control" type="text" id="favourite_perfume_1" name="favourite_perfume_1"
-                     placeholder="e.g. Sauvage" value="{{ form_values.favourite_perfume_1|default:'' }}" required>
+                     placeholder="e.g. Sauvage" value="{{ form_values.favourite_perfume_1|default:profile_values.favourite_perfume_1 }}" required>
             </div>
             <div class="col-md-4">
               <label class="form-label" for="favourite_perfume_2">Favourite perfume 2</label>
               <input class="form-control" type="text" id="favourite_perfume_2" name="favourite_perfume_2"
-                     placeholder="e.g. Black Opium" value="{{ form_values.favourite_perfume_2|default:'' }}" required>
+                     placeholder="e.g. Black Opium" value="{{ form_values.favourite_perfume_2|default:profile_values.favourite_perfume_2 }}" required>
             </div>
             <div class="col-md-4">
               <label class="form-label" for="favourite_perfume_3">Favourite perfume 3</label>
               <input class="form-control" type="text" id="favourite_perfume_3" name="favourite_perfume_3"
-                     placeholder="e.g. Libre" value="{{ form_values.favourite_perfume_3|default:'' }}" required>
+                     placeholder="e.g. Libre" value="{{ form_values.favourite_perfume_3|default:profile_values.favourite_perfume_3 }}" required>
             </div>
           </div>
 
@@ -53,56 +57,55 @@
               <label class="form-label" for="preferred_gender">Preferred gender category</label>
               <select class="form-select" id="preferred_gender" name="preferred_gender" required>
                 {% for value, label in preference_choices.gender %}
-                  <option value="{{ value }}" {% if form_values.preferred_gender == value %}selected{% endif %}>{{ label }}</option>
+                  <option value="{{ value }}" {% if form_values.preferred_gender == value or profile_values.preferred_gender == value %}selected{% endif %}>{{ label }}</option>
                 {% endfor %}
               </select>
             </div>
-
             <div class="col-md-4">
               <label class="form-label" for="style_preference">New or classic perfume?</label>
               <select class="form-select" id="style_preference" name="style_preference" required>
                 {% for value, label in preference_choices.style %}
-                  <option value="{{ value }}" {% if form_values.style_preference == value %}selected{% endif %}>{{ label }}</option>
+                  <option value="{{ value }}" {% if form_values.style_preference == value or profile_values.style_preference == value %}selected{% endif %}>{{ label }}</option>
                 {% endfor %}
               </select>
             </div>
-
             <div class="col-md-4">
               <label class="form-label" for="budget_range">Budget</label>
               <select class="form-select" id="budget_range" name="budget_range" required>
                 {% for value, label in preference_choices.budget %}
-                  <option value="{{ value }}" {% if form_values.budget_range == value %}selected{% endif %}>{{ label }}</option>
+                  <option value="{{ value }}" {% if form_values.budget_range == value or profile_values.budget_range == value %}selected{% endif %}>{{ label }}</option>
                 {% endfor %}
               </select>
             </div>
           </div>
-        </div>
 
-        <div class="mb-4">
+          {% if saved_profile %}
+            <div class="form-check mt-3">
+              <input class="form-check-input" type="checkbox" value="yes" id="update_saved_profile" name="update_saved_profile">
+              <label class="form-check-label" for="update_saved_profile">Update my saved profile with these values</label>
+            </div>
+          {% else %}
+            <input type="hidden" name="update_saved_profile" value="yes">
+          {% endif %}
+        </section>
+
+        <section>
           <h4 class="mb-3">2. Mood and scent questions</h4>
-
           {% for q in questions %}
-            <div class="mb-4">
+            <div class="nm-question mb-4">
               <h6 class="mb-2">{{ q.order }}. {{ q.text }}</h6>
-
               {% for opt in q.options.all %}
                 <div class="form-check">
                   <input class="form-check-input" type="radio" name="q_{{ q.id }}" id="opt_{{ opt.id }}" value="{{ opt.id }}" required>
-                  <label class="form-check-label" for="opt_{{ opt.id }}">
-                    {{ opt.text }}
-                  </label>
+                  <label class="form-check-label" for="opt_{{ opt.id }}">{{ opt.text }}</label>
                 </div>
               {% endfor %}
             </div>
           {% endfor %}
-        </div>
+        </section>
 
         <button class="btn nm-btn" type="submit">Get my personalised recommendations</button>
       </form>
-
-      <p class="mt-3 mb-0 text-secondary">
-        Preference data is used only to improve the recommendation result in this prototype.
-      </p>
     {% endif %}
   </div>
 </div>

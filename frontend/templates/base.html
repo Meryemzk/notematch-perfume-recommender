@@ -9,55 +9,22 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
-
 <body class="nm-body">
-  <nav class="navbar navbar-expand-lg nm-navbar sticky-top">
-    <div class="container">
-      <a class="navbar-brand d-flex align-items-center gap-2" href="/">
-        <span class="nm-logo">🧴</span>
-        <span class="nm-brand">NoteMatch</span>
-      </a>
-
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nmNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="nmNav">
-        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-3">
-          <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="/perfumes/">Perfumes</a></li>
-          <li class="nav-item"><a class="nav-link" href="/survey/">Survey</a></li>
-
-          {% if user.is_authenticated %}
-            <li class="nav-item"><a class="nav-link" href="/users/me/">My Profile</a></li>
-            <li class="nav-item">
-              <form method="post" action="/accounts/logout/">
-                {% csrf_token %}
-                <button class="btn nm-pill" type="submit">Logout</button>
-              </form>
-            </li>
-          {% else %}
-            <li class="nav-item"><a class="nav-link" href="/users/signup/">Sign up</a></li>
-            <li class="nav-item"><a class="btn nm-btn" href="/accounts/login/">Login</a></li>
-          {% endif %}
-        </ul>
-      </div>
-    </div>
-  </nav>
+  {% include "includes/navbar.html" %}
 
   {% if messages %}
     <div class="container mt-3">
       {% for message in messages %}
-        <div class="alert alert-info mb-2">{{ message }}</div>
+        <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %} mb-2">{{ message }}</div>
       {% endfor %}
     </div>
   {% endif %}
 
-  {% block content %}{% endblock %}
+  <main>{% block content %}{% endblock %}</main>
+  {% include "includes/footer.html" %}
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

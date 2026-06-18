@@ -1,0 +1,16 @@
+<div class="nm-product-card h-100">
+  <div class="d-flex justify-content-between align-items-start gap-3">
+    <div>
+      <h5 class="mb-1">{{ perfume.name }}</h5>
+      {% if perfume.brand %}<p class="text-secondary mb-2">{{ perfume.brand }}</p>{% endif %}
+    </div>
+    <span class="nm-price">£{{ perfume.price }}</span>
+  </div>
+  {% if perfume.description %}<p class="small text-secondary mb-2">{{ perfume.description }}</p>{% endif %}
+  {% if perfume.notes %}<p class="mb-2"><strong>Notes:</strong> {{ perfume.notes }}</p>{% endif %}
+  <div class="d-flex flex-wrap gap-2">
+    <span class="nm-chip">{{ perfume.get_gender_category_display }}</span>
+    <span class="nm-chip">{{ perfume.get_style_category_display }}</span>
+    {% for mood in perfume.moods.all %}<span class="nm-chip">{{ mood.name }}</span>{% endfor %}
+  </div>
+</div>

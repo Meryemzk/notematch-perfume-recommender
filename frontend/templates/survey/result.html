@@ -78,6 +78,39 @@
     <div class="nm-card"><p class="text-secondary mb-0">No recommendations found yet. Add active perfumes in Admin and connect them to moods.</p></div>
   {% endif %}
 
+
+
+  <div class="nm-card mt-4">
+    <p class="nm-eyebrow">Recommendation feedback</p>
+    <h4 class="mb-2">Was this recommendation useful?</h4>
+    <p class="text-secondary">Your feedback helps the project evaluate trust, usefulness and future machine-learning potential.</p>
+    {% if existing_feedback %}
+      <div class="alert alert-light border">You already rated this result {{ existing_feedback.rating }}/5. You can update your feedback below.</div>
+    {% endif %}
+    <form method="post" class="row g-3">
+      {% csrf_token %}
+      <div class="col-md-4">
+        <label class="form-label" for="was_useful">Useful?</label>
+        <select class="form-select" id="was_useful" name="was_useful">
+          <option value="yes" {% if existing_feedback.was_useful %}selected{% endif %}>Yes</option>
+          <option value="no" {% if existing_feedback and not existing_feedback.was_useful %}selected{% endif %}>No</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label" for="rating">Rating</label>
+        <select class="form-select" id="rating" name="rating">
+          {% for i in "12345" %}<option value="{{ i }}" {% if existing_feedback.rating|stringformat:"s" == i %}selected{% endif %}>{{ i }} out of 5</option>{% endfor %}
+        </select>
+      </div>
+      <div class="col-12">
+        <label class="form-label" for="comment">Optional comment</label>
+        <textarea class="form-control" id="comment" name="comment" rows="3" placeholder="Tell us what worked well or what should improve.">{% if existing_feedback %}{{ existing_feedback.comment }}{% endif %}</textarea>
+      </div>
+      <div class="col-12"><button class="btn nm-btn" type="submit">Save feedback</button></div>
+    </form>
+  </div>
+
+
   <div class="mt-4 d-flex gap-2 flex-wrap">
     <a class="btn nm-pill" href="/survey/">Take survey again</a>
     <a class="btn nm-pill" href="/users/preferences/">Edit saved profile</a>

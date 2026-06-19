@@ -13,7 +13,7 @@ class UserPreferenceProfile(models.Model):
     """Saved long-term perfume preferences for each registered user.
 
     These values are used by the recommendation engine until the user chooses
-    to update them from the profile page or from the first survey completion.
+    to update them from the profile page or from the survey form.
     """
     GENDER_PREFERENCE_CHOICES = [
         ("female", "Female"),
@@ -54,7 +54,7 @@ class UserPreferenceProfile(models.Model):
 
 
 class SurveyQuestion(models.Model):
-    """A question shown in the survey."""
+    """A question shown in the mood and scent survey."""
     text = models.CharField(max_length=255)
     order = models.PositiveIntegerField(default=1)
     is_active = models.BooleanField(default=True)
@@ -66,7 +66,7 @@ class SurveyQuestion(models.Model):
 class SurveyOption(models.Model):
     """Options for each question.
 
-    Each option contributes points to energic/relaxation + optional note tag.
+    Each option contributes points to energic/relaxation and an optional note tag.
     """
     question = models.ForeignKey(SurveyQuestion, on_delete=models.CASCADE, related_name="options")
     text = models.CharField(max_length=255)
@@ -79,13 +79,18 @@ class SurveyOption(models.Model):
 
 
 class SurveySubmission(models.Model):
-    """One submission per time user takes the survey.
+    """One submission per time a user takes the survey.
 
     This stores the mood quiz result and a snapshot of the saved preference
     profile used at the time of recommendation.
     """
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    # Consent and ethics evidence for the academic project
+    age_confirmed = models.BooleanField(default=False)
+    consent_given = models.BooleanField(default=False)
+    privacy_acknowledged = models.BooleanField(default=False)
 
     total_energic = models.IntegerField(default=0)
     total_relax = models.IntegerField(default=0)
@@ -115,3 +120,22 @@ class SurveyAnswer(models.Model):
 
     def __str__(self):
         return f"{self.submission.user} -> {self.question.order}"
+
+
+class RecommendationFeedback(models.Model):
+    """User feedback after seeing recommendation results.
+
+    These records can be used later as training data for a machine-learning
+    recommendation model.
+    """
+    RATING_CHOICES = [(i, str(i)) for i in range(1, 6)]
+
+    submission = models.OneToOneField(SurveySubmission, on_delete=models.CASCADE, related_name="feedback")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    was_useful = models.BooleanField(default=True)
+    rating = models.PositiveSmallIntegerField(choices=RATING_CHOICES, default=5)
+    comment = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Feedback from {self.user} - {self.rating}/5"

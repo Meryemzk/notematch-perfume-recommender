@@ -18,6 +18,24 @@
       <form method="post">
         {% csrf_token %}
 
+
+        <section class="nm-panel mb-4">
+          <h4 class="mb-2">Before you start: research consent</h4>
+          <p class="text-secondary mb-3">NoteMatch is an academic prototype. Your answers are used to generate recommendations and to support evaluation of the system. Do not enter sensitive personal information.</p>
+          <div class="form-check mb-2">
+            <input class="form-check-input" type="checkbox" value="yes" id="age_confirmed" name="age_confirmed" required {% if form_values.age_confirmed %}checked{% endif %}>
+            <label class="form-check-label" for="age_confirmed">I confirm that I am 18 years old or above.</label>
+          </div>
+          <div class="form-check mb-2">
+            <input class="form-check-input" type="checkbox" value="yes" id="consent_given" name="consent_given" required {% if form_values.consent_given %}checked{% endif %}>
+            <label class="form-check-label" for="consent_given">I agree to take part in this academic research and recommendation activity.</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="yes" id="privacy_acknowledged" name="privacy_acknowledged" required {% if form_values.privacy_acknowledged %}checked{% endif %}>
+            <label class="form-check-label" for="privacy_acknowledged">I understand that my saved perfume preferences are used only to improve my recommendations and can be updated from My Profile.</label>
+          </div>
+        </section>
+
         <section class="nm-panel mb-4">
           <div class="d-flex flex-wrap justify-content-between gap-2 align-items-start">
             <div>

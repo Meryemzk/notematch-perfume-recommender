@@ -1,7 +1,24 @@
 from django.core.management.base import BaseCommand
-from django.db import transaction
+from django.db import transaction, connection
 
 from survey.models import Mood, SurveyQuestion, SurveyOption
+
+
+def drop_legacy_target_mood_column():
+    """Remove old Render DB column that blocks seeding if it still exists."""
+    table_name = "survey_surveyoption"
+    column_name = "target_mood"
+    try:
+        with connection.cursor() as cursor:
+            columns = [col.name for col in connection.introspection.get_table_description(cursor, table_name)]
+            if column_name not in columns:
+                return
+            if connection.vendor == "postgresql":
+                cursor.execute(f'ALTER TABLE "{table_name}" DROP COLUMN IF EXISTS "{column_name}" CASCADE')
+            else:
+                cursor.execute(f'ALTER TABLE "{table_name}" DROP COLUMN "{column_name}"')
+    except Exception:
+        pass
 
 
 SEED_DATA = [
@@ -200,6 +217,8 @@ class Command(BaseCommand):
 
     @transaction.atomic
     def handle(self, *args, **options):
+        drop_legacy_target_mood_column()
+
         for mood_name in ["Energic", "Relaxation"]:
             Mood.objects.get_or_create(name=mood_name)
 

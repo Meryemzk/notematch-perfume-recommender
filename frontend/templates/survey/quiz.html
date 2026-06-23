@@ -4,15 +4,14 @@
 {% block content %}
 <div class="container nm-section" style="max-width:980px;">
   <div class="nm-card nm-form-card">
-    <p class="nm-kicker mb-1">Optional registration</p>
-    <h2 class="nm-title mb-2">Mood, Scent & Preference Survey</h2>
+    <p class="nm-kicker mb-1">No registration required</p>
+    <h2 class="nm-title mb-2">Find your perfume match</h2>
     <p class="text-secondary mb-4">
-      Answer the mood questions, choose your price range and select up to three favourite perfumes.
-      NoteMatch will combine your answers with your preferences to suggest better matches.
+      Answer simple questions about your mood, occasion, scent style and budget. Then choose up to three perfumes you already like so NoteMatch can personalise the result.
     </p>
 
     {% if no_questions %}
-      <div class="alert alert-warning">No survey questions yet. Run <code>python manage.py seed_survey</code> or add them in Admin.</div>
+      <div class="alert alert-warning">The survey data has not been loaded yet. Run <code>python manage.py seed_survey</code> after deployment.</div>
     {% else %}
       {% if error %}<div class="alert alert-danger">{{ error }}</div>{% endif %}
       <form method="post">
@@ -31,10 +30,10 @@
 
         <div class="nm-preference-panel mt-4">
           <p class="nm-kicker mb-1">Your preferences</p>
-          <h4 class="mb-3">Choose your budget and favourites</h4>
+          <h4 class="mb-3">Budget and favourite perfumes</h4>
           <div class="row g-3">
             <div class="col-md-6">
-              <label class="form-label" for="price_range">Preferred price range</label>
+              <label class="form-label fw-bold" for="price_range">Preferred price range</label>
               <select class="form-select" name="price_range" id="price_range">
                 {% for value, label in price_ranges %}
                   <option value="{{ value }}">{{ label }}</option>
@@ -42,21 +41,21 @@
               </select>
             </div>
             <div class="col-md-6">
-              <label class="form-label" for="favourite_perfume_1">Favourite perfume 1</label>
+              <label class="form-label fw-bold" for="favourite_perfume_1">Favourite perfume 1</label>
               <select class="form-select" name="favourite_perfume_1" id="favourite_perfume_1">
                 <option value="">No preference</option>
                 {% for p in perfumes %}<option value="{{ p.id }}">{{ p.brand }} {{ p.name }} - £{{ p.price }}</option>{% endfor %}
               </select>
             </div>
             <div class="col-md-6">
-              <label class="form-label" for="favourite_perfume_2">Favourite perfume 2</label>
+              <label class="form-label fw-bold" for="favourite_perfume_2">Favourite perfume 2</label>
               <select class="form-select" name="favourite_perfume_2" id="favourite_perfume_2">
                 <option value="">No preference</option>
                 {% for p in perfumes %}<option value="{{ p.id }}">{{ p.brand }} {{ p.name }} - £{{ p.price }}</option>{% endfor %}
               </select>
             </div>
             <div class="col-md-6">
-              <label class="form-label" for="favourite_perfume_3">Favourite perfume 3</label>
+              <label class="form-label fw-bold" for="favourite_perfume_3">Favourite perfume 3</label>
               <select class="form-select" name="favourite_perfume_3" id="favourite_perfume_3">
                 <option value="">No preference</option>
                 {% for p in perfumes %}<option value="{{ p.id }}">{{ p.brand }} {{ p.name }} - £{{ p.price }}</option>{% endfor %}
@@ -65,7 +64,10 @@
           </div>
         </div>
 
-        <button class="btn nm-btn btn-lg mt-4" type="submit">Get my recommendations</button>
+        <div class="d-flex flex-wrap gap-2 mt-4">
+          <button class="btn nm-btn-rose btn-lg" type="submit">Get my recommendations</button>
+          <a class="btn nm-btn-outline btn-lg" href="/perfumes/">Browse perfume prices</a>
+        </div>
       </form>
     {% endif %}
   </div>

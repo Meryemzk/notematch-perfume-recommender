@@ -31,7 +31,7 @@
       <h3 class="nm-title mb-1">Top Recommendations for You</h3>
       <p class="text-secondary mb-0">Based on your survey answers, favourite perfumes, scent notes and budget.</p>
     </div>
-    <a class="btn nm-btn-outline" href="/survey/">Take survey again</a>
+    <a class="btn nm-btn-green" href="/survey/">Take survey again</a>
   </div>
 
   {% if top_recommendations %}
@@ -63,7 +63,7 @@
       {% endfor %}
     </div>
   {% else %}
-    <div class="nm-card"><p class="text-secondary mb-0">No recommendations found yet. Add perfumes in Admin or run <code>python manage.py seed_survey</code>.</p></div>
+    <div class="nm-card"><h5>No recommendations found yet.</h5><p class="text-secondary mb-3">Please try a different price range or browse the full perfume catalog.</p><a class="btn nm-btn" href="/perfumes/">Browse perfumes</a></div>
   {% endif %}
 </div>
 {% endblock %}

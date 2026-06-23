@@ -64,25 +64,37 @@
   <footer class="nm-footer">
     <div class="container">
       <div class="row g-4 align-items-start">
-        <div class="col-md-5">
-          <div class="d-flex align-items-center gap-2 mb-2">
-            <img class="nm-footer-logo" src="{% static 'images/notematch-logo.png' %}" alt="NoteMatch logo">
-            <h5 class="nm-brand mb-0">NoteMatch</h5>
+        <div class="col-lg-4">
+          <h5 class="nm-brand text-white mb-2">NoteMatch</h5>
+          <p class="mb-3">A mood-based perfume recommendation system designed to make fragrance discovery easier, clearer and more personal.</p>
+          <div class="nm-socials" aria-label="Social links preview">
+            <span>f</span><span>X</span><span>▶</span><span>◎</span><span>P</span><span>♪</span>
           </div>
-          <p class="mb-0 text-secondary">A mood-based perfume recommendation system that connects feelings, scent notes, preferences and price range to suggest more personal fragrance matches.</p>
         </div>
-        <div class="col-md-3">
+        <div class="col-sm-6 col-lg-2">
           <h6>Explore</h6>
-          <a href="/survey/">Take the survey</a>
+          <a href="/">Home</a>
           <a href="/perfumes/">Perfume catalog</a>
-          <a href="/users/signup/">Optional account</a>
+          <a href="/survey/">Find my match</a>
+          <a href="/users/signup/">Create account</a>
         </div>
-        <div class="col-md-4">
-          <h6>Project features</h6>
-          <p class="mb-0 text-secondary">Guest survey access, personalised recommendations, bestseller perfume prices, scent tags, and admin controls for adding or deleting perfumes.</p>
+        <div class="col-sm-6 col-lg-3">
+          <h6>How it works</h6>
+          <p class="mb-2">Choose your mood, scent family, strength, occasion, three favourite perfumes and budget range.</p>
+          <p class="mb-0">The system compares your answers with perfume scent notes and prices to suggest suitable matches.</p>
+        </div>
+        <div class="col-lg-3">
+          <h6>Price ranges</h6>
+          <div class="nm-footer-pills">
+            <span>Under £80</span><span>£80–£120</span><span>£120–£160</span><span>£160+</span>
+          </div>
+          <p class="small mt-3 mb-0">Project prototype for academic use. Perfume names and prices are based on the uploaded bestseller report.</p>
         </div>
       </div>
-      <div class="nm-footer-bottom">© 2026 NoteMatch · Love. Mood. Your Note.</div>
+      <div class="nm-footer-bottom d-flex flex-wrap justify-content-between gap-2">
+        <span>© 2026 NoteMatch · Love. Mood. Your Note.</span>
+        <span>Built with Django, Python, HTML, CSS and survey-based recommendation logic.</span>
+      </div>
     </div>
   </footer>
 

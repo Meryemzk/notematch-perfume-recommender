@@ -1,17 +1,16 @@
-# NoteMatch — Mood and Preference Perfume Recommendation System
+# Just NoteMatch
 
-NoteMatch is a Django web application for an undergraduate development project. It recommends perfumes using a combination of mood answers and a saved user preference profile.
+NoteMatch is a Django mood-based perfume recommendation system. This version includes the requested design, survey, perfume catalog and admin improvements.
 
-## Main features
+## What is included
 
-- User sign up, login and profile pages.
-- Friendly greeting that shows the user name only, without an email domain or @ sign.
-- Saved preference profile for each user. Three favourite perfumes, gender preference, new/classic style preference and budget remain saved until the user chooses to update them.
-- Mood and scent survey with admin-editable questions and options.
-- Recommendation scoring using mood, scent-note keywords, favourite-perfume evidence, gender category, style category and budget.
-- Catalogue with more than 100 seeded perfume records and prices shown in pounds.
-- Professional responsive interface with shared templates, reusable includes and a detailed footer.
-- Admin controls for perfumes, questions, user preference profiles and survey submissions.
+- Public home page: visitors can use the survey without registration.
+- Optional registration: users only need an account if they want to keep using profile features.
+- NoteMatch logo and main-page image added from the provided NM pictures.
+- Survey questions rewritten so mood, occasion, scent, strength and personality relate to each other.
+- Best-seller perfume catalog seeded from the provided perfume report photos, including UK prices with £ display and 3 scent tags per perfume.
+- Admin page improved so perfumes can be added, edited and deleted, with dropdown choices for scent 1, scent 2, scent 3, and mood selection.
+- Project kept in clear folders: `backend/`, `frontend/`, `frontend/static/`, `frontend/templates/`, and `docs/`.
 
 ## Local run
 
@@ -26,34 +25,30 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
-Open:
+Open the website:
 
 ```text
 http://127.0.0.1:8000/
 ```
 
-Admin:
+Open admin:
 
 ```text
 http://127.0.0.1:8000/admin/
 ```
 
-## Render deployment
+## Important command
 
-This project includes `render.yaml`, `Procfile`, `runtime.txt`, WhiteNoise static-file support and PostgreSQL/Supabase support through `DATABASE_URL`.
+Run this after migrations to add the survey questions and perfume list:
 
-In Render, set these environment variables:
-
-```text
-DEBUG=False
-SECRET_KEY=your-secret-key
-ALLOWED_HOSTS=your-app-name.onrender.com
-CSRF_TRUSTED_ORIGINS=https://your-app-name.onrender.com
-DATABASE_URL=optional-postgres-url
+```bash
+python manage.py seed_survey
 ```
 
-The Render build command runs migrations and seeds the survey/perfume data automatically.
+## Deployment
 
-## Important note about prices
+For Render and Supabase deployment, read:
 
-The seeded perfume prices are prototype/demo UK pound prices for project testing and comparison. For a commercial website, prices should be checked against live retailer data before publishing.
+```text
+docs/DEPLOY_RENDER_SUPABASE.md
+```

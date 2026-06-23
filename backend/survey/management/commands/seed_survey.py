@@ -7,127 +7,211 @@ from survey.models import Mood, SurveyQuestion, SurveyOption
 SEED_DATA = [
     {
         "order": 1,
-        "text": "What do you want your perfume to help with right now?",
+        "text": "How do you want to feel after wearing your perfume today?",
         "options": [
-            {"text": "Boost my energy / feel active", "energic": 3, "relax": 0, "tag": "citrus"},
-            {"text": "Calm down / reduce stress", "energic": 0, "relax": 3, "tag": "lavender"},
-            {"text": "Both (balanced)", "energic": 2, "relax": 2, "tag": "musk"},
+            {"text": "Energised and confident", "energic": 3, "relax": 0, "tag": "fresh"},
+            {"text": "Calm and relaxed", "energic": 0, "relax": 3, "tag": "musk"},
+            {"text": "Romantic and soft", "energic": 1, "relax": 2, "tag": "floral"},
+            {"text": "Powerful and noticeable", "energic": 3, "relax": 0, "tag": "spicy"},
         ],
     },
     {
         "order": 2,
-        "text": "When do you mostly apply perfume?",
+        "text": "What is the main reason you are choosing a perfume?",
         "options": [
-            {"text": "Morning", "energic": 2, "relax": 0, "tag": "citrus"},
-            {"text": "Afternoon", "energic": 1, "relax": 1, "tag": "woody"},
-            {"text": "Evening / Night", "energic": 0, "relax": 2, "tag": "vanilla"},
+            {"text": "Daily use / work / university", "energic": 2, "relax": 1, "tag": "fresh"},
+            {"text": "Date or romantic occasion", "energic": 1, "relax": 2, "tag": "floral"},
+            {"text": "Evening, party or special event", "energic": 3, "relax": 0, "tag": "amber"},
+            {"text": "Comfort, self-care or relaxing at home", "energic": 0, "relax": 3, "tag": "vanilla"},
         ],
     },
     {
         "order": 3,
-        "text": "What weather/season do you use it in most?",
+        "text": "Which scent family attracts you most?",
         "options": [
-            {"text": "Warm / Summer", "energic": 2, "relax": 0, "tag": "fresh"},
-            {"text": "Cold / Winter", "energic": 0, "relax": 2, "tag": "amber"},
-            {"text": "Mild / All seasons", "energic": 1, "relax": 1, "tag": "musk"},
+            {"text": "Fresh or citrus", "energic": 3, "relax": 0, "tag": "citrus"},
+            {"text": "Floral", "energic": 1, "relax": 2, "tag": "floral"},
+            {"text": "Sweet vanilla or amber", "energic": 1, "relax": 2, "tag": "vanilla"},
+            {"text": "Woody, leather or oud", "energic": 2, "relax": 1, "tag": "woody"},
         ],
     },
     {
         "order": 4,
-        "text": "Which scent style do you prefer?",
+        "text": "How strong should your perfume be?",
         "options": [
-            {"text": "Fresh/Citrus (clean, bright)", "energic": 3, "relax": 0, "tag": "citrus"},
-            {"text": "Aromatic/Lavender (soothing)", "energic": 0, "relax": 3, "tag": "lavender"},
-            {"text": "Soft Musky/Powdery", "energic": 1, "relax": 2, "tag": "musk"},
-            {"text": "Warm Sweet (vanilla)", "energic": 1, "relax": 2, "tag": "vanilla"},
-            {"text": "Woody (cedar/sandal)", "energic": 1, "relax": 2, "tag": "woody"},
+            {"text": "Light and clean", "energic": 1, "relax": 2, "tag": "musk"},
+            {"text": "Medium and balanced", "energic": 2, "relax": 1, "tag": "floral"},
+            {"text": "Strong and long-lasting", "energic": 3, "relax": 0, "tag": "amber"},
         ],
     },
     {
         "order": 5,
-        "text": "How strong do you want the perfume to feel?",
+        "text": "Which season or weather do you imagine wearing it in?",
         "options": [
-            {"text": "Light (very soft)", "energic": 0, "relax": 2, "tag": "musk"},
-            {"text": "Medium", "energic": 1, "relax": 1, "tag": "woody"},
-            {"text": "Strong (noticeable)", "energic": 2, "relax": 0, "tag": "spicy"},
+            {"text": "Spring / fresh weather", "energic": 2, "relax": 1, "tag": "floral"},
+            {"text": "Summer / warm weather", "energic": 3, "relax": 0, "tag": "citrus"},
+            {"text": "Autumn / cosy weather", "energic": 1, "relax": 2, "tag": "woody"},
+            {"text": "Winter / cold weather", "energic": 1, "relax": 2, "tag": "amber"},
         ],
     },
     {
         "order": 6,
-        "text": "If you choose “Energic”, what type of energy?",
+        "text": "Which description fits your personality best?",
         "options": [
-            {"text": "Sporty & active", "energic": 3, "relax": 0, "tag": "fresh"},
-            {"text": "Happy & bright", "energic": 3, "relax": 0, "tag": "citrus"},
-            {"text": "Confident & powerful", "energic": 2, "relax": 0, "tag": "spicy"},
+            {"text": "Bright, social and energetic", "energic": 3, "relax": 0, "tag": "fruity"},
+            {"text": "Elegant, romantic and soft", "energic": 1, "relax": 2, "tag": "rose"},
+            {"text": "Calm, minimal and clean", "energic": 0, "relax": 3, "tag": "musk"},
+            {"text": "Bold, confident and mysterious", "energic": 3, "relax": 0, "tag": "leather"},
         ],
     },
     {
         "order": 7,
-        "text": "If you choose “Relaxation”, what kind of calm?",
+        "text": "Which note would you choose first?",
         "options": [
-            {"text": "Before sleep", "energic": 0, "relax": 3, "tag": "lavender"},
-            {"text": "During a stressful day", "energic": 0, "relax": 3, "tag": "musk"},
-            {"text": "Warm comfort", "energic": 0, "relax": 3, "tag": "vanilla"},
+            {"text": "Bergamot, lemon or orange", "energic": 3, "relax": 0, "tag": "citrus"},
+            {"text": "Rose or jasmine", "energic": 1, "relax": 2, "tag": "jasmine"},
+            {"text": "Vanilla or caramel", "energic": 1, "relax": 2, "tag": "vanilla"},
+            {"text": "Cedar, sandalwood or leather", "energic": 2, "relax": 1, "tag": "woody"},
         ],
     },
     {
         "order": 8,
-        "text": "Choose the note you like most (pick one).",
+        "text": "What type of recommendation do you prefer?",
         "options": [
-            {"text": "Bergamot/Lemon/Orange", "energic": 3, "relax": 0, "tag": "citrus"},
-            {"text": "Lavender", "energic": 0, "relax": 3, "tag": "lavender"},
-            {"text": "Vanilla", "energic": 1, "relax": 2, "tag": "vanilla"},
-            {"text": "Cedar/Sandalwood", "energic": 1, "relax": 2, "tag": "woody"},
-            {"text": "Amber", "energic": 0, "relax": 2, "tag": "amber"},
-            {"text": "Ginger/Pepper", "energic": 3, "relax": 0, "tag": "spicy"},
-        ],
-    },
-    {
-        "order": 9,
-        "text": "Do you like sweet perfumes?",
-        "options": [
-            {"text": "Yes, I love sweet", "energic": 1, "relax": 2, "tag": "vanilla"},
-            {"text": "Sometimes", "energic": 1, "relax": 1, "tag": "amber"},
-            {"text": "No, I prefer fresh", "energic": 2, "relax": 0, "tag": "fresh"},
-        ],
-    },
-    {
-        "order": 10,
-        "text": "Do you like “clean/soapy” scents?",
-        "options": [
-            {"text": "Yes, very much", "energic": 2, "relax": 1, "tag": "fresh"},
-            {"text": "Neutral", "energic": 1, "relax": 1, "tag": "musk"},
-            {"text": "No", "energic": 0, "relax": 1, "tag": "amber"},
+            {"text": "Popular best sellers", "energic": 2, "relax": 1, "tag": "fresh"},
+            {"text": "Luxury and premium", "energic": 2, "relax": 1, "tag": "amber"},
+            {"text": "Soft and easy to wear", "energic": 0, "relax": 3, "tag": "musk"},
+            {"text": "Unique and memorable", "energic": 3, "relax": 0, "tag": "spicy"},
         ],
     },
 ]
 
+PERFUME_DATA = [
+    ("PRADA PARADIGME EDPV100", "Prada", "115.00", "woody", "amber", "musk", ["Energic"]),
+    ("PRADA PARADIGME EDP50", "Prada", "85.00", "woody", "amber", "citrus", ["Energic"]),
+    ("BOSS BOTT NGT EDT200ML", "Boss", "128.00", "woody", "spicy", "amber", ["Energic"]),
+    ("INVIC VICT ELIX PARFUM 100", "Rabanne", "114.00", "fresh", "amber", "woody", ["Energic"]),
+    ("DIOR SAUVAGE EDP100", "Dior", "122.00", "fresh", "spicy", "amber", ["Energic"]),
+    ("1 MILLION LUCKY EDT100", "Rabanne", "90.00", "sweet", "woody", "amber", ["Energic"]),
+    ("GG ESSENCE PH EDT90", "Gucci", "103.00", "floral", "jasmine", "musk", ["Relaxation"]),
+    ("V DYLAN BLUE EDT100ML", "Versace", "96.00", "fresh", "aquatic", "woody", ["Energic"]),
+    ("DIOR SAUVAGE EDP60", "Dior", "87.00", "fresh", "spicy", "amber", ["Energic"]),
+    ("MONTBLANC EXPLORER EDP100", "Montblanc", "89.00", "woody", "leather", "fresh", ["Energic"]),
+    ("SAUVAGE ELIX 100ML", "Dior", "206.00", "spicy", "amber", "woody", ["Energic"]),
+    ("YSL MYSLF EDPRFA60", "YSL", "87.00", "fresh", "woody", "musk", ["Energic"]),
+    ("DIOR SAUVAGE EDT100ML", "Dior", "107.00", "fresh", "citrus", "spicy", ["Energic"]),
+    ("EA STRONGER YOU EDT150", "Emporio Armani", "110.00", "sweet", "vanilla", "amber", ["Relaxation"]),
+    ("BLEU CHANEL EDPV100ML", "Chanel", "128.00", "woody", "citrus", "amber", ["Energic"]),
+    ("JPG LE MALE PARFUM EDP75", "Jean Paul Gaultier", "81.00", "vanilla", "lavender", "amber", ["Relaxation"]),
+    ("LA VIE EST BELLE EDP100ML", "Lancome", "130.00", "vanilla", "floral", "sweet", ["Relaxation"]),
+    ("BOSS BOTT TONIC EDT100ML", "Boss", "89.00", "fresh", "citrus", "woody", ["Energic"]),
+    ("BAD BOY EDT V50ML", "Carolina Herrera", "71.00", "spicy", "amber", "citrus", ["Energic"]),
+    ("DIOR SAUVAGE EDT60ML", "Dior", "75.00", "fresh", "citrus", "spicy", ["Energic"]),
+    ("RABANNE 1 MILLION EDT50&TSX", "Rabanne", "67.00", "spicy", "leather", "amber", ["Energic"]),
+    ("COCO MADEM EDPV100ML", "Chanel", "152.00", "floral", "citrus", "amber", ["Relaxation"]),
+    ("PHANTOM EDT V100ML", "Rabanne", "98.00", "citrus", "lavender", "vanilla", ["Energic"]),
+    ("DIOR SAUVAGE ELIX60ML", "Dior", "143.00", "spicy", "amber", "woody", ["Energic"]),
+    ("MJ DAISY LOVE EAU EDT50", "Marc Jacobs", "77.00", "floral", "fruity", "musk", ["Relaxation"]),
+    ("RAB 1 MILL NIT ELX PRF100", "Rabanne", "109.00", "amber", "spicy", "woody", ["Energic"]),
+    ("BOSS BTTL SRK LAVN EDP100", "Boss", "100.00", "lavender", "woody", "musk", ["Relaxation"]),
+    ("PRADA PARADOXE EDPV50", "Prada", "107.00", "floral", "amber", "musk", ["Relaxation"]),
+    ("YSL MYSLF EDP100&TS10X", "YSL", "123.00", "fresh", "woody", "musk", ["Energic"]),
+    ("BOSS BOTTLD ABSOLU EDP100", "Boss", "109.00", "leather", "woody", "amber", ["Energic"]),
+    ("BOSS BOTTLED EDT100ML", "Boss", "91.00", "woody", "citrus", "vanilla", ["Energic"]),
+    ("BLEU CHANEL EDPV50ML", "Chanel", "92.00", "woody", "citrus", "amber", ["Energic"]),
+    ("YSL Y EDP 100ML", "YSL", "115.00", "fresh", "spicy", "woody", ["Energic"]),
+    ("EXPLR EDP100&TS2X7.5&SG", "Montblanc", "85.00", "woody", "leather", "fresh", ["Energic"]),
+    ("GUCCI OUD INT EDPV90ML", "Gucci", "167.00", "oud", "amber", "woody", ["Relaxation"]),
+    ("GOOD GIRL EDP 50", "Carolina Herrera", "98.00", "jasmine", "vanilla", "amber", ["Relaxation"]),
+    ("ISSEY M EDT V 125ML", "Issey Miyake", "101.00", "aquatic", "citrus", "woody", ["Energic"]),
+    ("PRADA PARADME EDP30", "Prada", "64.00", "woody", "amber", "musk", ["Energic"]),
+    ("EA STRONGER INTENS EDP100", "Emporio Armani", "105.00", "vanilla", "amber", "woody", ["Relaxation"]),
+    ("BLEU CHANEL PARFUM 100", "Chanel", "150.00", "woody", "amber", "fresh", ["Energic"]),
+    ("TF OMBRE LEATHER EDP100ML", "Tom Ford", "155.00", "leather", "spicy", "amber", ["Energic"]),
+    ("JPG MALE EDT V 75ML", "Jean Paul Gaultier", "74.00", "lavender", "vanilla", "mint", ["Relaxation"]),
+    ("GUCCI BAMBOO EDP50ML", "Gucci", "90.00", "floral", "jasmine", "woody", ["Relaxation"]),
+    ("JOOP! EDT V 200ML", "Joop", "90.00", "sweet", "citrus", "vanilla", ["Energic"]),
+    ("PRADA PARADOXE EDPV90", "Prada", "147.00", "floral", "amber", "musk", ["Relaxation"]),
+    ("TOUCH M EDT V 100ML", "Burberry", "54.99", "fresh", "spicy", "woody", ["Energic"]),
+    ("VLTNO BIR UOMO INT EDP100", "Valentino", "110.00", "woody", "vanilla", "leather", ["Energic"]),
+    ("YSL LIBRE EDPV30ML", "YSL", "75.00", "lavender", "orange blossom", "vanilla", ["Relaxation"]),
+    ("PARADOXE INT EDP RF90", "Prada", "162.00", "floral", "amber", "musk", ["Relaxation"]),
+    ("PRADA PARADOXE EDPV30", "Prada", "75.00", "floral", "amber", "musk", ["Relaxation"]),
+    ("MONTBLANC EXPLORER EDP60", "Montblanc", "65.00", "woody", "leather", "fresh", ["Energic"]),
+    ("COCO MADEM EDP V50ML", "Chanel", "112.00", "floral", "citrus", "amber", ["Relaxation"]),
+    ("SAUVAGE LE PARFUM 100ML", "Dior", "147.00", "spicy", "amber", "woody", ["Energic"]),
+    ("HB BOTTLED PARFUM V50ML", "Hugo Boss", "74.00", "woody", "leather", "amber", ["Energic"]),
+    ("MJ DAISY WILD EDPV100", "Marc Jacobs", "117.00", "floral", "green", "banana blossom", ["Relaxation"]),
+    ("JPG LE BEAU NARCIS EDP125", "Jean Paul Gaultier", "111.00", "coconut", "woody", "amber", ["Energic"]),
+    ("TF OMBRE LEATHER EDP50ML", "Tom Ford", "108.00", "leather", "spicy", "amber", ["Energic"]),
+    ("MOSC TOYBOY EDP V 100ML", "Moschino", "91.00", "rose", "spicy", "woody", ["Energic"]),
+    ("CH GG BLU POLKA PARAD EDP80", "Carolina Herrera", "146.00", "floral", "jasmine", "amber", ["Relaxation"]),
+    ("FLORA GORG ORCHID EDPV50", "Gucci", "105.00", "floral", "vanilla", "marine", ["Relaxation"]),
+    ("BOSS BOTT INFINITE EDP100", "Boss", "94.00", "fresh", "woody", "citrus", ["Energic"]),
+    ("1 MILLION EDT V100ML", "Rabanne", "94.00", "spicy", "leather", "amber", ["Energic"]),
+    ("YSL MYSLF EDPR 100ML", "YSL", "120.00", "fresh", "woody", "musk", ["Energic"]),
+    ("GENTLEMAN SOCIETY EDP60", "Givenchy", "85.00", "woody", "vanilla", "sage", ["Energic"]),
+    ("BOSS SCENT ABSLT M EDP100", "Boss", "107.00", "leather", "ginger", "vanilla", ["Energic"]),
+    ("JPG SCANDAL PH EDTV100ML", "Jean Paul Gaultier", "100.00", "sweet", "caramel", "spicy", ["Energic"]),
+    ("BLEU CHANEL EDPV150ML", "Chanel", "156.00", "woody", "citrus", "amber", ["Energic"]),
+    ("ADG PROFONDO PRF100", "Armani", "127.00", "aquatic", "fresh", "citrus", ["Energic"]),
+    ("RABANNE INVICTUS EDT100&TSX", "Rabanne", "95.00", "fresh", "aquatic", "woody", ["Energic"]),
+    ("VERSACE EROS EDPV100ML", "Versace", "105.00", "vanilla", "mint", "woody", ["Energic"]),
+    ("EA STRONGER INTENS EDP50", "Emporio Armani", "77.00", "vanilla", "amber", "woody", ["Relaxation"]),
+    ("SAUVAGE EDP200", "Dior", "183.00", "fresh", "spicy", "amber", ["Energic"]),
+    ("BOSS BTTL SRK LAVEN EDP50", "Boss", "73.00", "lavender", "woody", "musk", ["Relaxation"]),
+    ("COCO MAD EDP 35ML CLS", "Chanel", "78.00", "floral", "citrus", "amber", ["Relaxation"]),
+    ("BURBERRY HERO EDTV50ML", "Burberry", "76.00", "woody", "fresh", "spicy", ["Energic"]),
+    ("YSL LIBRE EDPV50ML", "YSL", "107.00", "lavender", "orange blossom", "vanilla", ["Relaxation"]),
+    ("FLORA GORG ORCHID EDPV100", "Gucci", "146.00", "floral", "vanilla", "marine", ["Relaxation"]),
+    ("GUCCI BAMBOO EDTV75ML", "Gucci", "111.00", "floral", "jasmine", "woody", ["Relaxation"]),
+    ("FAHRENHEIT EDT V 100ML", "Dior", "107.00", "leather", "violet", "woody", ["Energic"]),
+    ("MOMENT EDPV100ML", "One Direction", "42.99", "fruity", "floral", "musk", ["Relaxation"]),
+    ("PARADOXE INT EDP RF50", "Prada", "117.00", "floral", "amber", "musk", ["Relaxation"]),
+    ("BOSS THE SCENT M EDT100", "Boss", "90.00", "ginger", "leather", "spicy", ["Energic"]),
+    ("YSL LIBRE INTNSE EDP30ML", "YSL", "82.00", "lavender", "vanilla", "amber", ["Relaxation"]),
+    ("GOOD GIRL EDP 80", "Carolina Herrera", "128.00", "jasmine", "vanilla", "amber", ["Relaxation"]),
+    ("RAB 1 MILL NIT ELIX PRF50", "Rabanne", "80.00", "amber", "spicy", "woody", ["Energic"]),
+    ("GA CODE LE PARFUM V50", "Armani", "102.00", "iris", "woody", "amber", ["Relaxation"]),
+    ("CH LA BOMBA EDPA50", "Carolina Herrera", "98.00", "fruity", "floral", "vanilla", ["Relaxation"]),
+    ("YSL MYSLF L ABSOLU PRF100", "YSL", "140.00", "fresh", "woody", "spicy", ["Energic"]),
+    ("NO 5 EDP V 100ML CLS", "Chanel", "156.00", "powdery", "floral", "aldehydic", ["Relaxation"]),
+    ("MONTBLANC EXPLORER EDP200", "Montblanc", "130.00", "woody", "leather", "fresh", ["Energic"]),
+    ("B BOTTLED UNLTD EDT100", "Boss", "86.00", "fresh", "mint", "woody", ["Energic"]),
+    ("VLNTNO BIR UOMO INT EDP50", "Valentino", "81.00", "woody", "vanilla", "leather", ["Energic"]),
+    ("MONTBLANC EXPLORER EDP30", "Montblanc", "40.00", "woody", "leather", "fresh", ["Energic"]),
+    ("DIAMONDS W EDP V 100ML", "Armani", "80.00", "rose", "fruity", "vanilla", ["Relaxation"]),
+    ("EXPLORER EXTREME EDP100", "Montblanc", "99.00", "woody", "leather", "amber", ["Energic"]),
+    ("SAUVAGE LE PARFUM 60ML", "Dior", "107.00", "spicy", "amber", "woody", ["Energic"]),
+    ("BLEU CHANEL EDTV50ML", "Chanel", "80.00", "fresh", "citrus", "woody", ["Energic"]),
+    ("TF BLK ORCHID EDP100", "Tom Ford", "155.00", "oriental", "floral", "truffle", ["Relaxation"]),
+]
 
-PERFUME_DATA = [{'name': 'Sauvage', 'brand': 'Dior', 'notes': 'bergamot, pepper, ambroxan, lavender, woody', 'description': 'A new male fragrance profile with notes of bergamot, pepper, ambroxan, lavender, woody.', 'moods': ['Energic'], 'gender': 'male', 'style': 'new', 'price': '82.00', 'featured': True}, {'name': 'Miss Dior', 'brand': 'Dior', 'notes': 'rose, floral, patchouli, musk', 'description': 'A classic female fragrance profile with notes of rose, floral, patchouli, musk.', 'moods': ['Relaxation'], 'gender': 'female', 'style': 'classic', 'price': '89.00', 'featured': True}, {'name': 'J’adore', 'brand': 'Dior', 'notes': 'jasmine, rose, pear, floral musk', 'description': 'A classic female fragrance profile with notes of jasmine, rose, pear, floral musk.', 'moods': ['Relaxation'], 'gender': 'female', 'style': 'classic', 'price': '92.00', 'featured': False}, {'name': 'Homme Intense', 'brand': 'Dior', 'notes': 'iris, amber, cedar, lavender', 'description': 'A classic male fragrance profile with notes of iris, amber, cedar, lavender.', 'moods': ['Relaxation'], 'gender': 'male', 'style': 'classic', 'price': '96.00', 'featured': False}, {'name': 'Coco Mademoiselle', 'brand': 'Chanel', 'notes': 'orange, rose, patchouli, vanilla', 'description': 'A classic female fragrance profile with notes of orange, rose, patchouli, vanilla.', 'moods': ['Energic', 'Relaxation'], 'gender': 'female', 'style': 'classic', 'price': '94.00', 'featured': False}, {'name': 'Chance Eau Tendre', 'brand': 'Chanel', 'notes': 'grapefruit, quince, jasmine, musk', 'description': 'A new female fragrance profile with notes of grapefruit, quince, jasmine, musk.', 'moods': ['Energic'], 'gender': 'female', 'style': 'new', 'price': '83.00', 'featured': False}, {'name': 'Bleu de Chanel', 'brand': 'Chanel', 'notes': 'citrus, incense, cedar, sandalwood', 'description': 'A classic male fragrance profile with notes of citrus, incense, cedar, sandalwood.', 'moods': ['Energic', 'Relaxation'], 'gender': 'male', 'style': 'classic', 'price': '90.00', 'featured': False}, {'name': 'No. 5', 'brand': 'Chanel', 'notes': 'aldehydes, rose, jasmine, sandalwood, vanilla', 'description': 'A classic female fragrance profile with notes of aldehydes, rose, jasmine, sandalwood, vanilla.', 'moods': ['Relaxation'], 'gender': 'female', 'style': 'classic', 'price': '88.00', 'featured': False}, {'name': 'Libre', 'brand': 'Yves Saint Laurent', 'notes': 'lavender, orange blossom, musk, vanilla', 'description': 'A new female fragrance profile with notes of lavender, orange blossom, musk, vanilla.', 'moods': ['Energic', 'Relaxation'], 'gender': 'female', 'style': 'new', 'price': '86.00', 'featured': True}, {'name': 'Black Opium', 'brand': 'Yves Saint Laurent', 'notes': 'coffee, vanilla, jasmine, pear', 'description': 'A new female fragrance profile with notes of coffee, vanilla, jasmine, pear.', 'moods': ['Relaxation'], 'gender': 'female', 'style': 'new', 'price': '82.00', 'featured': True}, {'name': 'Y Eau de Parfum', 'brand': 'Yves Saint Laurent', 'notes': 'apple, sage, bergamot, cedar', 'description': 'A new male fragrance profile with notes of apple, sage, bergamot, cedar.', 'moods': ['Energic'], 'gender': 'male', 'style': 'new', 'price': '78.00', 'featured': False}, {'name': 'Mon Paris', 'brand': 'Yves Saint Laurent', 'notes': 'strawberry, pear, patchouli, musk', 'description': 'A new female fragrance profile with notes of strawberry, pear, patchouli, musk.', 'moods': ['Energic'], 'gender': 'female', 'style': 'new', 'price': '79.00', 'featured': False}, {'name': 'My Way', 'brand': 'Giorgio Armani', 'notes': 'orange blossom, tuberose, vanilla, musk', 'description': 'A new female fragrance profile with notes of orange blossom, tuberose, vanilla, musk.', 'moods': ['Relaxation'], 'gender': 'female', 'style': 'new', 'price': '79.00', 'featured': False}, {'name': 'Si', 'brand': 'Giorgio Armani', 'notes': 'blackcurrant, rose, vanilla, patchouli', 'description': 'A classic female fragrance profile with notes of blackcurrant, rose, vanilla, patchouli.', 'moods': ['Relaxation'], 'gender': 'female', 'style': 'classic', 'price': '86.00', 'featured': False}, {'name': 'Acqua di Gio', 'brand': 'Giorgio Armani', 'notes': 'marine, bergamot, jasmine, cedar', 'description': 'A classic male fragrance profile with notes of marine, bergamot, jasmine, cedar.', 'moods': ['Energic'], 'gender': 'male', 'style': 'classic', 'price': '76.00', 'featured': False}, {'name': 'Code', 'brand': 'Giorgio Armani', 'notes': 'bergamot, tonka, leather, lavender', 'description': 'A classic male fragrance profile with notes of bergamot, tonka, leather, lavender.', 'moods': ['Relaxation'], 'gender': 'male', 'style': 'classic', 'price': '74.00', 'featured': False}, {'name': 'Bloom', 'brand': 'Gucci', 'notes': 'jasmine, tuberose, floral, musk', 'description': 'A new female fragrance profile with notes of jasmine, tuberose, floral, musk.', 'moods': ['Relaxation'], 'gender': 'female', 'style': 'new', 'price': '78.00', 'featured': False}, {'name': 'Guilty Pour Homme', 'brand': 'Gucci', 'notes': 'lavender, lemon, orange blossom, cedar', 'description': 'A new male fragrance profile with notes of lavender, lemon, orange blossom, cedar.', 'moods': ['Energic'], 'gender': 'male', 'style': 'new', 'price': '72.00', 'featured': False}, {'name': 'Flora Gorgeous Gardenia', 'brand': 'Gucci', 'notes': 'pear, gardenia, jasmine, brown sugar', 'description': 'A new female fragrance profile with notes of pear, gardenia, jasmine, brown sugar.', 'moods': ['Energic'], 'gender': 'female', 'style': 'new', 'price': '82.00', 'featured': False}, {'name': 'Memoire d’une Odeur', 'brand': 'Gucci', 'notes': 'chamomile, jasmine, musk, cedar', 'description': 'A new unisex fragrance profile with notes of chamomile, jasmine, musk, cedar.', 'moods': ['Relaxation'], 'gender': 'unisex', 'style': 'new', 'price': '75.00', 'featured': False}, {'name': 'Black Orchid', 'brand': 'Tom Ford', 'notes': 'black truffle, orchid, patchouli, vanilla', 'description': 'A classic unisex fragrance profile with notes of black truffle, orchid, patchouli, vanilla.', 'moods': ['Relaxation'], 'gender': 'unisex', 'style': 'classic', 'price': '118.00', 'featured': False}, {'name': 'Oud Wood', 'brand': 'Tom Ford', 'notes': 'oud, sandalwood, cardamom, amber', 'description': 'A classic unisex fragrance profile with notes of oud, sandalwood, cardamom, amber.', 'moods': ['Relaxation'], 'gender': 'unisex', 'style': 'classic', 'price': '185.00', 'featured': False}, {'name': 'Neroli Portofino', 'brand': 'Tom Ford', 'notes': 'neroli, bergamot, lemon, amber', 'description': 'A classic unisex fragrance profile with notes of neroli, bergamot, lemon, amber.', 'moods': ['Energic'], 'gender': 'unisex', 'style': 'classic', 'price': '175.00', 'featured': False}, {'name': 'Tobacco Vanille', 'brand': 'Tom Ford', 'notes': 'tobacco, vanilla, spices, tonka', 'description': 'A classic unisex fragrance profile with notes of tobacco, vanilla, spices, tonka.', 'moods': ['Relaxation'], 'gender': 'unisex', 'style': 'classic', 'price': '190.00', 'featured': False}, {'name': 'La Vie Est Belle', 'brand': 'Lancôme', 'notes': 'iris, praline, vanilla, patchouli', 'description': 'A classic female fragrance profile with notes of iris, praline, vanilla, patchouli.', 'moods': ['Relaxation'], 'gender': 'female', 'style': 'classic', 'price': '78.00', 'featured': False}, {'name': 'Idôle', 'brand': 'Lancôme', 'notes': 'rose, jasmine, musk, pear', 'description': 'A new female fragrance profile with notes of rose, jasmine, musk, pear.', 'moods': ['Energic'], 'gender': 'female', 'style': 'new', 'price': '76.00', 'featured': False}, {'name': 'Tresor', 'brand': 'Lancôme', 'notes': 'rose, peach, apricot, vanilla', 'description': 'A classic female fragrance profile with notes of rose, peach, apricot, vanilla.', 'moods': ['Relaxation'], 'gender': 'female', 'style': 'classic', 'price': '65.00', 'featured': False}, {'name': 'Flowerbomb', 'brand': 'Viktor & Rolf', 'notes': 'jasmine, rose, patchouli, vanilla', 'description': 'A classic female fragrance profile with notes of jasmine, rose, patchouli, vanilla.', 'moods': ['Relaxation'], 'gender': 'female', 'style': 'classic', 'price': '86.00', 'featured': False}, {'name': 'Spicebomb', 'brand': 'Viktor & Rolf', 'notes': 'cinnamon, pepper, tobacco, leather', 'description': 'A new male fragrance profile with notes of cinnamon, pepper, tobacco, leather.', 'moods': ['Energic'], 'gender': 'male', 'style': 'new', 'price': '82.00', 'featured': False}, {'name': 'Good Fortune', 'brand': 'Viktor & Rolf', 'notes': 'jasmine, vanilla, fennel, musk', 'description': 'A new female fragrance profile with notes of jasmine, vanilla, fennel, musk.', 'moods': ['Relaxation'], 'gender': 'female', 'style': 'new', 'price': '80.00', 'featured': False}, {'name': '1 Million', 'brand': 'Paco Rabanne', 'notes': 'blood mandarin, cinnamon, leather, amber', 'description': 'A classic male fragrance profile with notes of blood mandarin, cinnamon, leather, amber.', 'moods': ['Energic'], 'gender': 'male', 'style': 'classic', 'price': '72.00', 'featured': False}, {'name': 'Lady Million', 'brand': 'Paco Rabanne', 'notes': 'orange, raspberry, jasmine, honey', 'description': 'A classic female fragrance profile with notes of orange, raspberry, jasmine, honey.', 'moods': ['Energic'], 'gender': 'female', 'style': 'classic', 'price': '70.00', 'featured': False}, {'name': 'Invictus', 'brand': 'Paco Rabanne', 'notes': 'grapefruit, marine, bay leaf, ambergris', 'description': 'A new male fragrance profile with notes of grapefruit, marine, bay leaf, ambergris.', 'moods': ['Energic'], 'gender': 'male', 'style': 'new', 'price': '69.00', 'featured': False}, {'name': 'Olympea', 'brand': 'Paco Rabanne', 'notes': 'vanilla, salt, jasmine, ambergris', 'description': 'A new female fragrance profile with notes of vanilla, salt, jasmine, ambergris.', 'moods': ['Relaxation'], 'gender': 'female', 'style': 'new', 'price': '72.00', 'featured': False}, {'name': 'Good Girl', 'brand': 'Carolina Herrera', 'notes': 'jasmine, tuberose, tonka, cocoa', 'description': 'A new female fragrance profile with notes of jasmine, tuberose, tonka, cocoa.', 'moods': ['Relaxation'], 'gender': 'female', 'style': 'new', 'price': '82.00', 'featured': False}, {'name': 'Bad Boy', 'brand': 'Carolina Herrera', 'notes': 'pepper, bergamot, tonka, cocoa', 'description': 'A new male fragrance profile with notes of pepper, bergamot, tonka, cocoa.', 'moods': ['Energic'], 'gender': 'male', 'style': 'new', 'price': '77.00', 'featured': False}, {'name': '212 VIP Men', 'brand': 'Carolina Herrera', 'notes': 'vodka, mint, ginger, amber', 'description': 'A new male fragrance profile with notes of vodka, mint, ginger, amber.', 'moods': ['Energic'], 'gender': 'male', 'style': 'new', 'price': '70.00', 'featured': False}, {'name': '212 Heroes For Her', 'brand': 'Carolina Herrera', 'notes': 'raspberry, jasmine, cedar, tonka', 'description': 'A new female fragrance profile with notes of raspberry, jasmine, cedar, tonka.', 'moods': ['Energic'], 'gender': 'female', 'style': 'new', 'price': '68.00', 'featured': False}, {'name': 'Le Male', 'brand': 'Jean Paul Gaultier', 'notes': 'lavender, mint, vanilla, cinnamon', 'description': 'A classic male fragrance profile with notes of lavender, mint, vanilla, cinnamon.', 'moods': ['Energic', 'Relaxation'], 'gender': 'male', 'style': 'classic', 'price': '75.00', 'featured': False}, {'name': 'Classique', 'brand': 'Jean Paul Gaultier', 'notes': 'orange blossom, ginger, vanilla, amber', 'description': 'A classic female fragrance profile with notes of orange blossom, ginger, vanilla, amber.', 'moods': ['Relaxation'], 'gender': 'female', 'style': 'classic', 'price': '78.00', 'featured': False}, {'name': 'Scandal', 'brand': 'Jean Paul Gaultier', 'notes': 'honey, gardenia, patchouli, caramel', 'description': 'A new female fragrance profile with notes of honey, gardenia, patchouli, caramel.', 'moods': ['Relaxation'], 'gender': 'female', 'style': 'new', 'price': '79.00', 'featured': False}, {'name': 'Ultra Male', 'brand': 'Jean Paul Gaultier', 'notes': 'pear, lavender, mint, vanilla', 'description': 'A new male fragrance profile with notes of pear, lavender, mint, vanilla.', 'moods': ['Energic'], 'gender': 'male', 'style': 'new', 'price': '80.00', 'featured': False}, {'name': 'Eros', 'brand': 'Versace', 'notes': 'mint, green apple, vanilla, tonka', 'description': 'A new male fragrance profile with notes of mint, green apple, vanilla, tonka.', 'moods': ['Energic'], 'gender': 'male', 'style': 'new', 'price': '68.00', 'featured': False}, {'name': 'Dylan Blue', 'brand': 'Versace', 'notes': 'bergamot, grapefruit, aquatic, incense', 'description': 'A new male fragrance profile with notes of bergamot, grapefruit, aquatic, incense.', 'moods': ['Energic'], 'gender': 'male', 'style': 'new', 'price': '64.00', 'featured': False}, {'name': 'Bright Crystal', 'brand': 'Versace', 'notes': 'yuzu, peony, magnolia, musk', 'description': 'A classic female fragrance profile with notes of yuzu, peony, magnolia, musk.', 'moods': ['Energic'], 'gender': 'female', 'style': 'classic', 'price': '58.00', 'featured': False}, {'name': 'Crystal Noir', 'brand': 'Versace', 'notes': 'ginger, gardenia, amber, sandalwood', 'description': 'A classic female fragrance profile with notes of ginger, gardenia, amber, sandalwood.', 'moods': ['Relaxation'], 'gender': 'female', 'style': 'classic', 'price': '60.00', 'featured': False}, {'name': 'CK One', 'brand': 'Calvin Klein', 'notes': 'bergamot, green tea, musk, amber', 'description': 'A classic unisex fragrance profile with notes of bergamot, green tea, musk, amber.', 'moods': ['Energic'], 'gender': 'unisex', 'style': 'classic', 'price': '32.00', 'featured': True}, {'name': 'Eternity', 'brand': 'Calvin Klein', 'notes': 'lavender, mandarin, jasmine, sandalwood', 'description': 'A classic unisex fragrance profile with notes of lavender, mandarin, jasmine, sandalwood.', 'moods': ['Relaxation'], 'gender': 'unisex', 'style': 'classic', 'price': '42.00', 'featured': False}, {'name': 'Euphoria', 'brand': 'Calvin Klein', 'notes': 'pomegranate, orchid, amber, musk', 'description': 'A classic female fragrance profile with notes of pomegranate, orchid, amber, musk.', 'moods': ['Relaxation'], 'gender': 'female', 'style': 'classic', 'price': '48.00', 'featured': False}, {'name': 'Defy', 'brand': 'Calvin Klein', 'notes': 'bergamot, lavender, vetiver, amber', 'description': 'A new male fragrance profile with notes of bergamot, lavender, vetiver, amber.', 'moods': ['Energic'], 'gender': 'male', 'style': 'new', 'price': '45.00', 'featured': False}, {'name': 'Bottled', 'brand': 'Hugo Boss', 'notes': 'apple, cinnamon, vanilla, woody', 'description': 'A classic male fragrance profile with notes of apple, cinnamon, vanilla, woody.', 'moods': ['Relaxation'], 'gender': 'male', 'style': 'classic', 'price': '58.00', 'featured': False}, {'name': 'The Scent For Her', 'brand': 'Hugo Boss', 'notes': 'peach, freesia, osmanthus, cocoa', 'description': 'A new female fragrance profile with notes of peach, freesia, osmanthus, cocoa.', 'moods': ['Relaxation'], 'gender': 'female', 'style': 'new', 'price': '62.00', 'featured': False}, {'name': 'Bottled Night', 'brand': 'Hugo Boss', 'notes': 'lavender, birch, musk, woody', 'description': 'A classic male fragrance profile with notes of lavender, birch, musk, woody.', 'moods': ['Relaxation'], 'gender': 'male', 'style': 'classic', 'price': '52.00', 'featured': False}, {'name': 'Alive', 'brand': 'Hugo Boss', 'notes': 'apple, vanilla, plum, woody', 'description': 'A new female fragrance profile with notes of apple, vanilla, plum, woody.', 'moods': ['Energic'], 'gender': 'female', 'style': 'new', 'price': '64.00', 'featured': False}, {'name': 'Daisy', 'brand': 'Marc Jacobs', 'notes': 'strawberry, violet, jasmine, musk', 'description': 'A classic female fragrance profile with notes of strawberry, violet, jasmine, musk.', 'moods': ['Energic'], 'gender': 'female', 'style': 'classic', 'price': '65.00', 'featured': False}, {'name': 'Perfect', 'brand': 'Marc Jacobs', 'notes': 'rhubarb, daffodil, almond milk, cedar', 'description': 'A new female fragrance profile with notes of rhubarb, daffodil, almond milk, cedar.', 'moods': ['Energic'], 'gender': 'female', 'style': 'new', 'price': '72.00', 'featured': False}, {'name': 'Daisy Love', 'brand': 'Marc Jacobs', 'notes': 'cloudberry, daisy, musk, cashmere', 'description': 'A new female fragrance profile with notes of cloudberry, daisy, musk, cashmere.', 'moods': ['Energic'], 'gender': 'female', 'style': 'new', 'price': '64.00', 'featured': False}, {'name': 'Daisy Dream', 'brand': 'Marc Jacobs', 'notes': 'blackberry, grapefruit, jasmine, musk', 'description': 'A new female fragrance profile with notes of blackberry, grapefruit, jasmine, musk.', 'moods': ['Energic'], 'gender': 'female', 'style': 'new', 'price': '62.00', 'featured': False}, {'name': 'Lime Basil & Mandarin', 'brand': 'Jo Malone', 'notes': 'lime, basil, mandarin, amberwood', 'description': 'A classic unisex fragrance profile with notes of lime, basil, mandarin, amberwood.', 'moods': ['Energic'], 'gender': 'unisex', 'style': 'classic', 'price': '56.00', 'featured': False}, {'name': 'Peony & Blush Suede', 'brand': 'Jo Malone', 'notes': 'peony, red apple, jasmine, suede', 'description': 'A classic female fragrance profile with notes of peony, red apple, jasmine, suede.', 'moods': ['Relaxation'], 'gender': 'female', 'style': 'classic', 'price': '56.00', 'featured': False}, {'name': 'Wood Sage & Sea Salt', 'brand': 'Jo Malone', 'notes': 'sea salt, sage, grapefruit, musk', 'description': 'A new unisex fragrance profile with notes of sea salt, sage, grapefruit, musk.', 'moods': ['Relaxation'], 'gender': 'unisex', 'style': 'new', 'price': '56.00', 'featured': False}, {'name': 'English Pear & Freesia', 'brand': 'Jo Malone', 'notes': 'pear, freesia, rose, patchouli', 'description': 'A classic unisex fragrance profile with notes of pear, freesia, rose, patchouli.', 'moods': ['Relaxation'], 'gender': 'unisex', 'style': 'classic', 'price': '56.00', 'featured': False}, {'name': 'Baccarat Rouge 540', 'brand': 'Maison Francis Kurkdjian', 'notes': 'saffron, jasmine, amberwood, cedar', 'description': 'A new unisex fragrance profile with notes of saffron, jasmine, amberwood, cedar.', 'moods': ['Energic', 'Relaxation'], 'gender': 'unisex', 'style': 'new', 'price': '235.00', 'featured': True}, {'name': 'Aqua Universalis', 'brand': 'Maison Francis Kurkdjian', 'notes': 'bergamot, lemon, lily, musk', 'description': 'A classic unisex fragrance profile with notes of bergamot, lemon, lily, musk.', 'moods': ['Energic'], 'gender': 'unisex', 'style': 'classic', 'price': '155.00', 'featured': False}, {'name': 'Gentle Fluidity Gold', 'brand': 'Maison Francis Kurkdjian', 'notes': 'juniper, nutmeg, vanilla, amber', 'description': 'A new unisex fragrance profile with notes of juniper, nutmeg, vanilla, amber.', 'moods': ['Relaxation'], 'gender': 'unisex', 'style': 'new', 'price': '165.00', 'featured': False}, {'name': 'Amyris Femme', 'brand': 'Maison Francis Kurkdjian', 'notes': 'amyris, iris, lemon blossom, musk', 'description': 'A classic female fragrance profile with notes of amyris, iris, lemon blossom, musk.', 'moods': ['Relaxation'], 'gender': 'female', 'style': 'classic', 'price': '160.00', 'featured': False}, {'name': 'Gypsy Water', 'brand': 'Byredo', 'notes': 'bergamot, juniper, incense, vanilla', 'description': 'A classic unisex fragrance profile with notes of bergamot, juniper, incense, vanilla.', 'moods': ['Relaxation'], 'gender': 'unisex', 'style': 'classic', 'price': '150.00', 'featured': False}, {'name': 'Blanche', 'brand': 'Byredo', 'notes': 'aldehydes, rose, sandalwood, musk', 'description': 'A classic unisex fragrance profile with notes of aldehydes, rose, sandalwood, musk.', 'moods': ['Relaxation'], 'gender': 'unisex', 'style': 'classic', 'price': '145.00', 'featured': False}, {'name': 'Mojave Ghost', 'brand': 'Byredo', 'notes': 'ambrette, magnolia, sandalwood, cedar', 'description': 'A new unisex fragrance profile with notes of ambrette, magnolia, sandalwood, cedar.', 'moods': ['Relaxation'], 'gender': 'unisex', 'style': 'new', 'price': '150.00', 'featured': False}, {'name': 'Bal d’Afrique', 'brand': 'Byredo', 'notes': 'bergamot, neroli, jasmine, musk', 'description': 'A classic unisex fragrance profile with notes of bergamot, neroli, jasmine, musk.', 'moods': ['Energic'], 'gender': 'unisex', 'style': 'classic', 'price': '150.00', 'featured': False}, {'name': 'Santal 33', 'brand': 'Le Labo', 'notes': 'sandalwood, cedar, cardamom, leather', 'description': 'A classic unisex fragrance profile with notes of sandalwood, cedar, cardamom, leather.', 'moods': ['Relaxation'], 'gender': 'unisex', 'style': 'classic', 'price': '168.00', 'featured': True}, {'name': 'Another 13', 'brand': 'Le Labo', 'notes': 'ambroxan, jasmine, moss, musk', 'description': 'A new unisex fragrance profile with notes of ambroxan, jasmine, moss, musk.', 'moods': ['Relaxation'], 'gender': 'unisex', 'style': 'new', 'price': '168.00', 'featured': False}, {'name': 'Bergamote 22', 'brand': 'Le Labo', 'notes': 'bergamot, grapefruit, vetiver, amber', 'description': 'A classic unisex fragrance profile with notes of bergamot, grapefruit, vetiver, amber.', 'moods': ['Energic'], 'gender': 'unisex', 'style': 'classic', 'price': '168.00', 'featured': False}, {'name': 'Rose 31', 'brand': 'Le Labo', 'notes': 'rose, cumin, cedar, musk', 'description': 'A classic unisex fragrance profile with notes of rose, cumin, cedar, musk.', 'moods': ['Relaxation'], 'gender': 'unisex', 'style': 'classic', 'price': '168.00', 'featured': False}, {'name': 'Her', 'brand': 'Burberry', 'notes': 'strawberry, raspberry, jasmine, musk', 'description': 'A new female fragrance profile with notes of strawberry, raspberry, jasmine, musk.', 'moods': ['Energic'], 'gender': 'female', 'style': 'new', 'price': '74.00', 'featured': False}, {'name': 'Goddess', 'brand': 'Burberry', 'notes': 'vanilla, lavender, cacao, ginger', 'description': 'A new female fragrance profile with notes of vanilla, lavender, cacao, ginger.', 'moods': ['Relaxation'], 'gender': 'female', 'style': 'new', 'price': '86.00', 'featured': False}, {'name': 'Hero', 'brand': 'Burberry', 'notes': 'bergamot, juniper, cedar, pepper', 'description': 'A new male fragrance profile with notes of bergamot, juniper, cedar, pepper.', 'moods': ['Energic'], 'gender': 'male', 'style': 'new', 'price': '76.00', 'featured': False}, {'name': 'Brit For Her', 'brand': 'Burberry', 'notes': 'lime, almond, vanilla, amber', 'description': 'A classic female fragrance profile with notes of lime, almond, vanilla, amber.', 'moods': ['Relaxation'], 'gender': 'female', 'style': 'classic', 'price': '48.00', 'featured': False}, {'name': 'Alien', 'brand': 'Mugler', 'notes': 'jasmine, amber, woody, cashmere', 'description': 'A classic female fragrance profile with notes of jasmine, amber, woody, cashmere.', 'moods': ['Relaxation'], 'gender': 'female', 'style': 'classic', 'price': '80.00', 'featured': False}, {'name': 'Angel', 'brand': 'Mugler', 'notes': 'bergamot, praline, patchouli, vanilla', 'description': 'A classic female fragrance profile with notes of bergamot, praline, patchouli, vanilla.', 'moods': ['Relaxation'], 'gender': 'female', 'style': 'classic', 'price': '78.00', 'featured': False}, {'name': 'Alien Goddess', 'brand': 'Mugler', 'notes': 'coconut, jasmine, vanilla, bergamot', 'description': 'A new female fragrance profile with notes of coconut, jasmine, vanilla, bergamot.', 'moods': ['Energic', 'Relaxation'], 'gender': 'female', 'style': 'new', 'price': '82.00', 'featured': False}, {'name': 'A*Men', 'brand': 'Mugler', 'notes': 'lavender, coffee, caramel, patchouli', 'description': 'A classic male fragrance profile with notes of lavender, coffee, caramel, patchouli.', 'moods': ['Energic'], 'gender': 'male', 'style': 'classic', 'price': '70.00', 'featured': False}, {'name': 'Light Blue', 'brand': 'Dolce & Gabbana', 'notes': 'lemon, apple, cedar, musk', 'description': 'A classic female fragrance profile with notes of lemon, apple, cedar, musk.', 'moods': ['Energic'], 'gender': 'female', 'style': 'classic', 'price': '60.00', 'featured': False}, {'name': 'The One For Men', 'brand': 'Dolce & Gabbana', 'notes': 'grapefruit, ginger, tobacco, amber', 'description': 'A classic male fragrance profile with notes of grapefruit, ginger, tobacco, amber.', 'moods': ['Relaxation'], 'gender': 'male', 'style': 'classic', 'price': '68.00', 'featured': False}, {'name': 'Devotion', 'brand': 'Dolce & Gabbana', 'notes': 'candied lemon, orange blossom, vanilla', 'description': 'A new female fragrance profile with notes of candied lemon, orange blossom, vanilla.', 'moods': ['Energic'], 'gender': 'female', 'style': 'new', 'price': '82.00', 'featured': False}, {'name': 'K', 'brand': 'Dolce & Gabbana', 'notes': 'citrus, juniper, sage, cedar', 'description': 'A new male fragrance profile with notes of citrus, juniper, sage, cedar.', 'moods': ['Energic'], 'gender': 'male', 'style': 'new', 'price': '64.00', 'featured': False}, {'name': 'Paradoxe', 'brand': 'Prada', 'notes': 'neroli, amber, musk, vanilla', 'description': 'A new female fragrance profile with notes of neroli, amber, musk, vanilla.', 'moods': ['Relaxation'], 'gender': 'female', 'style': 'new', 'price': '84.00', 'featured': False}, {'name': 'Luna Rossa Carbon', 'brand': 'Prada', 'notes': 'bergamot, lavender, metallic notes, patchouli', 'description': 'A new male fragrance profile with notes of bergamot, lavender, metallic notes, patchouli.', 'moods': ['Energic'], 'gender': 'male', 'style': 'new', 'price': '76.00', 'featured': False}, {'name': 'Candy', 'brand': 'Prada', 'notes': 'caramel, musk, benzoin, vanilla', 'description': 'A classic female fragrance profile with notes of caramel, musk, benzoin, vanilla.', 'moods': ['Relaxation'], 'gender': 'female', 'style': 'classic', 'price': '62.00', 'featured': False}, {'name': 'L’Homme', 'brand': 'Prada', 'notes': 'iris, amber, neroli, cedar', 'description': 'A classic male fragrance profile with notes of iris, amber, neroli, cedar.', 'moods': ['Relaxation'], 'gender': 'male', 'style': 'classic', 'price': '78.00', 'featured': False}, {'name': 'Born in Roma Donna', 'brand': 'Valentino', 'notes': 'jasmine, vanilla, blackcurrant, woody', 'description': 'A new female fragrance profile with notes of jasmine, vanilla, blackcurrant, woody.', 'moods': ['Relaxation'], 'gender': 'female', 'style': 'new', 'price': '82.00', 'featured': False}, {'name': 'Born in Roma Uomo', 'brand': 'Valentino', 'notes': 'violet leaf, ginger, sage, woody', 'description': 'A new male fragrance profile with notes of violet leaf, ginger, sage, woody.', 'moods': ['Energic'], 'gender': 'male', 'style': 'new', 'price': '82.00', 'featured': False}, {'name': 'Voce Viva', 'brand': 'Valentino', 'notes': 'orange blossom, bergamot, vanilla, moss', 'description': 'A new female fragrance profile with notes of orange blossom, bergamot, vanilla, moss.', 'moods': ['Energic'], 'gender': 'female', 'style': 'new', 'price': '78.00', 'featured': False}, {'name': 'Uomo Intense', 'brand': 'Valentino', 'notes': 'iris, leather, vanilla, tonka', 'description': 'A classic male fragrance profile with notes of iris, leather, vanilla, tonka.', 'moods': ['Relaxation'], 'gender': 'male', 'style': 'classic', 'price': '86.00', 'featured': False}, {'name': 'Cloud', 'brand': 'Ariana Grande', 'notes': 'lavender, pear, coconut, praline', 'description': 'A new female fragrance profile with notes of lavender, pear, coconut, praline.', 'moods': ['Relaxation'], 'gender': 'female', 'style': 'new', 'price': '38.00', 'featured': True}, {'name': 'Thank U Next', 'brand': 'Ariana Grande', 'notes': 'pear, raspberry, coconut, musk', 'description': 'A new female fragrance profile with notes of pear, raspberry, coconut, musk.', 'moods': ['Energic'], 'gender': 'female', 'style': 'new', 'price': '35.00', 'featured': False}, {'name': 'Mod Vanilla', 'brand': 'Ariana Grande', 'notes': 'vanilla, plum, musk, cocoa butter', 'description': 'A new female fragrance profile with notes of vanilla, plum, musk, cocoa butter.', 'moods': ['Relaxation'], 'gender': 'female', 'style': 'new', 'price': '42.00', 'featured': False}, {'name': 'God Is A Woman', 'brand': 'Ariana Grande', 'notes': 'pear, ambrette, orris, musk', 'description': 'A new female fragrance profile with notes of pear, ambrette, orris, musk.', 'moods': ['Energic'], 'gender': 'female', 'style': 'new', 'price': '42.00', 'featured': False}, {'name': 'Red Temptation', 'brand': 'Zara', 'notes': 'saffron, jasmine, amber, moss', 'description': 'A new unisex fragrance profile with notes of saffron, jasmine, amber, moss.', 'moods': ['Relaxation'], 'gender': 'unisex', 'style': 'new', 'price': '22.00', 'featured': False}, {'name': 'Golden Decade', 'brand': 'Zara', 'notes': 'mandarin, lavender, orange blossom, vanilla', 'description': 'A new female fragrance profile with notes of mandarin, lavender, orange blossom, vanilla.', 'moods': ['Energic'], 'gender': 'female', 'style': 'new', 'price': '25.00', 'featured': False}, {'name': 'Vibrant Leather', 'brand': 'Zara', 'notes': 'bergamot, bamboo, leather, patchouli', 'description': 'A new male fragrance profile with notes of bergamot, bamboo, leather, patchouli.', 'moods': ['Energic'], 'gender': 'male', 'style': 'new', 'price': '24.00', 'featured': False}, {'name': 'Ebony Wood', 'brand': 'Zara', 'notes': 'pepper, clove, ebony wood, vanilla', 'description': 'A new unisex fragrance profile with notes of pepper, clove, ebony wood, vanilla.', 'moods': ['Relaxation'], 'gender': 'unisex', 'style': 'new', 'price': '26.00', 'featured': False}]
+# Keep only scent values that exist in the Perfume model choices.
+SCENT_NORMALISE = {
+    "mint": "fresh", "banana blossom": "floral", "orange blossom": "floral", "marine": "aquatic",
+    "ginger": "spicy", "sage": "green", "caramel": "sweet", "violet": "powdery", "iris": "powdery",
+    "aldehydic": "powdery", "coconut": "sweet", "truffle": "oriental",
+}
 
 
 class Command(BaseCommand):
-    help = "Seed survey questions/options and 100 perfume records. Safe to run multiple times."
+    help = "Seed NoteMatch survey questions, moods and best-seller perfume catalog. Safe to run multiple times."
 
     @transaction.atomic
     def handle(self, *args, **options):
-        Mood.objects.get_or_create(name="Energic")
-        Mood.objects.get_or_create(name="Relaxation")
+        for mood_name in ["Energic", "Relaxation"]:
+            Mood.objects.get_or_create(name=mood_name)
 
-        created_q = 0
-        updated_q = 0
-        total_opts = 0
-
+        created_q = updated_q = total_opts = 0
         for q in SEED_DATA:
             question, created = SurveyQuestion.objects.get_or_create(order=q["order"], defaults={"text": q["text"]})
             if not created and question.text != q["text"]:
                 question.text = q["text"]
-                question.is_active = True
                 question.save()
                 updated_q += 1
             elif created:
                 created_q += 1
-
             SurveyOption.objects.filter(question=question).delete()
             for opt in q["options"]:
                 SurveyOption.objects.create(
@@ -135,36 +219,33 @@ class Command(BaseCommand):
                     text=opt["text"],
                     energic_points=opt["energic"],
                     relax_points=opt["relax"],
-                    note_tag=opt["tag"],
+                    note_tag=SCENT_NORMALISE.get(opt["tag"], opt["tag"]),
                 )
                 total_opts += 1
 
         from perfumes.models import Perfume
-        created_perfumes = 0
-        updated_perfumes = 0
-        for item in PERFUME_DATA:
-            perfume, perfume_created = Perfume.objects.get_or_create(name=item["name"], brand=item["brand"])
-            perfume.notes = item["notes"]
-            perfume.description = item.get("description", "")
-            perfume.gender_category = item.get("gender", "unisex")
-            perfume.style_category = item.get("style", "new")
-            perfume.price = item.get("price", "0.00")
-            perfume.price_source = "Demo UK price book"
-            perfume.is_featured = item.get("featured", False)
-            perfume.is_active = True
-            perfume.save()
 
-            if perfume_created:
+        created_perfumes = updated_perfumes = 0
+        for name, brand, price, s1, s2, s3, moods in PERFUME_DATA:
+            s1, s2, s3 = [SCENT_NORMALISE.get(s, s) for s in (s1, s2, s3)]
+            perfume, created = Perfume.objects.get_or_create(name=name, defaults={"brand": brand})
+            perfume.brand = brand
+            perfume.price = price
+            perfume.scent_1 = s1
+            perfume.scent_2 = s2
+            perfume.scent_3 = s3
+            perfume.notes = f"Best-seller catalog item. Scent profile: {s1}, {s2}, {s3}."
+            perfume.save()
+            perfume.moods.clear()
+            for mood_name in moods:
+                mood, _ = Mood.objects.get_or_create(name=mood_name)
+                perfume.moods.add(mood)
+            if created:
                 created_perfumes += 1
             else:
                 updated_perfumes += 1
 
-            perfume.moods.clear()
-            for mood_name in item["moods"]:
-                mood, _ = Mood.objects.get_or_create(name=mood_name)
-                perfume.moods.add(mood)
-
-        self.stdout.write(self.style.SUCCESS("✅ Survey and perfume seed completed"))
+        self.stdout.write(self.style.SUCCESS("✅ NoteMatch seed completed"))
         self.stdout.write(f"Questions created: {created_q}")
         self.stdout.write(f"Questions updated: {updated_q}")
         self.stdout.write(f"Options inserted: {total_opts}")

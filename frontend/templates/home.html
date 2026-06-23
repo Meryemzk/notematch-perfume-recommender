@@ -1,39 +1,36 @@
 {% extends "base.html" %}
-{% block title %}NoteMatch - Mood Perfume Recommendation{% endblock %}
+{% load static %}
+{% block title %}NoteMatch - Mood Perfume Finder{% endblock %}
 
 {% block content %}
-<div class="container nm-section">
-  {% if user.is_authenticated %}
-    <div class="nm-welcome mb-4">Hello {{ display_name }}, ready to discover your next perfume?</div>
-  {% endif %}
-
-  <div class="row g-0 nm-hero">
-    <div class="col-lg-6 p-4 p-lg-5">
-      <p class="nm-eyebrow">AI-enhanced perfume discovery</p>
-      <h1 class="nm-title display-5 mb-3">Mood-based recommendations that remember what you like.</h1>
-      <p class="text-secondary mb-4">
-        NoteMatch combines your saved favourite perfumes, current mood, fragrance notes, gender preference,
-        modern/classic style and budget to suggest perfumes that feel more personal.
-      </p>
-
-      <div class="d-flex gap-2 flex-wrap">
-        <a class="btn nm-btn" href="/survey/">Get Recommendations</a>
-        <a class="btn nm-pill" href="/perfumes/">Browse Perfumes</a>
+<section class="nm-home-hero">
+  <div class="container">
+    <div class="row align-items-center g-4">
+      <div class="col-lg-6">
+        <p class="nm-kicker">Love. Mood. Your Note.</p>
+        <h1 class="nm-title display-4 mb-3">Find a perfume that matches how you feel.</h1>
+        <p class="text-secondary fs-5 mb-4">
+          Use NoteMatch without registration. Take the mood survey, browse real perfume prices,
+          and create an account only when you want to save your results.
+        </p>
+        <div class="d-flex gap-2 flex-wrap">
+          <a class="btn nm-btn btn-lg" href="/survey/">Take the survey</a>
+          <a class="btn nm-pill btn-lg" href="/perfumes/">Browse perfumes</a>
+          {% if not user.is_authenticated %}<a class="btn nm-link-btn btn-lg" href="/users/signup/">Register optional</a>{% endif %}
+        </div>
       </div>
-
-      <div class="row g-3 mt-4">
-        <div class="col-4"><div class="nm-mini-stat"><strong>100+</strong><span>Perfumes</span></div></div>
-        <div class="col-4"><div class="nm-mini-stat"><strong>3</strong><span>Favourites saved</span></div></div>
-        <div class="col-4"><div class="nm-mini-stat"><strong>£</strong><span>Budget aware</span></div></div>
+      <div class="col-lg-6">
+        <img class="nm-hero-photo" src="{% static 'images/notematch-hero.png' %}" alt="NoteMatch perfume hero image">
       </div>
     </div>
-    <div class="col-lg-6 nm-hero-img nm-hero-img--perfume"></div>
   </div>
+</section>
 
-  <div class="row nm-section g-3">
-    <div class="col-md-4"><div class="nm-card h-100"><h5 class="mb-2">Saved Profile</h5><p class="text-secondary mb-0">Your three favourite perfumes remain saved until you choose to update them.</p></div></div>
-    <div class="col-md-4"><div class="nm-card h-100"><h5 class="mb-2">Mood Survey</h5><p class="text-secondary mb-0">A short quiz captures how you want your perfume to make you feel today.</p></div></div>
-    <div class="col-md-4"><div class="nm-card h-100"><h5 class="mb-2">Professional Admin</h5><p class="text-secondary mb-0">Admin users can add perfumes, edit questions, manage prices and control catalogue visibility.</p></div></div>
+<div class="container nm-section">
+  <div class="row g-3">
+    <div class="col-md-4"><div class="nm-card h-100"><h5>Survey first</h5><p class="text-secondary mb-0">Visitors can answer the questions immediately. Login is not required.</p></div></div>
+    <div class="col-md-4"><div class="nm-card h-100"><h5>Mood matching</h5><p class="text-secondary mb-0">Questions connect mood, scent families, strength, weather and perfume occasion.</p></div></div>
+    <div class="col-md-4"><div class="nm-card h-100"><h5>Admin control</h5><p class="text-secondary mb-0">Admin can add, edit and delete perfumes, prices, moods and scent options.</p></div></div>
   </div>
 </div>
 {% endblock %}

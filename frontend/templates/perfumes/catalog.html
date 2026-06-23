@@ -3,20 +3,38 @@
 
 {% block content %}
 <div class="container nm-section">
-  <div class="nm-card mb-4">
-    <p class="nm-eyebrow">Catalogue</p>
-    <h2 class="nm-title mb-2">Perfume Catalogue</h2>
-    <p class="text-secondary mb-0">Browse the seeded perfume data used by the recommendation engine. Admin users can add, edit, feature or hide perfumes.</p>
+  <div class="d-flex justify-content-between align-items-end gap-3 flex-wrap mb-4">
+    <div>
+      <h2 class="nm-title mb-2">Perfume Catalog</h2>
+      <p class="text-secondary mb-0">Best-seller perfumes with prices and three scent tags for matching.</p>
+    </div>
+    <a class="btn nm-btn" href="/survey/">Find my match</a>
   </div>
 
   {% if perfumes %}
     <div class="row g-3">
-      {% for perfume in perfumes %}
-        <div class="col-lg-4 col-md-6">{% include "includes/perfume_card.html" %}</div>
+      {% for p in perfumes %}
+        <div class="col-md-6 col-xl-4">
+          <div class="nm-card h-100 perfume-card">
+            <div class="d-flex justify-content-between gap-3">
+              <div>
+                <h5 class="mb-1">{{ p.name }}</h5>
+                {% if p.brand %}<p class="text-secondary mb-2">{{ p.brand }}</p>{% endif %}
+              </div>
+              <div class="nm-price">£{{ p.price }}</div>
+            </div>
+            <div class="mb-2">
+              <span class="nm-badge">{{ p.get_scent_1_display }}</span>
+              <span class="nm-badge">{{ p.get_scent_2_display }}</span>
+              <span class="nm-badge">{{ p.get_scent_3_display }}</span>
+            </div>
+            {% if p.notes %}<p class="text-secondary small mb-0">{{ p.notes }}</p>{% endif %}
+          </div>
+        </div>
       {% endfor %}
     </div>
   {% else %}
-    <div class="nm-card"><p class="text-secondary mb-0">No perfumes yet.</p></div>
+    <div class="nm-card"><p class="text-secondary mb-0">No perfumes yet. Add perfumes in Admin.</p></div>
   {% endif %}
 </div>
 {% endblock %}

@@ -1,137 +1,103 @@
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
+from collections import Counter
 from django.shortcuts import render, redirect
-from django.views.decorators.http import require_POST
 
-from .models import SurveyQuestion, SurveySubmission, UserPreferenceProfile, RecommendationFeedback
-from .services import get_or_create_profile_from_post, create_mood_result, rank_perfumes_for_submission
-
-
-def _preference_choices():
-    return {
-        "gender": UserPreferenceProfile.GENDER_PREFERENCE_CHOICES,
-        "style": UserPreferenceProfile.STYLE_PREFERENCE_CHOICES,
-        "budget": UserPreferenceProfile.BUDGET_CHOICES,
-    }
+from .models import Mood, SurveyQuestion, SurveyOption, SurveySubmission, SurveyAnswer
+from perfumes.models import Perfume
 
 
-def _profile_values(profile):
-    if not profile:
-        return {
-            "favourite_perfume_1": "",
-            "favourite_perfume_2": "",
-            "favourite_perfume_3": "",
-            "preferred_gender": "no_preference",
-            "style_preference": "both",
-            "budget_range": "no_preference",
-        }
-    return {
-        "favourite_perfume_1": profile.favourite_perfume_1,
-        "favourite_perfume_2": profile.favourite_perfume_2,
-        "favourite_perfume_3": profile.favourite_perfume_3,
-        "preferred_gender": profile.preferred_gender,
-        "style_preference": profile.style_preference,
-        "budget_range": profile.budget_range,
-    }
-
-
-@login_required
 def quiz(request):
-    questions = SurveyQuestion.objects.filter(is_active=True).order_by("order")
-    saved_profile = UserPreferenceProfile.objects.filter(user=request.user).first()
-    preference_choices = _preference_choices()
-
-    context = {
-        "questions": questions,
-        "preference_choices": preference_choices,
-        "saved_profile": saved_profile,
-        "profile_values": _profile_values(saved_profile),
-    }
+    questions = SurveyQuestion.objects.all().order_by("order")
 
     if not questions.exists():
-        context["no_questions"] = True
-        return render(request, "survey/quiz.html", context)
+        return render(request, "survey/quiz.html", {"questions": questions, "no_questions": True})
 
     if request.method == "POST":
-        if not (request.POST.get("age_confirmed") == "yes" and request.POST.get("consent_given") == "yes" and request.POST.get("privacy_acknowledged") == "yes"):
-            context.update({
-                "error": "Please confirm age, consent and privacy acknowledgement before continuing.",
-                "form_values": request.POST,
-            })
-            return render(request, "survey/quiz.html", context)
-
-        profile, error = get_or_create_profile_from_post(request.user, request.POST)
-        if error:
-            context.update({"error": error, "form_values": request.POST})
-            return render(request, "survey/quiz.html", context)
-
         submission = SurveySubmission.objects.create(
-            user=request.user,
-            age_confirmed=True,
-            consent_given=True,
-            privacy_acknowledged=True,
-            favourite_perfume_1=profile.favourite_perfume_1,
-            favourite_perfume_2=profile.favourite_perfume_2,
-            favourite_perfume_3=profile.favourite_perfume_3,
-            preferred_gender=profile.preferred_gender,
-            style_preference=profile.style_preference,
-            budget_range=profile.budget_range,
+            user=request.user if request.user.is_authenticated else None
         )
 
-        error = create_mood_result(submission, questions, request.POST, profile)
-        if error:
-            submission.delete()
-            context.update({"error": error, "form_values": request.POST})
-            return render(request, "survey/quiz.html", context)
+        total_energic = 0
+        total_relax = 0
+        tags = []
 
-        if request.POST.get("update_saved_profile") == "yes":
-            messages.success(request, "Your saved perfume profile has been updated.")
+        for q in questions:
+            picked_option_id = request.POST.get(f"q_{q.id}")
+            if not picked_option_id:
+                submission.delete()
+                return render(request, "survey/quiz.html", {
+                    "questions": questions,
+                    "error": "Please answer all questions."
+                })
+
+            opt = SurveyOption.objects.filter(id=picked_option_id, question=q).first()
+            if not opt:
+                submission.delete()
+                return render(request, "survey/quiz.html", {
+                    "questions": questions,
+                    "error": "Invalid selection. Please try again."
+                })
+
+            SurveyAnswer.objects.create(submission=submission, question=q, option=opt)
+            total_energic += opt.energic_points
+            total_relax += opt.relax_points
+
+            if opt.note_tag:
+                tags.append(opt.note_tag.strip().lower())
+
+        mood_name = "Energic" if total_energic >= total_relax else "Relaxation"
+        mood, _ = Mood.objects.get_or_create(name=mood_name)
+        top_tags = [t for t, _count in Counter(tags).most_common(3)]
+
+        submission.total_energic = total_energic
+        submission.total_relax = total_relax
+        submission.result_mood = mood
+        submission.top_note_tags = ",".join(top_tags)
+        submission.save()
+
+        request.session["latest_submission_id"] = submission.id
         return redirect("quiz_result")
 
-    return render(request, "survey/quiz.html", context)
+    return render(request, "survey/quiz.html", {"questions": questions})
 
 
-@login_required
 def result(request):
-    latest = (
-        SurveySubmission.objects
-        .filter(user=request.user)
-        .select_related("result_mood")
-        .order_by("-created_at")
-        .first()
-    )
+    latest = None
+    latest_id = request.session.get("latest_submission_id")
+
+    if latest_id:
+        latest = SurveySubmission.objects.select_related("result_mood").filter(id=latest_id).first()
+
+    if not latest and request.user.is_authenticated:
+        latest = (
+            SurveySubmission.objects
+            .filter(user=request.user)
+            .select_related("result_mood")
+            .order_by("-created_at")
+            .first()
+        )
 
     if not latest:
         return redirect("quiz")
 
-    if request.method == "POST":
-        was_useful = request.POST.get("was_useful") == "yes"
-        try:
-            rating = int(request.POST.get("rating", "5"))
-        except ValueError:
-            rating = 5
-        rating = max(1, min(5, rating))
-        comment = (request.POST.get("comment") or "").strip()
-        RecommendationFeedback.objects.update_or_create(
-            submission=latest,
-            defaults={
-                "user": request.user,
-                "was_useful": was_useful,
-                "rating": rating,
-                "comment": comment,
-            },
-        )
-        messages.success(request, "Thank you. Your feedback has been saved and can support future system improvement.")
-        return redirect("quiz_result")
+    perfumes = Perfume.objects.filter(moods=latest.result_mood).distinct()
+    tags = [t.strip().lower() for t in (latest.top_note_tags or "").split(",") if t.strip()]
 
-    ranked_perfumes, tags = rank_perfumes_for_submission(latest)
-    top_recommendations = ranked_perfumes[:8]
-    existing_feedback = getattr(latest, "feedback", None)
+    ranked_perfumes = []
+    for perfume in perfumes:
+        score = 5
+        notes_text = perfume.searchable_notes
+        matched_tags = []
+        for tag in tags:
+            if tag in notes_text:
+                score += 3
+                matched_tags.append(tag)
+        ranked_perfumes.append({"perfume": perfume, "score": score, "matched_tags": matched_tags})
+
+    ranked_perfumes.sort(key=lambda x: (x["score"], float(x["perfume"].price or 0)), reverse=True)
+    top_recommendations = ranked_perfumes[:6]
 
     return render(request, "survey/result.html", {
         "latest": latest,
         "tags": tags,
-        "favourite_names": latest.favourite_names,
         "top_recommendations": top_recommendations,
-        "existing_feedback": existing_feedback,
     })

@@ -5,11 +5,29 @@
 <div class="container nm-section">
   <div class="d-flex justify-content-between align-items-end gap-3 flex-wrap mb-4">
     <div>
+      <p class="nm-kicker mb-1">Bestseller list</p>
       <h2 class="nm-title mb-2">Perfume Catalog</h2>
-      <p class="text-secondary mb-0">Best-seller perfumes with prices and three scent tags for matching.</p>
+      <p class="text-secondary mb-0">Perfumes from your price list with UK prices and three scent tags for matching.</p>
     </div>
     <a class="btn nm-btn" href="/survey/">Find my match</a>
   </div>
+
+  <form method="get" class="nm-card mb-4">
+    <div class="row g-3 align-items-end">
+      <div class="col-md-5">
+        <label class="form-label" for="q">Search perfume or brand</label>
+        <input class="form-control" id="q" name="q" value="{{ query }}" placeholder="Dior, Chanel, Prada...">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label" for="price">Price range</label>
+        <select class="form-select" id="price" name="price">
+          {% for value, label in price_ranges %}<option value="{{ value }}" {% if value == selected_price %}selected{% endif %}>{{ label }}</option>{% endfor %}
+        </select>
+      </div>
+      <div class="col-md-2"><button class="btn nm-btn w-100" type="submit">Filter</button></div>
+      <div class="col-md-2"><a class="btn nm-btn-outline w-100" href="/perfumes/">Reset</a></div>
+    </div>
+  </form>
 
   {% if perfumes %}
     <div class="row g-3">
@@ -34,7 +52,7 @@
       {% endfor %}
     </div>
   {% else %}
-    <div class="nm-card"><p class="text-secondary mb-0">No perfumes yet. Add perfumes in Admin.</p></div>
+    <div class="nm-card"><p class="text-secondary mb-0">No perfumes found. Run <code>python manage.py seed_survey</code> or add perfumes in Admin.</p></div>
   {% endif %}
 </div>
 {% endblock %}

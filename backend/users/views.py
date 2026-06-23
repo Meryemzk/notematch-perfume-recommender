@@ -1,17 +1,21 @@
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from survey.models import SurveySubmission
+from .forms import NoteMatchSignUpForm
+
 
 def signup(request):
     if request.method == "POST":
-        form = UserCreationForm(request.POST)
+        form = NoteMatchSignUpForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect("login")
+            user = form.save()
+            login(request, user)
+            return redirect("home")
     else:
-        form = UserCreationForm()
+        form = NoteMatchSignUpForm()
     return render(request, "users/signup.html", {"form": form})
+
 
 @login_required
 def profile(request):

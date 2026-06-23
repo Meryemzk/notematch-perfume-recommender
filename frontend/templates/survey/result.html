@@ -3,51 +3,67 @@
 
 {% block content %}
 <div class="container nm-section">
-  <div class="nm-card">
+  <div class="nm-card mb-4">
+    <p class="nm-kicker mb-1">Personalised result</p>
     <h2 class="nm-title mb-2">Your result: {{ latest.result_mood.name }}</h2>
     <p class="text-secondary mb-2">Energic score: <b>{{ latest.total_energic }}</b> | Relaxation score: <b>{{ latest.total_relax }}</b></p>
+    <p class="text-secondary mb-2">Preferred price range: <b>{{ price_range_label }}</b></p>
 
     {% if tags %}
-      <p class="text-secondary mb-3">Your preferred scent tags:
+      <p class="text-secondary mb-2">Your preferred scent tags:
         {% for tag in tags %}<span class="nm-badge">{{ tag }}</span>{% endfor %}
+      </p>
+    {% endif %}
+
+    {% if favourite_perfumes %}
+      <p class="text-secondary mb-3">Your selected favourites:
+        {% for p in favourite_perfumes %}<span class="nm-badge">{{ p.brand }} {{ p.name }}</span>{% endfor %}
       </p>
     {% endif %}
 
     {% if not user.is_authenticated %}
       <div class="alert alert-light border">You are using NoteMatch as a guest. <a href="/users/signup/">Register</a> if you want to save future results.</div>
     {% endif %}
-
-    <hr>
-    <h4 class="mb-3">Top Recommendations for You</h4>
-
-    {% if top_recommendations %}
-      <div class="row g-3">
-        {% for item in top_recommendations %}
-          <div class="col-md-6 col-xl-4">
-            <div class="nm-card h-100 perfume-card">
-              <div class="d-flex justify-content-between gap-3">
-                <div>
-                  <h5 class="mb-1">{{ item.perfume.name }}</h5>
-                  {% if item.perfume.brand %}<p class="text-secondary mb-1">{{ item.perfume.brand }}</p>{% endif %}
-                </div>
-                <div class="nm-price">£{{ item.perfume.price }}</div>
-              </div>
-              <p class="mb-2">
-                <span class="nm-badge">{{ item.perfume.get_scent_1_display }}</span>
-                <span class="nm-badge">{{ item.perfume.get_scent_2_display }}</span>
-                <span class="nm-badge">{{ item.perfume.get_scent_3_display }}</span>
-              </p>
-              <p class="mb-1"><strong>Match score:</strong> {{ item.score }}</p>
-              {% if item.matched_tags %}<p class="mb-0"><strong>Matched:</strong> {% for tag in item.matched_tags %}<span class="nm-badge">{{ tag }}</span>{% endfor %}</p>{% endif %}
-            </div>
-          </div>
-        {% endfor %}
-      </div>
-    {% else %}
-      <p>No recommendations found yet. Add perfumes in Admin and connect them to moods.</p>
-    {% endif %}
-
-    <div class="mt-4"><a class="btn nm-pill" href="/survey/">Take survey again</a></div>
   </div>
+
+  <div class="d-flex justify-content-between align-items-end flex-wrap gap-3 mb-3">
+    <div>
+      <h3 class="nm-title mb-1">Top Recommendations for You</h3>
+      <p class="text-secondary mb-0">Based on your survey answers, favourite perfumes, scent notes and budget.</p>
+    </div>
+    <a class="btn nm-btn-outline" href="/survey/">Take survey again</a>
+  </div>
+
+  {% if top_recommendations %}
+    <div class="row g-3">
+      {% for item in top_recommendations %}
+        <div class="col-md-6 col-xl-4">
+          <div class="nm-card h-100 perfume-card">
+            <div class="d-flex justify-content-between gap-3">
+              <div>
+                <h5 class="mb-1">{{ item.perfume.name }}</h5>
+                {% if item.perfume.brand %}<p class="text-secondary mb-1">{{ item.perfume.brand }}</p>{% endif %}
+              </div>
+              <div class="nm-price">£{{ item.perfume.price }}</div>
+            </div>
+            <p class="mb-2">
+              <span class="nm-badge">{{ item.perfume.get_scent_1_display }}</span>
+              <span class="nm-badge">{{ item.perfume.get_scent_2_display }}</span>
+              <span class="nm-badge">{{ item.perfume.get_scent_3_display }}</span>
+            </p>
+            <p class="mb-1"><strong>Match score:</strong> {{ item.score }}</p>
+            {% if item.matched_tags %}<p class="mb-1"><strong>Matched notes:</strong> {% for tag in item.matched_tags %}<span class="nm-badge">{{ tag }}</span>{% endfor %}</p>{% endif %}
+            {% if item.reasons %}
+              <ul class="small text-secondary mb-0 ps-3">
+                {% for reason in item.reasons %}<li>{{ reason }}</li>{% endfor %}
+              </ul>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="nm-card"><p class="text-secondary mb-0">No recommendations found yet. Add perfumes in Admin or run <code>python manage.py seed_survey</code>.</p></div>
+  {% endif %}
 </div>
 {% endblock %}

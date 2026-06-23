@@ -1,15 +1,40 @@
 from collections import Counter
+from decimal import Decimal
 from django.shortcuts import render, redirect
 
-from .models import Mood, SurveyQuestion, SurveyOption, SurveySubmission, SurveyAnswer
+from .models import Mood, SurveyQuestion, SurveyOption, SurveySubmission, SurveyAnswer, PRICE_RANGE_CHOICES
 from perfumes.models import Perfume
 
 
+def _price_bounds(price_range):
+    return {
+        "under_80": (None, Decimal("80.00")),
+        "80_120": (Decimal("80.00"), Decimal("120.00")),
+        "120_160": (Decimal("120.00"), Decimal("160.00")),
+        "160_plus": (Decimal("160.00"), None),
+    }.get(price_range, (None, None))
+
+
+def _apply_price_filter(queryset, price_range):
+    low, high = _price_bounds(price_range)
+    if low is not None:
+        queryset = queryset.filter(price__gte=low)
+    if high is not None:
+        queryset = queryset.filter(price__lte=high)
+    return queryset
+
+
 def quiz(request):
-    questions = SurveyQuestion.objects.all().order_by("order")
+    questions = SurveyQuestion.objects.prefetch_related("options").all().order_by("order")
+    perfumes = Perfume.objects.all().order_by("brand", "name")
 
     if not questions.exists():
-        return render(request, "survey/quiz.html", {"questions": questions, "no_questions": True})
+        return render(request, "survey/quiz.html", {
+            "questions": questions,
+            "perfumes": perfumes,
+            "price_ranges": PRICE_RANGE_CHOICES,
+            "no_questions": True,
+        })
 
     if request.method == "POST":
         submission = SurveySubmission.objects.create(
@@ -26,6 +51,8 @@ def quiz(request):
                 submission.delete()
                 return render(request, "survey/quiz.html", {
                     "questions": questions,
+                    "perfumes": perfumes,
+                    "price_ranges": PRICE_RANGE_CHOICES,
                     "error": "Please answer all questions."
                 })
 
@@ -34,6 +61,8 @@ def quiz(request):
                 submission.delete()
                 return render(request, "survey/quiz.html", {
                     "questions": questions,
+                    "perfumes": perfumes,
+                    "price_ranges": PRICE_RANGE_CHOICES,
                     "error": "Invalid selection. Please try again."
                 })
 
@@ -48,16 +77,39 @@ def quiz(request):
         mood, _ = Mood.objects.get_or_create(name=mood_name)
         top_tags = [t for t, _count in Counter(tags).most_common(3)]
 
+        favourite_ids = []
+        for field_name in ["favourite_perfume_1", "favourite_perfume_2", "favourite_perfume_3"]:
+            value = request.POST.get(field_name)
+            if value and value not in favourite_ids:
+                favourite_ids.append(value)
+
+        favourites = list(Perfume.objects.filter(id__in=favourite_ids))
+        price_range = request.POST.get("price_range") or "any"
+        valid_ranges = {value for value, _label in PRICE_RANGE_CHOICES}
+        if price_range not in valid_ranges:
+            price_range = "any"
+
         submission.total_energic = total_energic
         submission.total_relax = total_relax
         submission.result_mood = mood
         submission.top_note_tags = ",".join(top_tags)
+        submission.price_range = price_range
+        if len(favourites) > 0:
+            submission.favourite_perfume_1 = favourites[0]
+        if len(favourites) > 1:
+            submission.favourite_perfume_2 = favourites[1]
+        if len(favourites) > 2:
+            submission.favourite_perfume_3 = favourites[2]
         submission.save()
 
         request.session["latest_submission_id"] = submission.id
         return redirect("quiz_result")
 
-    return render(request, "survey/quiz.html", {"questions": questions})
+    return render(request, "survey/quiz.html", {
+        "questions": questions,
+        "perfumes": perfumes,
+        "price_ranges": PRICE_RANGE_CHOICES,
+    })
 
 
 def result(request):
@@ -65,13 +117,18 @@ def result(request):
     latest_id = request.session.get("latest_submission_id")
 
     if latest_id:
-        latest = SurveySubmission.objects.select_related("result_mood").filter(id=latest_id).first()
+        latest = (
+            SurveySubmission.objects
+            .select_related("result_mood", "favourite_perfume_1", "favourite_perfume_2", "favourite_perfume_3")
+            .filter(id=latest_id)
+            .first()
+        )
 
     if not latest and request.user.is_authenticated:
         latest = (
             SurveySubmission.objects
             .filter(user=request.user)
-            .select_related("result_mood")
+            .select_related("result_mood", "favourite_perfume_1", "favourite_perfume_2", "favourite_perfume_3")
             .order_by("-created_at")
             .first()
         )
@@ -80,24 +137,57 @@ def result(request):
         return redirect("quiz")
 
     perfumes = Perfume.objects.filter(moods=latest.result_mood).distinct()
+    price_filtered_perfumes = _apply_price_filter(perfumes, latest.price_range)
+    if price_filtered_perfumes.exists():
+        perfumes = price_filtered_perfumes
+
     tags = [t.strip().lower() for t in (latest.top_note_tags or "").split(",") if t.strip()]
+    favourite_perfumes = latest.favourite_perfumes
+    favourite_scents = []
+    favourite_brands = []
+    for favourite in favourite_perfumes:
+        favourite_brands.append((favourite.brand or "").lower())
+        favourite_scents.extend([favourite.scent_1, favourite.scent_2, favourite.scent_3])
 
     ranked_perfumes = []
     for perfume in perfumes:
         score = 5
         notes_text = perfume.searchable_notes
         matched_tags = []
+        reasons = []
+
         for tag in tags:
             if tag in notes_text:
                 score += 3
                 matched_tags.append(tag)
-        ranked_perfumes.append({"perfume": perfume, "score": score, "matched_tags": matched_tags})
+                reasons.append(f"matches your {tag} preference")
 
-    ranked_perfumes.sort(key=lambda x: (x["score"], float(x["perfume"].price or 0)), reverse=True)
+        for fav_scent in favourite_scents:
+            if fav_scent and fav_scent in notes_text:
+                score += 2
+
+        if perfume.brand and perfume.brand.lower() in favourite_brands:
+            score += 2
+            reasons.append(f"similar brand style to your favourites")
+
+        if latest.price_range != "any":
+            score += 1
+            reasons.append("fits your selected price range")
+
+        ranked_perfumes.append({
+            "perfume": perfume,
+            "score": score,
+            "matched_tags": sorted(set(matched_tags)),
+            "reasons": list(dict.fromkeys(reasons))[:3],
+        })
+
+    ranked_perfumes.sort(key=lambda x: (x["score"], -float(x["perfume"].price or 0)), reverse=True)
     top_recommendations = ranked_perfumes[:6]
 
     return render(request, "survey/result.html", {
         "latest": latest,
         "tags": tags,
         "top_recommendations": top_recommendations,
+        "favourite_perfumes": favourite_perfumes,
+        "price_range_label": dict(PRICE_RANGE_CHOICES).get(latest.price_range, "Any price"),
     })

@@ -2,13 +2,13 @@
 {% block title %}Survey{% endblock %}
 
 {% block content %}
-<div class="container nm-section" style="max-width:860px;">
-  <div class="nm-card">
+<div class="container nm-section" style="max-width:980px;">
+  <div class="nm-card nm-form-card">
     <p class="nm-kicker mb-1">Optional registration</p>
-    <h2 class="nm-title mb-2">Mood & Scent Survey</h2>
-    <p class="text-secondary mb-3">
-      Answer these related questions to match your mood, occasion, strength and scent preference.
-      You can use this survey as a guest; create an account only if you want to save results.
+    <h2 class="nm-title mb-2">Mood, Scent & Preference Survey</h2>
+    <p class="text-secondary mb-4">
+      Answer the mood questions, choose your price range and select up to three favourite perfumes.
+      NoteMatch will combine your answers with your preferences to suggest better matches.
     </p>
 
     {% if no_questions %}
@@ -21,14 +21,51 @@
           <div class="mb-4 nm-question">
             <h6 class="mb-2">{{ q.order }}. {{ q.text }}</h6>
             {% for opt in q.options.all %}
-              <div class="form-check">
+              <div class="form-check nm-option">
                 <input class="form-check-input" type="radio" name="q_{{ q.id }}" id="opt_{{ opt.id }}" value="{{ opt.id }}">
                 <label class="form-check-label" for="opt_{{ opt.id }}">{{ opt.text }}</label>
               </div>
             {% endfor %}
           </div>
         {% endfor %}
-        <button class="btn nm-btn" type="submit">Get my recommendations</button>
+
+        <div class="nm-preference-panel mt-4">
+          <p class="nm-kicker mb-1">Your preferences</p>
+          <h4 class="mb-3">Choose your budget and favourites</h4>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label" for="price_range">Preferred price range</label>
+              <select class="form-select" name="price_range" id="price_range">
+                {% for value, label in price_ranges %}
+                  <option value="{{ value }}">{{ label }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="favourite_perfume_1">Favourite perfume 1</label>
+              <select class="form-select" name="favourite_perfume_1" id="favourite_perfume_1">
+                <option value="">No preference</option>
+                {% for p in perfumes %}<option value="{{ p.id }}">{{ p.brand }} {{ p.name }} - £{{ p.price }}</option>{% endfor %}
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="favourite_perfume_2">Favourite perfume 2</label>
+              <select class="form-select" name="favourite_perfume_2" id="favourite_perfume_2">
+                <option value="">No preference</option>
+                {% for p in perfumes %}<option value="{{ p.id }}">{{ p.brand }} {{ p.name }} - £{{ p.price }}</option>{% endfor %}
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="favourite_perfume_3">Favourite perfume 3</label>
+              <select class="form-select" name="favourite_perfume_3" id="favourite_perfume_3">
+                <option value="">No preference</option>
+                {% for p in perfumes %}<option value="{{ p.id }}">{{ p.brand }} {{ p.name }} - £{{ p.price }}</option>{% endfor %}
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn nm-btn btn-lg mt-4" type="submit">Get my recommendations</button>
       </form>
     {% endif %}
   </div>

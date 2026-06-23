@@ -1,54 +1,47 @@
-# Just NoteMatch
+# NoteMatch
 
-NoteMatch is a Django mood-based perfume recommendation system. This version includes the requested design, survey, perfume catalog and admin improvements.
+NoteMatch is a Django-based mood perfume recommendation web application. Users can complete a survey without registering, browse perfumes with prices and scent notes, and receive personalised perfume suggestions based on mood, occasion, season, and scent preferences.
 
-## What is included
+## Folder structure
 
-- Public home page: visitors can use the survey without registration.
-- Optional registration: users only need an account if they want to keep using profile features.
-- NoteMatch logo and main-page image added from the provided NM pictures.
-- Survey questions rewritten so mood, occasion, scent, strength and personality relate to each other.
-- Best-seller perfume catalog seeded from the provided perfume report photos, including UK prices with £ display and 3 scent tags per perfume.
-- Admin page improved so perfumes can be added, edited and deleted, with dropdown choices for scent 1, scent 2, scent 3, and mood selection.
-- Project kept in clear folders: `backend/`, `frontend/`, `frontend/static/`, `frontend/templates/`, and `docs/`.
+```text
+NoteMatch/
+├── backend/        # Django project, apps, settings, deployment files
+├── frontend/       # Templates, CSS, images
+├── docs/           # Deployment notes
+├── render.yaml     # Render Blueprint configuration
+└── README.md
+```
 
 ## Local run
 
+From the project root:
+
 ```bash
 cd backend
-python3 -m venv .venv
-source .venv/bin/activate
 pip install -r requirements.txt
 python manage.py migrate
-python manage.py seed_survey
-python manage.py createsuperuser
+python manage.py collectstatic --noinput
 python manage.py runserver
 ```
 
-Open the website:
+## Render settings
+
+If you deploy manually on Render, use these settings:
 
 ```text
-http://127.0.0.1:8000/
+Root Directory: backend
+Build Command: pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate
+Start Command: gunicorn config.wsgi:application
 ```
 
-Open admin:
+Add these environment variables in Render:
 
 ```text
-http://127.0.0.1:8000/admin/
+DEBUG=False
+SECRET_KEY=your-long-secret-key
+ALLOWED_HOSTS=your-service-name.onrender.com,.onrender.com
+CSRF_TRUSTED_ORIGINS=https://your-service-name.onrender.com
 ```
 
-## Important command
-
-Run this after migrations to add the survey questions and perfume list:
-
-```bash
-python manage.py seed_survey
-```
-
-## Deployment
-
-For Render and Supabase deployment, read:
-
-```text
-docs/DEPLOY_RENDER_SUPABASE.md
-```
+The important point is that Render must start inside `backend`, because `manage.py` and `config/` are both inside that folder.

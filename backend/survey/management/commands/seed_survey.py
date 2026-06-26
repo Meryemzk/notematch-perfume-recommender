@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from django.db import transaction, connection
+from django.db import connection
 
 from survey.models import Mood, SurveyQuestion, SurveyOption
 
@@ -22,26 +22,38 @@ def drop_legacy_target_mood_column():
 
 
 def make_legacy_perfume_columns_nullable():
-    """Make old Render perfume columns safe before seed inserts.
+    """Repair old live database columns before seed inserts.
 
-    Your Render database has been built from several older NoteMatch versions.
-    That left extra NOT NULL columns such as description, best_for and
-    boosts_mood. The current Perfume model does not write those old columns,
-    so PostgreSQL blocks new perfume rows unless those columns allow NULL.
-
-    To avoid a new deploy failing every time another old column appears, this
-    drops NOT NULL from every non-primary-key column that exists on the live
-    perfumes_perfume table. It is safe for this project because the Django
-    model and forms still control the values used by the website.
+    Older Render databases can still contain old NOT NULL columns such as
+    description, best_for and boosts_mood. The current Django model no longer
+    writes those columns, so this function makes all existing non-ID perfume
+    columns nullable before the seed inserts run. It is safe to run repeatedly.
     """
     table_name = "perfumes_perfume"
     try:
         with connection.cursor() as cursor:
-            columns = [col.name for col in connection.introspection.get_table_description(cursor, table_name)]
+            tables = connection.introspection.table_names(cursor)
+            if table_name not in tables:
+                return
+
             if connection.vendor == "postgresql":
+                cursor.execute(
+                    """
+                    SELECT column_name
+                    FROM information_schema.columns
+                    WHERE table_schema = current_schema()
+                      AND table_name = %s
+                      AND column_name <> 'id'
+                    ORDER BY ordinal_position
+                    """,
+                    [table_name],
+                )
+                columns = [row[0] for row in cursor.fetchall()]
                 for column_name in columns:
-                    if column_name != "id":
+                    try:
                         cursor.execute(f'ALTER TABLE "{table_name}" ALTER COLUMN "{column_name}" DROP NOT NULL')
+                    except Exception:
+                        pass
     except Exception:
         pass
 
@@ -240,8 +252,8 @@ SCENT_NORMALISE = {
 class Command(BaseCommand):
     help = "Seed NoteMatch survey questions, moods and best-seller perfume catalog. Safe to run multiple times."
 
-    @transaction.atomic
     def handle(self, *args, **options):
+        # Repair old Render/Supabase columns before inserting seed data.
         drop_legacy_target_mood_column()
         make_legacy_perfume_columns_nullable()
 

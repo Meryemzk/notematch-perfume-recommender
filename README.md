@@ -1,6 +1,22 @@
 # NoteMatch
 
-NoteMatch is a Django-based mood perfume recommendation web application. Users can complete a survey without registering, browse perfumes with prices and scent notes, and receive personalised perfume suggestions based on mood, occasion, season, and scent preferences.
+NoteMatch is a Django-based mood and scent perfume recommendation web app. It uses survey answers, favourite perfumes, scent notes and price ranges to recommend matching fragrances with visible UK prices.
+
+## Live deployment command
+
+Root Directory: `backend`
+
+Build Command:
+
+```bash
+pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py repair_live_db && python manage.py migrate && python manage.py repair_live_db && python manage.py seed_survey
+```
+
+Start Command:
+
+```bash
+gunicorn config.wsgi:application
+```
 
 ## Folder structure
 

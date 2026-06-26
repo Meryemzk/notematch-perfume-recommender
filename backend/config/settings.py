@@ -15,7 +15,7 @@ DEBUG = os.getenv("DEBUG", "True").lower() in ("true", "1", "yes")
 
 allowed_hosts_raw = os.getenv(
     "ALLOWED_HOSTS",
-    "localhost,127.0.0.1,.onrender.com,notematch.onrender.com,notematch-perfume-recommender.onrender.com",
+    "localhost,127.0.0.1,testserver,.onrender.com,notematch.onrender.com,notematch-perfume-recommender.onrender.com",
 )
 ALLOWED_HOSTS = [host.strip() for host in allowed_hosts_raw.split(",") if host.strip()]
 

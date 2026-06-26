@@ -22,23 +22,25 @@ def drop_legacy_target_mood_column():
 
 
 def make_legacy_perfume_columns_nullable():
-    """Fix older Render DB columns that are not in the current Perfume model.
+    """Make old Render perfume columns safe before seed inserts.
 
-    Previous versions of the project created NOT NULL columns such as
-    description and best_for. The current model does not write those fields,
-    so seeding can fail unless those legacy columns are nullable.
+    Your Render database has been built from several older NoteMatch versions.
+    That left extra NOT NULL columns such as description, best_for and
+    boosts_mood. The current Perfume model does not write those old columns,
+    so PostgreSQL blocks new perfume rows unless those columns allow NULL.
+
+    To avoid a new deploy failing every time another old column appears, this
+    drops NOT NULL from every non-primary-key column that exists on the live
+    perfumes_perfume table. It is safe for this project because the Django
+    model and forms still control the values used by the website.
     """
     table_name = "perfumes_perfume"
-    legacy_columns = [
-        "description", "best_for", "gender", "image", "mood",
-        "occasion", "intensity", "category", "short_description",
-    ]
     try:
         with connection.cursor() as cursor:
             columns = [col.name for col in connection.introspection.get_table_description(cursor, table_name)]
             if connection.vendor == "postgresql":
-                for column_name in legacy_columns:
-                    if column_name in columns:
+                for column_name in columns:
+                    if column_name != "id":
                         cursor.execute(f'ALTER TABLE "{table_name}" ALTER COLUMN "{column_name}" DROP NOT NULL')
     except Exception:
         pass

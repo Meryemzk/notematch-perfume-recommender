@@ -21,6 +21,29 @@ def drop_legacy_target_mood_column():
         pass
 
 
+def make_legacy_perfume_columns_nullable():
+    """Fix older Render DB columns that are not in the current Perfume model.
+
+    Previous versions of the project created NOT NULL columns such as
+    description and best_for. The current model does not write those fields,
+    so seeding can fail unless those legacy columns are nullable.
+    """
+    table_name = "perfumes_perfume"
+    legacy_columns = [
+        "description", "best_for", "gender", "image", "mood",
+        "occasion", "intensity", "category", "short_description",
+    ]
+    try:
+        with connection.cursor() as cursor:
+            columns = [col.name for col in connection.introspection.get_table_description(cursor, table_name)]
+            if connection.vendor == "postgresql":
+                for column_name in legacy_columns:
+                    if column_name in columns:
+                        cursor.execute(f'ALTER TABLE "{table_name}" ALTER COLUMN "{column_name}" DROP NOT NULL')
+    except Exception:
+        pass
+
+
 SEED_DATA = [
     {
         "order": 1,
@@ -218,6 +241,7 @@ class Command(BaseCommand):
     @transaction.atomic
     def handle(self, *args, **options):
         drop_legacy_target_mood_column()
+        make_legacy_perfume_columns_nullable()
 
         for mood_name in ["Energic", "Relaxation"]:
             Mood.objects.get_or_create(name=mood_name)
@@ -247,14 +271,17 @@ class Command(BaseCommand):
         created_perfumes = updated_perfumes = 0
         for name, brand, price, s1, s2, s3, moods in PERFUME_DATA:
             s1, s2, s3 = [SCENT_NORMALISE.get(s, s) for s in (s1, s2, s3)]
-            perfume, created = Perfume.objects.get_or_create(name=name, defaults={"brand": brand})
-            perfume.brand = brand
-            perfume.price = price
-            perfume.scent_1 = s1
-            perfume.scent_2 = s2
-            perfume.scent_3 = s3
-            perfume.notes = f"Best-seller catalog item. Scent profile: {s1}, {s2}, {s3}."
-            perfume.save()
+            perfume, created = Perfume.objects.update_or_create(
+                name=name,
+                defaults={
+                    "brand": brand,
+                    "price": price,
+                    "scent_1": s1,
+                    "scent_2": s2,
+                    "scent_3": s3,
+                    "notes": f"Best-seller catalog item. Price £{price}. Scent profile: {s1}, {s2}, {s3}.",
+                },
+            )
             perfume.moods.clear()
             for mood_name in moods:
                 mood, _ = Mood.objects.get_or_create(name=mood_name)

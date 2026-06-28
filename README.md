@@ -1,63 +1,105 @@
-# NoteMatch
+# NoteMatch London — Luxury Perfume Recommendation Platform
 
-NoteMatch is a Django-based mood and scent perfume recommendation web app. It uses survey answers, favourite perfumes, scent notes and price ranges to recommend matching fragrances with visible UK prices.
+A polished Django perfume recommendation platform for London, built from the original NoteMatch survey project and designed for undergraduate deployment on GitHub + Render without changing the server stack.
 
-## Live deployment command
+## What is included
 
-Root Directory: `backend`
+- Luxury responsive UI with black, gold, cream, charcoal and soft beige styling
+- Home page with premium hero, London use cases, trending perfumes, brand cloud, testimonials and newsletter UI
+- Professional perfume search with autocomplete, brand, GBP price, note, season, London occasion, intensity, sorting, pagination, grid/list modes, empty states and mobile filter drawer
+- Smart multi-step recommendation quiz for fragrance style, age range, season, London weather, occasion, budget, intensity, longevity, notes liked/disliked, favourite brands, perfumes already liked, personality and London lifestyle
+- Results page with 5–10 recommendations, match percentage, reasons, strengths, weaknesses, season, occasion, longevity, projection, GBP price and London stockist guidance
+- Perfume detail pages with product-style visuals, notes, longevity, projection, sillage, scent ratings, London suitability, similar perfumes and retailer links
+- Comparison page for 2–4 perfumes
+- Brands page, fragrance notes page, favourites page, login, registration and user dashboard
+- Staff-only custom admin panel plus Django admin for user, perfume, quiz and catalogue management
+- About, Contact, FAQ, Terms and Privacy pages
+- Session favourites, protected admin routes, Django password hashing, CSRF protection and standard Django validation
+- Seed command with sample perfumes, survey questions, moods and notes
 
-Build Command:
-
-```bash
-pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py repair_live_db && python manage.py migrate && python manage.py repair_live_db && python manage.py seed_survey
-```
-
-Start Command:
-
-```bash
-gunicorn config.wsgi:application
-```
-
-## Folder structure
+## Project architecture
 
 ```text
-NoteMatch/
-├── backend/        # Django project, apps, settings, deployment files
-├── frontend/       # Templates, CSS, images
-├── docs/           # Deployment notes
-├── render.yaml     # Render Blueprint configuration
+NoteMatch-4-4/
+├── backend/
+│   ├── config/          # Django settings and project URLs
+│   ├── core/            # Home and static pages
+│   ├── perfumes/        # Catalogue, details, compare, brands, notes, favourites, admin panel
+│   ├── survey/          # Quiz, scoring and seed data
+│   ├── users/           # Registration and dashboard
+│   └── manage.py
+├── frontend/
+│   ├── static/css/style.css
+│   ├── static/js/luxury.js
+│   ├── static/images/
+│   └── templates/
+├── render.yaml
 └── README.md
 ```
 
-## Local run
-
-From the project root:
+## Local setup
 
 ```bash
 cd backend
+python -m venv .venv
+source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 python manage.py migrate
-python manage.py collectstatic --noinput
+python manage.py seed_survey
+python manage.py createsuperuser
 python manage.py runserver
 ```
 
-## Render settings
+Open `http://127.0.0.1:8000/`.
 
-If you deploy manually on Render, use these settings:
+## Render deployment
 
-```text
-Root Directory: backend
-Build Command: pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate
-Start Command: gunicorn config.wsgi:application
+This version keeps the existing Django + Render architecture. Do not switch to Next.js or Prisma for this project unless your supervisor asks for a full rebuild.
+
+Recommended Render build command:
+
+```bash
+cd backend && pip install -r requirements.txt && python manage.py migrate --noinput && python manage.py seed_survey && python manage.py collectstatic --noinput
 ```
 
-Add these environment variables in Render:
+Recommended start command:
+
+```bash
+cd backend && gunicorn config.wsgi:application
+```
+
+Set these environment variables in Render:
 
 ```text
+SECRET_KEY=your-secure-secret
 DEBUG=False
-SECRET_KEY=your-long-secret-key
-ALLOWED_HOSTS=your-service-name.onrender.com,.onrender.com
-CSRF_TRUSTED_ORIGINS=https://your-service-name.onrender.com
+ALLOWED_HOSTS=your-service.onrender.com,.onrender.com
+CSRF_TRUSTED_ORIGINS=https://your-service.onrender.com
+DATABASE_URL=your-postgres-url-if-used
 ```
 
-The important point is that Render must start inside `backend`, because `manage.py` and `config/` are both inside that folder.
+## Admin access
+
+1. Create a superuser locally or on Render:
+
+```bash
+python manage.py createsuperuser
+```
+
+2. Use `/admin/` for Django admin CRUD.
+3. Use `/perfumes/admin-panel/` for the custom luxury analytics dashboard.
+
+## Test commands
+
+```bash
+python manage.py check
+python manage.py smoke_test
+```
+
+The smoke test checks the home page, perfume catalogue, quiz, recommendation result flow and admin login page.
+
+## Notes for your undergraduate report
+
+The platform uses Django templates, Bootstrap, custom CSS, Django sessions, Django authentication, ORM queries and a weighted recommendation algorithm. The recommendation score rewards matching preferred notes, season, London weather, budget, gender/fragrance style, occasion, intensity, longevity, lifestyle, personality and favourite brands. It penalises disliked notes and sorts the result by the highest match.
+
+Perfume prices are prototype estimates in GBP and should not be presented as live retail prices.

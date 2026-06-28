@@ -1,62 +1,24 @@
 {% extends "base.html" %}
-{% block title %}Perfumes{% endblock %}
-
+{% block title %}Luxury perfume search in London | NoteMatch{% endblock %}
 {% block content %}
+<header class="nm-page-heading"><div class="container"><nav class="nm-breadcrumb">Home / Perfumes / Search</nav><p class="nm-kicker">Professional search</p><h1 class="nm-title">Perfume search & filters</h1><p class="text-secondary mb-0">Search by brand, notes, price in GBP, season, London occasion, longevity style and availability.</p></div></header>
 <div class="container nm-section">
-  <div class="d-flex justify-content-between align-items-end gap-3 flex-wrap mb-4">
-    <div>
-      <p class="nm-kicker mb-1">Bestseller price list</p>
-      <h2 class="nm-title mb-2">Perfume Catalog</h2>
-      <p class="text-secondary mb-0">Browse the perfumes from your report, compare UK prices and use scent tags to choose favourites for your survey.</p>
-    </div>
-    <a class="btn nm-btn-rose" href="/survey/">Find my match</a>
-  </div>
-
-  <form method="get" class="nm-card mb-4">
+  <button class="btn nm-btn-outline nm-filter-toggle d-lg-none mb-3">Open filters</button>
+  <form method="get" class="nm-card nm-filter-panel mb-4">
     <div class="row g-3 align-items-end">
-      <div class="col-md-5">
-        <label class="form-label fw-bold" for="q">Search perfume or brand</label>
-        <input class="form-control" id="q" name="q" value="{{ query }}" placeholder="Dior, Chanel, Prada, YSL...">
-      </div>
-      <div class="col-md-3">
-        <label class="form-label fw-bold" for="price">Price range</label>
-        <select class="form-select" id="price" name="price">
-          {% for value, label in price_ranges %}<option value="{{ value }}" {% if value == selected_price %}selected{% endif %}>{{ label }}</option>{% endfor %}
-        </select>
-      </div>
-      <div class="col-md-2"><button class="btn nm-btn-green w-100" type="submit">Filter</button></div>
-      <div class="col-md-2"><a class="btn nm-btn-outline w-100" href="/perfumes/">Reset</a></div>
+      <div class="col-lg-3"><label class="form-label fw-bold">Search</label><input class="form-control" name="q" list="perfumeSuggestions" value="{{ query }}" placeholder="Dior, oud, vanilla..."><datalist id="perfumeSuggestions">{% for s in suggestions %}<option value="{{ s }}">{% endfor %}</datalist></div>
+      <div class="col-lg-2"><label class="form-label fw-bold">Brand</label><select class="form-select" name="brand"><option value="">All brands</option>{% for b in brands %}<option {% if b == selected_brand %}selected{% endif %}>{{ b }}</option>{% endfor %}</select></div>
+      <div class="col-lg-2"><label class="form-label fw-bold">Price</label><select class="form-select" name="price">{% for value,label in price_ranges %}<option value="{{ value }}" {% if value == selected_price %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></div>
+      <div class="col-lg-2"><label class="form-label fw-bold">Note</label><select class="form-select" name="note"><option value="">Any note</option>{% for value,label in scent_choices %}<option value="{{ value }}" {% if value == selected_note %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></div>
+      <div class="col-lg-3"><label class="form-label fw-bold">London occasion</label><select class="form-select" name="occasion"><option value="">Any occasion</option>{% for value,label in occasions %}<option value="{{ value }}" {% if value == selected_occasion %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></div>
+      <div class="col-md-3"><label class="form-label fw-bold">Season</label><select class="form-select" name="season"><option value="">Any season</option>{% for value,label in seasons %}<option value="{{ value }}" {% if value == selected_season %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></div>
+      <div class="col-md-3"><label class="form-label fw-bold">Intensity</label><select class="form-select" name="intensity"><option value="">Any intensity</option>{% for value,label in intensities %}<option value="{{ value }}" {% if value == selected_intensity %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></div>
+      <div class="col-md-3"><label class="form-label fw-bold">Sort</label><select class="form-select" name="sort"><option value="brand" {% if sort == 'brand' %}selected{% endif %}>Brand</option><option value="price" {% if sort == 'price' %}selected{% endif %}>Price low to high</option><option value="price_desc" {% if sort == 'price_desc' %}selected{% endif %}>Price high to low</option><option value="newest" {% if sort == 'newest' %}selected{% endif %}>Newest</option><option value="best" {% if sort == 'best' %}selected{% endif %}>Best match</option></select></div>
+      <div class="col-md-3 d-flex gap-2"><button class="btn nm-btn w-100" type="submit">Apply</button><a class="btn nm-btn-outline" href="/perfumes/">Clear</a></div>
     </div>
   </form>
-
-  {% if perfumes %}
-    <div class="row g-3">
-      {% for p in perfumes %}
-        <div class="col-md-6 col-xl-4">
-          <div class="nm-card h-100 perfume-card">
-            <div class="d-flex justify-content-between gap-3">
-              <div>
-                <h5 class="mb-1">{{ p.name }}</h5>
-                {% if p.brand %}<p class="text-secondary mb-2">{{ p.brand }}</p>{% endif %}
-              </div>
-              <div class="nm-price">£{{ p.price }}</div>
-            </div>
-            <div class="mb-2">
-              <span class="nm-badge">{{ p.get_scent_1_display }}</span>
-              <span class="nm-badge">{{ p.get_scent_2_display }}</span>
-              <span class="nm-badge">{{ p.get_scent_3_display }}</span>
-            </div>
-            {% if p.notes %}<p class="text-secondary small mb-0">{{ p.notes }}</p>{% endif %}
-          </div>
-        </div>
-      {% endfor %}
-    </div>
-  {% else %}
-    <div class="nm-card">
-      <h5 class="mb-2">No perfumes found for this filter.</h5>
-      <p class="text-secondary mb-3">Try another brand or price range. If the catalog is empty after deployment, run the seed command in the Render build command.</p>
-      <a class="btn nm-btn" href="/perfumes/">Show all perfumes</a>
-    </div>
-  {% endif %}
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3"><p class="text-secondary mb-0">{{ page_obj.paginator.count }} perfume results · London / UK availability focused</p><div class="btn-group"><a class="btn nm-mini {% if view_mode != 'list' %}active{% endif %}" href="?view=grid">Grid</a><a class="btn nm-mini {% if view_mode == 'list' %}active{% endif %}" href="?view=list">List</a></div></div>
+  {% if perfumes %}<div class="row g-3 {% if view_mode == 'list' %}nm-list-mode{% endif %}">{% for p in perfumes %}<div class="col-md-6 col-xl-4"><div class="nm-card h-100 perfume-card"><div class="d-flex justify-content-between gap-3"><div><a class="stretched-link" href="/perfumes/{{ p.id }}/"><h5>{{ p.name }}</h5></a><p class="text-secondary mb-2">{{ p.brand }}</p></div><span class="nm-price">£{{ p.price }}</span></div><p><span class="nm-badge">{{ p.get_scent_1_display }}</span><span class="nm-badge">{{ p.get_scent_2_display }}</span><span class="nm-badge">{{ p.get_scent_3_display }}</span></p><p class="text-secondary small">{{ p.notes|truncatechars:120 }}</p><div class="nm-card-actions"><form method="post" action="/perfumes/{{ p.id }}/favourite/">{% csrf_token %}<button class="btn nm-btn-outline btn-sm" type="submit">Add to Favourites</button></form><a class="btn nm-btn-light btn-sm" href="/perfumes/compare/?ids={{ p.id }}">Compare</a></div></div></div>{% endfor %}</div>{% else %}<div class="nm-empty"><h4>No perfumes found</h4><p>Try clearing filters, changing your price range, or searching broader notes such as amber, floral, woody or fresh.</p><a class="btn nm-btn" href="/perfumes/">Show all perfumes</a></div>{% endif %}
+  {% if page_obj.paginator.num_pages > 1 %}<nav class="mt-4"><ul class="pagination nm-pagination">{% if page_obj.has_previous %}<li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>{% endif %}<li class="page-item active"><span class="page-link">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span></li>{% if page_obj.has_next %}<li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>{% endif %}</ul></nav>{% endif %}
 </div>
 {% endblock %}

@@ -103,6 +103,21 @@ def quiz(request):
         submission.save()
 
         request.session["latest_submission_id"] = submission.id
+        request.session["quiz_profile"] = {
+            "gender_style": request.POST.get("gender_style", "unisex"),
+            "age_range": request.POST.get("age_range", ""),
+            "season": request.POST.get("season", ""),
+            "weather": request.POST.get("weather", ""),
+            "occasion": request.POST.get("occasion", ""),
+            "intensity": request.POST.get("intensity", "moderate"),
+            "longevity": request.POST.get("longevity", "medium"),
+            "preferred_notes": request.POST.getlist("preferred_notes"),
+            "disliked_notes": request.POST.getlist("disliked_notes"),
+            "favourite_brands": request.POST.get("favourite_brands", ""),
+            "already_like": request.POST.get("already_like", ""),
+            "personality": request.POST.get("personality", "elegant"),
+            "lifestyle": request.POST.get("lifestyle", ""),
+        }
         return redirect("quiz_result")
 
     return render(request, "survey/quiz.html", {
@@ -174,11 +189,56 @@ def result(request):
             score += 1
             reasons.append("fits your selected price range")
 
+        profile = request.session.get("quiz_profile", {})
+        profile_notes = profile.get("preferred_notes", []) or []
+        disliked_notes = profile.get("disliked_notes", []) or []
+        perfume_notes = {perfume.scent_1, perfume.scent_2, perfume.scent_3}
+        for note in profile_notes:
+            if note in perfume_notes or note in notes_text:
+                score += 4
+                matched_tags.append(note)
+                reasons.append(f"reflects your love of {note} notes")
+        for note in disliked_notes:
+            if note in perfume_notes or note in notes_text:
+                score -= 5
+                reasons.append(f"contains a note you may dislike: {note}")
+        if profile.get("season") in ["winter", "autumn"] and perfume_notes & {"amber", "vanilla", "woody", "oud", "leather", "spicy"}:
+            score += 4
+            reasons.append("suits colder London weather")
+        if profile.get("season") in ["summer", "spring"] and perfume_notes & {"fresh", "citrus", "aquatic", "green", "floral"}:
+            score += 4
+            reasons.append("suits lighter London seasons")
+        if profile.get("weather") == "rainy" and perfume_notes & {"musk", "woody", "amber", "green"}:
+            score += 3
+            reasons.append("works well on rainy London days")
+        if profile.get("occasion") in ["luxury", "date", "formal", "wedding"] and (perfume.price >= 75 or perfume_notes & {"amber", "oud", "leather", "jasmine"}):
+            score += 3
+            reasons.append("feels polished for your London occasion")
+        if profile.get("intensity") == "strong" and perfume_notes & {"amber", "oud", "leather", "spicy", "oriental"}:
+            score += 3
+            reasons.append("has the stronger presence you requested")
+        if profile.get("intensity") == "subtle" and perfume_notes & {"fresh", "musk", "citrus", "aquatic"}:
+            score += 3
+            reasons.append("keeps the profile subtle and refined")
+        favourite_brand_text = (profile.get("favourite_brands") or "").lower()
+        if perfume.brand and perfume.brand.lower() in favourite_brand_text:
+            score += 4
+            reasons.append("matches a brand you mentioned")
+        match_percent = max(55, min(99, int(score * 6)))
+        london_price = f"£{perfume.price}"
         ranked_perfumes.append({
             "perfume": perfume,
             "score": score,
+            "match_percent": match_percent,
             "matched_tags": sorted(set(matched_tags)),
-            "reasons": list(dict.fromkeys(reasons))[:3],
+            "reasons": list(dict.fromkeys(reasons))[:4] or ["balanced match for your stated scent profile"],
+            "strengths": ["Elegant scent profile", "Good London availability", "Versatile day-to-evening use"][:2],
+            "weaknesses": ["May project strongly in small offices"] if profile.get("intensity") == "subtle" else ["Premium price point" if perfume.price >= 140 else "May need reapplying after commuting"],
+            "season": profile.get("season", "all-year") or "all-year",
+            "occasion": profile.get("occasion", "daily wear") or "daily wear",
+            "longevity": "Strong" if perfume_notes & {"amber", "oud", "leather", "spicy"} else "Moderate",
+            "projection": "Noticeable" if perfume_notes & {"amber", "oud", "leather", "spicy"} else "Close-to-skin",
+            "london_price": london_price,
         })
 
     ranked_perfumes.sort(key=lambda x: (x["score"], -float(x["perfume"].price or 0)), reverse=True)
@@ -190,4 +250,5 @@ def result(request):
         "top_recommendations": top_recommendations,
         "favourite_perfumes": favourite_perfumes,
         "price_range_label": dict(PRICE_RANGE_CHOICES).get(latest.price_range, "Any price"),
+        "quiz_profile": request.session.get("quiz_profile", {}),
     })

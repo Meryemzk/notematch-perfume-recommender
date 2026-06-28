@@ -1,36 +1,29 @@
-{% extends "base.html" %}
-{% load static %}
-{% block title %}NoteMatch - Mood Perfume Finder{% endblock %}
-
+{% extends "base.html" %}{% load static %}
+{% block title %}Find your signature scent in London | NoteMatch{% endblock %}
 {% block content %}
-<section class="nm-home-hero">
+<section class="nm-hero-luxe">
   <div class="container">
-    <div class="row align-items-center g-4">
+    <div class="row align-items-center g-5">
       <div class="col-lg-6">
-        <p class="nm-kicker">Love. Mood. Your Note.</p>
-        <h1 class="nm-title display-4 mb-3">Find a perfume that matches how you feel.</h1>
-        <p class="text-secondary fs-5 mb-4">
-          Use NoteMatch without registration. Take the mood survey, select your favourite perfumes and price range,
-          then receive recommendations based on your scent preferences.
-        </p>
-        <div class="d-flex gap-2 flex-wrap">
-          <a class="btn nm-btn-rose btn-lg" href="/survey/">Take the survey</a>
-          <a class="btn nm-btn-green btn-lg" href="/perfumes/">Browse perfumes</a>
-          {% if not user.is_authenticated %}<a class="btn nm-link-btn btn-lg" href="/users/signup/">Create account</a>{% endif %}
-        </div>
+        <p class="nm-kicker">London perfume intelligence</p>
+        <h1 class="nm-title display-3 mb-3">Find your signature scent in London</h1>
+        <p class="fs-5 text-secondary mb-4">Discover luxury, niche and everyday perfumes for your lifestyle, budget, season and occasions — from Canary Wharf office wear to Soho date nights, Mayfair evenings and London weddings.</p>
+        <div class="d-flex gap-2 flex-wrap"><a class="btn nm-btn-gold btn-lg" href="/survey/" data-loading>Start the Scent Quiz</a><a class="btn nm-btn-light btn-lg" href="/perfumes/">Explore Perfumes</a></div>
+        <div class="nm-trust-row mt-4"><span>Dior</span><span>Chanel</span><span>Tom Ford</span><span>Jo Malone London</span><span>Creed</span></div>
       </div>
-      <div class="col-lg-6">
-        <img class="nm-hero-photo" src="{% static 'images/notematch-hero.png' %}" alt="NoteMatch perfume hero image">
-      </div>
+      <div class="col-lg-6"><div class="nm-hero-frame"><img src="{% static 'images/notematch-hero.png' %}" alt="Luxury perfume bottles for London fragrance recommendations"><div class="nm-floating-card"><b>London match engine</b><span>Notes · Occasion · Weather · Budget</span></div></div></div>
     </div>
   </div>
 </section>
-
-<div class="container nm-section">
+<section class="container nm-section">
   <div class="row g-3">
-    <div class="col-md-4"><div class="nm-card h-100"><h5>Survey first</h5><p class="text-secondary mb-0">Visitors can answer the questions immediately. Login is not required.</p></div></div>
-    <div class="col-md-4"><div class="nm-card h-100"><h5>Preference matching</h5><p class="text-secondary mb-0">Choose three favourites and a price range so results feel more personal.</p></div></div>
-    <div class="col-md-4"><div class="nm-card h-100"><h5>Admin control</h5><p class="text-secondary mb-0">Admin can add, edit and delete perfumes, prices, moods and scent options.</p></div></div>
+    <div class="col-md-4"><div class="nm-card h-100"><span class="nm-icon">✦</span><h5>Personal taste matching</h5><p class="text-secondary mb-0">Score perfumes by favourite notes, disliked notes, brand style, intensity, personality and lifestyle.</p></div></div>
+    <div class="col-md-4"><div class="nm-card h-100"><span class="nm-icon">☂</span><h5>Built for London weather</h5><p class="text-secondary mb-0">Find fresh rainy-day musks, office-safe citrus, cosy winter ambers and polished wedding guest fragrances.</p></div></div>
+    <div class="col-md-4"><div class="nm-card h-100"><span class="nm-icon">£</span><h5>GBP budget guidance</h5><p class="text-secondary mb-0">Compare estimated UK prices and where to buy across Selfridges, Harrods, Liberty, Space NK and more.</p></div></div>
   </div>
-</div>
+</section>
+<section class="nm-section nm-dark-band"><div class="container"><div class="d-flex justify-content-between align-items-end flex-wrap gap-3 mb-4"><div><p class="nm-kicker text-gold">Trending in London</p><h2 class="nm-title text-white">Popular luxury picks</h2></div><a class="btn nm-btn-gold" href="/perfumes/">View all</a></div><div class="row g-3">{% for p in trending %}<div class="col-md-6 col-xl-4"><a class="nm-card perfume-card nm-dark-card d-block h-100" href="/perfumes/{{ p.id }}/"><div class="d-flex justify-content-between"><div><h5>{{ p.name }}</h5><p>{{ p.brand }}</p></div><span class="nm-price">£{{ p.price }}</span></div><span class="nm-badge">{{ p.get_scent_1_display }}</span><span class="nm-badge">{{ p.get_scent_2_display }}</span><span class="nm-badge">{{ p.get_scent_3_display }}</span></a></div>{% empty %}<div class="col"><div class="nm-empty">Run <code>python manage.py seed_survey</code> to load sample perfumes.</div></div>{% endfor %}</div></div></section>
+<section class="container nm-section"><div class="row g-4"><div class="col-lg-5"><p class="nm-kicker">Seasonal recommendations</p><h2 class="nm-title">London weather edits</h2><p class="text-secondary">Explore scent wardrobes for unpredictable commutes, warm Underground journeys, crisp autumn walks in Kensington and formal winter evenings.</p></div><div class="col-lg-7"><div class="nm-edit-grid"><a href="/perfumes/?season=rainy">Best perfumes for rainy London days</a><a href="/perfumes/?occasion=office">Best office fragrances for Canary Wharf</a><a href="/perfumes/?occasion=date">Best date night perfumes in Soho</a><a href="/perfumes/?occasion=luxury">Luxury perfumes for Mayfair evenings</a><a href="/perfumes/?occasion=wedding">Best wedding guest fragrances</a><a href="/perfumes/?occasion=commute">Best perfumes for commuting</a></div></div></div></section>
+<section class="container nm-section"><div class="d-flex justify-content-between align-items-end flex-wrap gap-3 mb-4"><div><p class="nm-kicker">Brands</p><h2 class="nm-title">Luxury and niche houses</h2></div><a class="btn nm-btn-outline" href="/perfumes/brands/">Browse brands</a></div><div class="nm-brand-cloud">{% for brand in brands %}<a href="/perfumes/?brand={{ brand|urlencode }}">{{ brand }}</a>{% endfor %}<a href="/perfumes/?brand=Tom%20Ford">Tom Ford</a><a href="/perfumes/?brand=Chanel">Chanel</a><a href="/perfumes/?brand=Dior">Dior</a><a href="/perfumes/?brand=Gucci">Gucci</a></div></section>
+<section class="container nm-section"><div class="row g-3"><div class="col-lg-4"><div class="nm-testimonial h-100"><p>“The recommendations felt refined and actually useful for London office life.”</p><b>Student tester · Kensington</b></div></div><div class="col-lg-4"><div class="nm-testimonial h-100"><p>“The quiz explained why each perfume matched my personality and budget.”</p><b>Survey respondent · Shoreditch</b></div></div><div class="col-lg-4"><div class="nm-testimonial h-100"><p>“It looks premium enough for a real luxury fragrance startup.”</p><b>Prototype review · Mayfair</b></div></div></div></section>
 {% endblock %}

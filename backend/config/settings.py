@@ -107,8 +107,12 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 # This works locally and on Render when the service root is the repository root
 # and the build/start commands cd into backend.
 STATICFILES_DIRS = []
+# Primary static source: project-level frontend/static.
 if (FRONTEND_DIR / "static").exists():
     STATICFILES_DIRS.append(FRONTEND_DIR / "static")
+# Fallback static source for deployments that accidentally use backend as root.
+if (BASE_DIR / "static").exists():
+    STATICFILES_DIRS.append(BASE_DIR / "static")
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 STORAGES = {

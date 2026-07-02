@@ -68,12 +68,38 @@ def repair_survey_option_table():
         return changed
 
 
+def repair_survey_question_table():
+    table = "survey_surveyquestion"
+    vendor = connection.vendor
+    with connection.cursor() as cursor:
+        try:
+            tables = connection.introspection.table_names(cursor)
+        except Exception:
+            tables = []
+        if table not in tables:
+            return 0
+
+        columns = [col.name for col in connection.introspection.get_table_description(cursor, table)]
+        changed = 0
+        if vendor == "postgresql" and "is_active" in columns:
+            if _safe_execute(cursor, f'UPDATE "{table}" SET "is_active" = TRUE WHERE "is_active" IS NULL'):
+                changed += 1
+            if _safe_execute(cursor, f'ALTER TABLE "{table}" ALTER COLUMN "is_active" SET DEFAULT TRUE'):
+                changed += 1
+            if _safe_execute(cursor, f'ALTER TABLE "{table}" ALTER COLUMN "is_active" DROP NOT NULL'):
+                changed += 1
+        return changed
+
+
 class Command(BaseCommand):
     help = "Repair old Render database columns left from previous NoteMatch deployments. Safe to run repeatedly."
 
     def handle(self, *args, **options):
         perfume_changes = repair_perfume_table()
-        survey_changes = repair_survey_option_table()
+        survey_option_changes = repair_survey_option_table()
+        survey_question_changes = repair_survey_question_table()
         self.stdout.write(self.style.SUCCESS(
-            f"Live database repair completed. Perfume column fixes: {perfume_changes}. Survey column fixes: {survey_changes}."
+            f"Live database repair completed. Perfume column fixes: {perfume_changes}. "
+            f"Survey option fixes: {survey_option_changes}. "
+            f"Survey question fixes: {survey_question_changes}."
         ))

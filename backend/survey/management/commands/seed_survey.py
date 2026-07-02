@@ -58,6 +58,37 @@ def make_legacy_perfume_columns_nullable():
         pass
 
 
+def make_legacy_survey_question_columns_compatible():
+    """Repair old live databases that still have legacy SurveyQuestion columns.
+
+    Some previous deployments created an ``is_active`` column on
+    survey_surveyquestion with NOT NULL but without a database default.
+    The current model does not use that field, so Django inserts omit it and
+    PostgreSQL rejects the row. This repair is safe to run repeatedly and fixes
+    the live database before seed data is inserted.
+    """
+    table_name = "survey_surveyquestion"
+    try:
+        with connection.cursor() as cursor:
+            tables = connection.introspection.table_names(cursor)
+            if table_name not in tables:
+                return
+
+            columns = [col.name for col in connection.introspection.get_table_description(cursor, table_name)]
+            if "is_active" not in columns:
+                return
+
+            if connection.vendor == "postgresql":
+                cursor.execute(f'UPDATE "{table_name}" SET "is_active" = TRUE WHERE "is_active" IS NULL')
+                cursor.execute(f'ALTER TABLE "{table_name}" ALTER COLUMN "is_active" SET DEFAULT TRUE')
+                # Also drop NOT NULL so future model changes cannot block inserts.
+                cursor.execute(f'ALTER TABLE "{table_name}" ALTER COLUMN "is_active" DROP NOT NULL')
+    except Exception:
+        # Never block deployment because of a legacy repair. Normal migrations/seed
+        # will continue and show a clearer error if there is a different problem.
+        pass
+
+
 SEED_DATA = [
     {
         "order": 1,
@@ -304,6 +335,7 @@ class Command(BaseCommand):
         # Repair old Render/Supabase columns before inserting seed data.
         drop_legacy_target_mood_column()
         make_legacy_perfume_columns_nullable()
+        make_legacy_survey_question_columns_compatible()
 
         for mood_name in ["Energic", "Relaxation"]:
             Mood.objects.get_or_create(name=mood_name)

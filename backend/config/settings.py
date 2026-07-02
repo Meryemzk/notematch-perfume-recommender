@@ -102,8 +102,19 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_DIRS = [FRONTEND_DIR / "static"]
+
+# Static files live in the project-level frontend/static folder.
+# This works locally and on Render when the service root is the repository root
+# and the build/start commands cd into backend.
+STATICFILES_DIRS = []
+if (FRONTEND_DIR / "static").exists():
+    STATICFILES_DIRS.append(FRONTEND_DIR / "static")
+
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STORAGES = {
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
+}
 
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"

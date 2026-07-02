@@ -1,0 +1,23 @@
+{% extends "base.html" %}{% block title %}Professional Admin Panel | NoteMatch{% endblock %}{% block content %}
+<header class="nm-page-heading"><div class="container"><p class="nm-kicker">Role protected administration</p><h1 class="nm-title">Professional admin panel</h1><p class="text-secondary">Manage analytics, users, perfume catalogue, gender categories, survey questions, reviews, homepage content and recommendation settings.</p><div class="d-flex gap-2 flex-wrap"><a class="btn nm-btn" href="/admin/perfumes/perfume/">Open Django catalogue admin</a><a class="btn nm-btn-outline" href="/admin/perfumes/perfume/add/">Add perfume</a><a class="btn nm-btn-outline" href="/admin/survey/surveyquestion/">Quiz question management</a><a class="btn nm-btn-outline" href="/admin/auth/user/">User management</a></div></div></header>
+<section class="container nm-section">
+  <div class="row g-3">
+    <div class="col-md-3"><div class="nm-stat"><span>Total users</span><b>{{ total_users }}</b></div></div>
+    <div class="col-md-3"><div class="nm-stat"><span>Total perfumes</span><b>{{ total_perfumes }}</b></div></div>
+    <div class="col-md-3"><div class="nm-stat"><span>Total brands</span><b>{{ total_brands }}</b></div></div>
+    <div class="col-md-3"><div class="nm-stat"><span>Quiz submissions</span><b>{{ submissions }}</b></div></div>
+  </div>
+  <div class="row g-3 mt-1">
+    <div class="col-md-4"><div class="nm-card h-100"><h4>Feminine / W</h4><p class="display-6 fw-bold">{{ feminine_count }}</p><a href="/admin/perfumes/perfume/?gender_category__exact=feminine">Edit W perfumes</a></div></div>
+    <div class="col-md-4"><div class="nm-card h-100"><h4>Masculine / M</h4><p class="display-6 fw-bold">{{ masculine_count }}</p><a href="/admin/perfumes/perfume/?gender_category__exact=masculine">Edit M perfumes</a></div></div>
+    <div class="col-md-4"><div class="nm-card h-100"><h4>Unisex</h4><p class="display-6 fw-bold">{{ unisex_count }}</p><a href="/admin/perfumes/perfume/?gender_category__exact=unisex">Edit unisex perfumes</a></div></div>
+  </div>
+  <div class="row g-4 mt-1">
+    <div class="col-lg-7"><div class="nm-card"><h3 class="nm-title">Catalogue management</h3><div class="table-responsive"><table class="table align-middle"><thead><tr><th>Perfume</th><th>Brand</th><th>Category</th><th>Price</th><th>Edit</th></tr></thead><tbody>{% for p in top_perfumes %}<tr><td>{{ p.name }}</td><td>{{ p.brand }}</td><td><span class="nm-badge">{{ p.gender_display }}</span></td><td>£{{ p.price }}</td><td><a href="/admin/perfumes/perfume/{{ p.id }}/change/">Edit</a></td></tr>{% endfor %}</tbody></table></div></div></div>
+    <div class="col-lg-5"><div class="nm-card"><h3 class="nm-title">Most used notes</h3>{% for n in top_notes %}<div class="nm-progress"><span>{{ n.label }}</span><b>{{ n.count }}</b><i style="--w:{{ n.count }}0%"></i></div>{% endfor %}</div></div>
+  </div>
+  <div class="row g-4 mt-1">
+    <div class="col-lg-6"><div class="nm-card"><h3 class="nm-title">Admin modules</h3><div class="nm-edit-grid"><a href="/admin/perfumes/perfume/add/">Add perfume</a><a href="/admin/perfumes/perfume/">Edit/delete perfumes</a><a href="/admin/perfumes/perfume/?gender_category__exact=feminine">Feminine W list</a><a href="/admin/perfumes/perfume/?gender_category__exact=masculine">Masculine M list</a><a href="/admin/perfumes/perfume/?gender_category__exact=unisex">Unisex list</a><a href="/admin/survey/surveyquestion/">Quiz questions</a><a href="/admin/survey/surveyanswer/">Survey answers</a><a href="/admin/auth/group/">Admin/editor roles</a><a href="/admin/auth/user/">Users</a><a href="/admin/">Django admin home</a></div></div></div>
+    <div class="col-lg-6"><div class="nm-card"><h3 class="nm-title">Recent quiz results</h3>{% for r in recent_submissions %}<div class="nm-retailer"><b>{{ r.user|default:"Guest" }}</b><span>{{ r.result_mood }} · {{ r.created_at|date:"d/m/Y H:i" }}</span></div>{% empty %}<p class="text-secondary">No quiz submissions yet.</p>{% endfor %}</div></div>
+  </div>
+</section>{% endblock %}

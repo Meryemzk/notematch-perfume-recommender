@@ -1,0 +1,25 @@
+Render migration error fix
+==========================
+
+If Render shows:
+NodeNotFoundError: Migration perfumes.0001_initial dependencies reference nonexistent parent node ('survey', '0001_initial')
+
+It means GitHub/Render does not have this file:
+backend/survey/migrations/0001_initial.py
+
+Fix:
+1. Upload/commit the whole backend/survey/migrations folder.
+2. Also upload/commit backend/perfumes/migrations.
+3. Do not ignore Django migration files in .gitignore.
+
+Recommended Git commands from the project root:
+
+git add -f backend/survey/migrations/*.py backend/perfumes/migrations/*.py
+git add .
+git commit -m "Fix missing survey migrations for Render"
+git push origin main
+
+Render settings:
+Root Directory: leave empty
+Build Command: cd backend && pip install -r requirements.txt && python manage.py migrate --noinput && python manage.py repair_live_db && python manage.py seed_survey && python manage.py collectstatic --noinput
+Start Command: cd backend && gunicorn config.wsgi:application --bind 0.0.0.0:$PORT

@@ -1,0 +1,23 @@
+Render-ready settings for NoteMatch
+
+Use these Render settings so the live site runs the same project files as local:
+
+Root Directory: leave empty
+Build Command:
+cd backend && pip install -r requirements.txt && python manage.py migrate --noinput && python manage.py repair_live_db && python manage.py seed_survey && python manage.py collectstatic --noinput
+
+Start Command:
+cd backend && gunicorn config.wsgi:application --bind 0.0.0.0:$PORT
+
+Environment variables:
+DEBUG=False
+SECRET_KEY=<your secret key>
+ALLOWED_HOSTS=your-service-name.onrender.com,.onrender.com
+CSRF_TRUSTED_ORIGINS=https://your-service-name.onrender.com
+DATABASE_URL=<your Render PostgreSQL database URL>
+
+Important:
+- Do not set Root Directory to backend because static files are in frontend/static.
+- The settings.py file collects static files from frontend/static.
+- runtime.txt is included at repository root and backend/runtime.txt to keep Python consistent.
+- Migrations are included and should be committed to GitHub.

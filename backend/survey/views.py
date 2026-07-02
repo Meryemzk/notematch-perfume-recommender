@@ -248,24 +248,54 @@ def result(request):
             if note in perfume_notes or note in notes_text:
                 score -= 5
                 reasons.append(f"contains a note you may dislike: {note}")
-        if profile.get("season") in ["winter", "autumn"] and perfume_notes & {"amber", "vanilla", "woody", "oud", "leather", "spicy"}:
+        if profile.get("season") in ["winter", "autumn"] and perfume_notes & {"amber", "vanilla", "woody", "oud", "leather", "spicy", "smoky"}:
             score += 4
-            reasons.append("suits colder weather")
+            reasons.append("suits colder seasons")
         if profile.get("season") in ["summer", "spring"] and perfume_notes & {"fresh", "citrus", "aquatic", "green", "floral"}:
             score += 4
             reasons.append("suits lighter seasons")
         if profile.get("weather") == "rainy" and perfume_notes & {"musk", "woody", "amber", "green"}:
             score += 3
-            reasons.append("works well on rainy days")
-        if profile.get("occasion") in ["luxury", "date", "formal", "wedding"] and (perfume.price >= 75 or perfume_notes & {"amber", "oud", "leather", "jasmine"}):
+            reasons.append("works well on rainy or damp days")
+        if profile.get("weather") == "warm" and perfume_notes & {"fresh", "citrus", "aquatic", "green"}:
+            score += 3
+            reasons.append("feels fresh for warm weather")
+        if profile.get("weather") == "cold" and perfume_notes & {"amber", "vanilla", "woody", "oud", "leather", "spicy"}:
+            score += 3
+            reasons.append("has warmth for cold weather")
+        if profile.get("weather") in ["mild", "all_weather"] and perfume_notes & {"musk", "fresh", "floral", "woody"}:
+            score += 2
+            reasons.append("is versatile for everyday weather")
+        if profile.get("occasion") in ["luxury", "date", "formal", "wedding"] and (perfume.price >= 75 or perfume_notes & {"amber", "oud", "leather", "jasmine", "vanilla"}):
             score += 3
             reasons.append("feels polished for your occasion")
-        if profile.get("intensity") == "strong" and perfume_notes & {"amber", "oud", "leather", "spicy", "oriental"}:
+        if profile.get("occasion") in ["office", "daily", "weekend"] and perfume_notes & {"fresh", "musk", "citrus", "green", "floral"}:
+            score += 2
+            reasons.append("works well for regular wear")
+        if profile.get("occasion") == "party" and perfume_notes & {"spicy", "sweet", "amber", "oud", "leather"}:
+            score += 3
+            reasons.append("has presence for social events")
+        if profile.get("intensity") == "strong" and perfume_notes & {"amber", "oud", "leather", "spicy", "smoky", "oriental"}:
             score += 3
             reasons.append("has the stronger presence you requested")
-        if profile.get("intensity") == "subtle" and perfume_notes & {"fresh", "musk", "citrus", "aquatic"}:
+        if profile.get("intensity") == "moderate" and perfume_notes & {"floral", "woody", "musk", "fresh"}:
+            score += 2
+            reasons.append("balances presence and wearability")
+        if profile.get("intensity") == "subtle" and perfume_notes & {"fresh", "musk", "citrus", "aquatic", "green"}:
             score += 3
             reasons.append("keeps the profile subtle and refined")
+        if profile.get("longevity") in ["long", "very_long"] and perfume_notes & {"amber", "oud", "leather", "vanilla", "woody", "spicy"}:
+            score += 2
+            reasons.append("matches your longevity preference")
+        if profile.get("personality") in ["romantic", "elegant", "classic"] and perfume_notes & {"floral", "rose", "musk", "powdery", "vanilla"}:
+            score += 2
+            reasons.append("fits your personality style")
+        if profile.get("personality") in ["bold", "mysterious", "luxurious"] and perfume_notes & {"amber", "oud", "leather", "spicy", "smoky"}:
+            score += 2
+            reasons.append("fits your personality style")
+        if profile.get("personality") in ["minimalist", "modern", "sporty"] and perfume_notes & {"fresh", "citrus", "aquatic", "green", "musk"}:
+            score += 2
+            reasons.append("fits your personality style")
         favourite_brand_text = (profile.get("favourite_brands") or "").lower()
         if perfume.brand and perfume.brand.lower() in favourite_brand_text:
             score += 4

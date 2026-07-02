@@ -2,6 +2,14 @@ from django.conf import settings
 from django.db import models
 
 
+
+GENDER_STYLE_CHOICES = [
+    ("feminine", "Feminine / W only"),
+    ("masculine", "Masculine / M only"),
+    ("unisex", "Unisex only"),
+    ("no_preference", "No preference"),
+]
+
 PRICE_RANGE_CHOICES = [
     ("any", "Any price"),
     ("under_80", "Under £80"),
@@ -65,6 +73,9 @@ class SurveySubmission(models.Model):
     top_note_tags = models.CharField(max_length=255, blank=True)
 
     price_range = models.CharField(max_length=20, choices=PRICE_RANGE_CHOICES, default="any")
+    # Stored permanently so the result page does not depend on the browser session.
+    # This is the strict survey filter: feminine = W only, masculine = M only, unisex = unisex only.
+    selected_gender_style = models.CharField(max_length=20, choices=GENDER_STYLE_CHOICES, default="no_preference", db_index=True)
     favourite_perfume_1 = models.ForeignKey("perfumes.Perfume", on_delete=models.SET_NULL, null=True, blank=True, related_name="survey_favourite_1")
     favourite_perfume_2 = models.ForeignKey("perfumes.Perfume", on_delete=models.SET_NULL, null=True, blank=True, related_name="survey_favourite_2")
     favourite_perfume_3 = models.ForeignKey("perfumes.Perfume", on_delete=models.SET_NULL, null=True, blank=True, related_name="survey_favourite_3")

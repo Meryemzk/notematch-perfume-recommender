@@ -61,84 +61,132 @@ def make_legacy_perfume_columns_nullable():
 SEED_DATA = [
     {
         "order": 1,
-        "text": "How do you want to feel after wearing your perfume today?",
+        "text": "Eligibility: please confirm that you are aged 18 or above before taking part in this academic perfume recommendation survey.",
         "options": [
-            {"text": "Energised and confident", "energic": 3, "relax": 0, "tag": "fresh"},
-            {"text": "Calm and relaxed", "energic": 0, "relax": 3, "tag": "musk"},
-            {"text": "Romantic and soft", "energic": 1, "relax": 2, "tag": "floral"},
-            {"text": "Powerful and noticeable", "energic": 3, "relax": 0, "tag": "spicy"},
+            {"text": "Yes, I am 18 or above", "energic": 1, "relax": 1, "tag": "fresh"},
+            {"text": "No, I am under 18", "energic": 0, "relax": 0, "tag": "musk"},
         ],
     },
     {
         "order": 2,
-        "text": "What is the main reason you are choosing a perfume?",
+        "text": "Consent: do you agree for your anonymous answers to be used for academic research about mood-based perfume recommendations?",
         "options": [
-            {"text": "Daily use / work / university", "energic": 2, "relax": 1, "tag": "fresh"},
-            {"text": "Date or romantic occasion", "energic": 1, "relax": 2, "tag": "floral"},
-            {"text": "Evening, party or special event", "energic": 3, "relax": 0, "tag": "amber"},
-            {"text": "Comfort, self-care or relaxing at home", "energic": 0, "relax": 3, "tag": "vanilla"},
+            {"text": "Yes, I agree to participate", "energic": 1, "relax": 1, "tag": "fresh"},
+            {"text": "No, I do not agree", "energic": 0, "relax": 0, "tag": "musk"},
         ],
     },
     {
         "order": 3,
-        "text": "Which scent family attracts you most?",
+        "text": "How often do you normally wear perfume, body mist, aftershave or fragrance?",
         "options": [
-            {"text": "Fresh or citrus", "energic": 3, "relax": 0, "tag": "citrus"},
-            {"text": "Floral", "energic": 1, "relax": 2, "tag": "floral"},
-            {"text": "Sweet vanilla or amber", "energic": 1, "relax": 2, "tag": "vanilla"},
-            {"text": "Woody, leather or oud", "energic": 2, "relax": 1, "tag": "woody"},
+            {"text": "Every day", "energic": 3, "relax": 1, "tag": "fresh"},
+            {"text": "Several times a week", "energic": 2, "relax": 1, "tag": "floral"},
+            {"text": "Occasionally, mainly for plans or special moments", "energic": 1, "relax": 2, "tag": "musk"},
+            {"text": "Rarely, but I am interested in finding the right scent", "energic": 0, "relax": 3, "tag": "vanilla"},
         ],
     },
     {
         "order": 4,
-        "text": "How strong should your perfume be?",
+        "text": "When choosing a perfume, which factor usually matters most to you?",
         "options": [
-            {"text": "Light and clean", "energic": 1, "relax": 2, "tag": "musk"},
-            {"text": "Medium and balanced", "energic": 2, "relax": 1, "tag": "floral"},
-            {"text": "Strong and long-lasting", "energic": 3, "relax": 0, "tag": "amber"},
+            {"text": "Mood — how I want to feel", "energic": 1, "relax": 3, "tag": "musk"},
+            {"text": "Occasion — work, date, party, formal event or gifting", "energic": 2, "relax": 1, "tag": "amber"},
+            {"text": "Brand — designer, niche or a trusted name", "energic": 2, "relax": 1, "tag": "woody"},
+            {"text": "Price — staying within my budget", "energic": 1, "relax": 1, "tag": "fresh"},
+            {"text": "Recommendation — reviews, staff advice or online matching", "energic": 2, "relax": 2, "tag": "floral"},
+            {"text": "Other personal reasons", "energic": 1, "relax": 1, "tag": "green"},
         ],
     },
     {
         "order": 5,
-        "text": "Which season or weather do you imagine wearing it in?",
+        "text": "Which fragrance direction feels most suitable when you want to feel relaxed, comfortable or calm?",
         "options": [
-            {"text": "Spring / fresh weather", "energic": 2, "relax": 1, "tag": "floral"},
-            {"text": "Summer / warm weather", "energic": 3, "relax": 0, "tag": "citrus"},
-            {"text": "Autumn / cosy weather", "energic": 1, "relax": 2, "tag": "woody"},
-            {"text": "Winter / cold weather", "energic": 1, "relax": 2, "tag": "amber"},
+            {"text": "Lavender or aromatic clean notes", "energic": 0, "relax": 4, "tag": "lavender"},
+            {"text": "Vanilla or soft sweet notes", "energic": 0, "relax": 4, "tag": "vanilla"},
+            {"text": "Rose or gentle floral notes", "energic": 1, "relax": 3, "tag": "rose"},
+            {"text": "Woody notes that feel warm and grounded", "energic": 1, "relax": 3, "tag": "woody"},
+            {"text": "Musk or powdery skin-like notes", "energic": 0, "relax": 4, "tag": "musk"},
+            {"text": "Fresh, clean and airy notes", "energic": 1, "relax": 2, "tag": "fresh"},
         ],
     },
     {
         "order": 6,
-        "text": "Which description fits your personality best?",
+        "text": "Which fragrance direction makes you feel most confident, polished or memorable?",
         "options": [
-            {"text": "Bright, social and energetic", "energic": 3, "relax": 0, "tag": "fruity"},
-            {"text": "Elegant, romantic and soft", "energic": 1, "relax": 2, "tag": "rose"},
-            {"text": "Calm, minimal and clean", "energic": 0, "relax": 3, "tag": "musk"},
-            {"text": "Bold, confident and mysterious", "energic": 3, "relax": 0, "tag": "leather"},
+            {"text": "Amber — warm, rich and elegant", "energic": 3, "relax": 1, "tag": "amber"},
+            {"text": "Spicy notes — bold and attention-grabbing", "energic": 4, "relax": 0, "tag": "spicy"},
+            {"text": "Woody notes — refined and professional", "energic": 3, "relax": 1, "tag": "woody"},
+            {"text": "Musk — clean, intimate and sophisticated", "energic": 2, "relax": 2, "tag": "musk"},
+            {"text": "Rose or floral notes — elegant and expressive", "energic": 2, "relax": 2, "tag": "rose"},
         ],
     },
     {
         "order": 7,
-        "text": "Which note would you choose first?",
+        "text": "Which fragrance direction do you associate most with energy, freshness and a positive start to the day?",
         "options": [
-            {"text": "Bergamot, lemon or orange", "energic": 3, "relax": 0, "tag": "citrus"},
-            {"text": "Rose or jasmine", "energic": 1, "relax": 2, "tag": "jasmine"},
-            {"text": "Vanilla or caramel", "energic": 1, "relax": 2, "tag": "vanilla"},
-            {"text": "Cedar, sandalwood or leather", "energic": 2, "relax": 1, "tag": "woody"},
+            {"text": "Citrus — bright, clean and uplifting", "energic": 4, "relax": 0, "tag": "citrus"},
+            {"text": "Fresh notes — shower-clean and easy to wear", "energic": 4, "relax": 1, "tag": "fresh"},
+            {"text": "Green notes — natural, crisp and outdoorsy", "energic": 3, "relax": 1, "tag": "green"},
+            {"text": "Aquatic notes — cool, watery and airy", "energic": 3, "relax": 1, "tag": "aquatic"},
+            {"text": "Light spicy notes — energetic but still refined", "energic": 3, "relax": 0, "tag": "spicy"},
         ],
     },
     {
         "order": 8,
-        "text": "What type of recommendation do you prefer?",
+        "text": "How strongly do you agree that certain scents can influence your mood, confidence or memory?",
         "options": [
-            {"text": "Popular best sellers", "energic": 2, "relax": 1, "tag": "fresh"},
-            {"text": "Luxury and premium", "energic": 2, "relax": 1, "tag": "amber"},
-            {"text": "Soft and easy to wear", "energic": 0, "relax": 3, "tag": "musk"},
-            {"text": "Unique and memorable", "energic": 3, "relax": 0, "tag": "spicy"},
+            {"text": "Strongly disagree", "energic": 0, "relax": 0, "tag": "fresh"},
+            {"text": "Disagree", "energic": 0, "relax": 1, "tag": "musk"},
+            {"text": "Neither agree nor disagree", "energic": 1, "relax": 1, "tag": "floral"},
+            {"text": "Agree", "energic": 2, "relax": 2, "tag": "amber"},
+            {"text": "Strongly agree", "energic": 3, "relax": 3, "tag": "vanilla"},
+        ],
+    },
+    {
+        "order": 9,
+        "text": "Have you ever had a scent trigger a specific memory, person, place or emotional moment?",
+        "options": [
+            {"text": "Yes, scent strongly connects with memories for me", "energic": 1, "relax": 3, "tag": "rose"},
+            {"text": "Sometimes, but not always", "energic": 1, "relax": 2, "tag": "musk"},
+            {"text": "No, I have not noticed this", "energic": 1, "relax": 1, "tag": "fresh"},
+            {"text": "I am not sure", "energic": 1, "relax": 2, "tag": "powdery"},
+        ],
+    },
+    {
+        "order": 10,
+        "text": "Would you use a website that recommends perfumes based on your mood, occasion, preferred notes, budget and fragrance style?",
+        "options": [
+            {"text": "Yes, definitely", "energic": 3, "relax": 3, "tag": "floral"},
+            {"text": "Maybe, if the recommendations feel accurate", "energic": 2, "relax": 2, "tag": "musk"},
+            {"text": "Only if it is quick and does not ask too much", "energic": 1, "relax": 1, "tag": "fresh"},
+            {"text": "No, I prefer choosing perfumes myself", "energic": 0, "relax": 1, "tag": "green"},
+        ],
+    },
+    {
+        "order": 11,
+        "text": "What concern would most affect your trust in a mood-based perfume recommendation website?",
+        "options": [
+            {"text": "Privacy of personal data", "energic": 0, "relax": 2, "tag": "musk"},
+            {"text": "Security risks", "energic": 0, "relax": 2, "tag": "woody"},
+            {"text": "Too much personal information required", "energic": 0, "relax": 2, "tag": "powdery"},
+            {"text": "Lack of transparency about why perfumes are recommended", "energic": 1, "relax": 1, "tag": "green"},
+            {"text": "Inaccurate or irrelevant recommendations", "energic": 1, "relax": 1, "tag": "citrus"},
+            {"text": "No major concerns", "energic": 3, "relax": 2, "tag": "amber"},
+        ],
+    },
+    {
+        "order": 12,
+        "text": "What would make the recommendation results feel most useful and trustworthy to you?",
+        "options": [
+            {"text": "A clear explanation for each perfume match", "energic": 2, "relax": 2, "tag": "woody"},
+            {"text": "Visible privacy information and control over my answers", "energic": 1, "relax": 3, "tag": "musk"},
+            {"text": "Real user reviews, ratings and popularity signals", "energic": 2, "relax": 1, "tag": "floral"},
+            {"text": "Ability to edit preferences and retake the quiz", "energic": 2, "relax": 2, "tag": "fresh"},
+            {"text": "Accurate matching for mood, budget, occasion and gender category", "energic": 3, "relax": 2, "tag": "amber"},
         ],
     },
 ]
+
 
 PERFUME_DATA = [
     ("PRADA PARADIGME EDPV100", "Prada", "115.00", "woody", "amber", "musk", ["Energic"]),
@@ -280,20 +328,32 @@ class Command(BaseCommand):
                 )
                 total_opts += 1
 
-        from perfumes.models import Perfume
+        from types import SimpleNamespace
+        from perfumes.models import Perfume, infer_perfume_gender_category
 
         created_perfumes = updated_perfumes = 0
         for name, brand, price, s1, s2, s3, moods in PERFUME_DATA:
             s1, s2, s3 = [SCENT_NORMALISE.get(s, s) for s in (s1, s2, s3)]
+            category = infer_perfume_gender_category(SimpleNamespace(name=name, scent_1=s1, scent_2=s2, scent_3=s3))
             perfume, created = Perfume.objects.update_or_create(
                 name=name,
                 defaults={
                     "brand": brand,
                     "price": price,
+                    "gender_category": category,
                     "scent_1": s1,
                     "scent_2": s2,
                     "scent_3": s3,
-                    "notes": f"Best-seller catalog item. Price £{price}. Scent profile: {s1}, {s2}, {s3}.",
+                    "description": f"Best-seller catalogue perfume from the project data. Category: {category.title()}.",
+                    "notes": f"Best-seller catalog item. Price £{price}. Scent profile: {s1}, {s2}, {s3}. Category: {category}.",
+                    "suitable_season": "all",
+                    "occasion": "daily",
+                    "longevity": 8 if s3 in {"amber", "oud", "leather", "spicy", "oriental"} else 7,
+                    "projection": 8 if s3 in {"amber", "oud", "leather", "spicy", "oriental"} else 6,
+                    "sillage": 8 if s3 in {"amber", "oud", "leather", "spicy", "oriental"} else 6,
+                    "rating": "4.5",
+                    "availability_status": "Available",
+                    "retailer": "The Perfume Shop / online retailers",
                 },
             )
             perfume.moods.clear()
@@ -311,3 +371,6 @@ class Command(BaseCommand):
         self.stdout.write(f"Options inserted: {total_opts}")
         self.stdout.write(f"Perfumes created: {created_perfumes}")
         self.stdout.write(f"Perfumes updated: {updated_perfumes}")
+        self.stdout.write(f"Feminine / W perfumes: {Perfume.objects.filter(gender_category='feminine').count()}")
+        self.stdout.write(f"Masculine / M perfumes: {Perfume.objects.filter(gender_category='masculine').count()}")
+        self.stdout.write(f"Unisex perfumes: {Perfume.objects.filter(gender_category='unisex').count()}")

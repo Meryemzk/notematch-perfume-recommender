@@ -4,8 +4,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Luxury London perfume recommendations by taste, budget, season, lifestyle and occasion." />
-  <title>{% block title %}NoteMatch London Perfume Recommendations{% endblock %}</title>
+  <meta name="description" content="Luxury perfume recommendations by mood, taste, budget, season, weather and occasion." />
+  <title>{% block title %}NoteMatch Perfume Recommendations{% endblock %}</title>
   <link rel="canonical" href="{{ request.build_absolute_uri }}">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,7 +15,7 @@
 <body class="nm-body">
 <nav class="navbar navbar-expand-lg nm-navbar sticky-top">
   <div class="container">
-    <a class="navbar-brand d-flex align-items-center gap-2" href="/"><img class="nm-logo-img" src="{% static 'images/notematch-logo.png' %}" alt="NoteMatch London perfume logo"><span class="nm-brand">NoteMatch</span></a>
+    <a class="navbar-brand d-flex align-items-center gap-2" href="/"><img class="nm-logo-img" src="{% static 'images/notematch-logo.png' %}" alt="NoteMatch perfume logo"><span class="nm-brand">NoteMatch</span></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nmNav" aria-label="Open navigation"><span class="navbar-toggler-icon"></span></button>
     <div class="collapse navbar-collapse" id="nmNav">
       <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
@@ -24,7 +24,7 @@
           <div class="dropdown-menu nm-mega-menu p-3">
             <div class="row g-3">
               <div class="col-lg-4"><h6>Discover</h6><a href="/perfumes/">Perfume search</a><a href="/survey/">Smart scent quiz</a><a href="/perfumes/compare/">Compare perfumes</a><a href="/perfumes/favourites/">Favourites</a></div>
-              <div class="col-lg-4"><h6>London edits</h6><a href="/perfumes/?occasion=office">Canary Wharf office</a><a href="/perfumes/?occasion=date">Soho date night</a><a href="/perfumes/?occasion=luxury">Mayfair evenings</a><a href="/perfumes/?season=rainy">Rainy days</a></div>
+              <div class="col-lg-4"><h6>Occasion edits</h6><a href="/perfumes/?occasion=office">Office wear</a><a href="/perfumes/?occasion=date">Date night</a><a href="/perfumes/?occasion=luxury">Luxury evenings</a><a href="/perfumes/?season=rainy">Rainy days</a></div>
               <div class="col-lg-4"><h6>Categories</h6><a href="/perfumes/brands/">Luxury brands</a><a href="/perfumes/notes/">Fragrance notes</a><a href="/about/">About</a><a href="/faq/">FAQ</a></div>
             </div>
           </div>
@@ -47,12 +47,12 @@
 <footer class="nm-footer">
   <div class="container">
     <div class="row g-4">
-      <div class="col-lg-4"><h5 class="nm-brand text-white">NoteMatch</h5><p>Luxury perfume recommendations for London life, from office wear in Canary Wharf to Mayfair evenings, Soho date nights and wedding guest gifting.</p><form class="nm-newsletter"><input class="form-control" placeholder="Email for fragrance edits"><button class="btn nm-btn-gold" type="button">Join</button></form></div>
+      <div class="col-lg-4"><h5 class="nm-brand text-white">NoteMatch</h5><p>Luxury perfume recommendations for life, from office wear to luxury evenings, date nights and wedding guest gifting.</p><form class="nm-newsletter"><input class="form-control" placeholder="Email for fragrance edits"><button class="btn nm-btn-gold" type="button">Join</button></form></div>
       <div class="col-sm-6 col-lg-2"><h6>Platform</h6><a href="/survey/">Scent quiz</a><a href="/perfumes/">Search</a><a href="/perfumes/compare/">Compare</a><a href="/users/me/">Dashboard</a></div>
-      <div class="col-sm-6 col-lg-3"><h6>London</h6><a href="/perfumes/?season=rainy">Rainy days</a><a href="/perfumes/?occasion=office">Office wear</a><a href="/perfumes/?occasion=luxury">Luxury shopping</a><a href="/contact/">Retailer enquiries</a></div>
+      <div class="col-sm-6 col-lg-3"><h6>Occasions</h6><a href="/perfumes/?season=rainy">Rainy days</a><a href="/perfumes/?occasion=office">Office wear</a><a href="/perfumes/?occasion=luxury">Luxury shopping</a><a href="/contact/">Retailer enquiries</a></div>
       <div class="col-lg-3"><h6>Trust</h6><a href="/about/">About</a><a href="/faq/">FAQ</a><a href="/terms/">Terms</a><a href="/privacy/">Privacy</a><p class="small mt-2">Prices are estimated in GBP for academic prototype use.</p></div>
     </div>
-    <div class="nm-footer-bottom d-flex flex-wrap justify-content-between gap-2"><span>© 2026 NoteMatch London</span><span>Django · Responsive · Survey-based recommendation logic</span></div>
+    <div class="nm-footer-bottom d-flex flex-wrap justify-content-between gap-2"><span>© 2026 NoteMatch</span><span>Django · Responsive · Survey-based recommendation logic</span></div>
   </div>
 </footer>
 <button id="backToTop" class="nm-back-top" type="button" aria-label="Back to top">↑</button>
